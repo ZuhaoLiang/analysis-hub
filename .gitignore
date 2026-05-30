@@ -1,0 +1,5 @@
+﻿*.ps1
+*.log
+*.tmp
+node_modules/
+.git/

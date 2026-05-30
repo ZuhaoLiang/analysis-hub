@@ -1,0 +1,2688 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>万象分析 · 全维人生解读系统</title>
+  <style>
+/* ======================================
+   万象分析 · Life Discovery Hub
+   星际主题 · CSS
+   ====================================== */
+
+/* ----- 基础重置 & 变量 ----- */
+:root {
+  --bg-deep: #0a0e1a;
+  --bg-card: rgba(15, 23, 49, 0.85);
+  --bg-card-hover: rgba(20, 30, 60, 0.95);
+  --text-primary: #e8e6f0;
+  --text-secondary: #9892b8;
+  --text-muted: #6b6391;
+  --accent-gold: #d4a847;
+  --accent-gold-glow: #f0c850;
+  --accent-blue: #4a7cf7;
+  --accent-purple: #8b5cf6;
+  --accent-teal: #06d6a0;
+  --accent-pink: #ef476f;
+  --gradient-main: linear-gradient(135deg, #0a0e1a 0%, #1a1f3a 50%, #0a0e1a 100%);
+  --gradient-card: linear-gradient(145deg, rgba(15,23,49,0.9), rgba(30,40,70,0.8));
+  --glass-border: 1px solid rgba(212,168,71,0.15);
+  --glass-shadow: 0 8px 32px rgba(0,0,0,0.4);
+  --radius: 16px;
+  --radius-sm: 8px;
+  --transition: all 0.3s ease;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Noto Sans SC', sans-serif;
+  background: var(--gradient-main);
+  color: var(--text-primary);
+  min-height: 100vh;
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+h1,h2,h3,h4 { font-family: 'Noto Serif SC', serif; }
+a { color: var(--accent-gold); text-decoration: none; transition: var(--transition); }
+a:hover { color: var(--accent-gold-glow); }
+
+/* ----- 星空背景 ----- */
+#stars-bg {
+  position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+  background-image:
+    radial-gradient(1px 1px at 10% 20%, rgba(255,255,255,0.6), transparent),
+    radial-gradient(1px 1px at 30% 60%, rgba(255,255,255,0.4), transparent),
+    radial-gradient(1.5px 1.5px at 50% 10%, rgba(255,255,255,0.7), transparent),
+    radial-gradient(1px 1px at 70% 40%, rgba(255,255,255,0.5), transparent),
+    radial-gradient(1px 1px at 90% 80%, rgba(255,255,255,0.6), transparent),
+    radial-gradient(1.5px 1.5px at 5% 90%, rgba(255,255,255,0.3), transparent),
+    radial-gradient(1px 1px at 45% 70%, rgba(255,255,255,0.4), transparent),
+    radial-gradient(1px 1px at 80% 15%, rgba(255,255,255,0.5), transparent),
+    radial-gradient(0.8px 0.8px at 25% 85%, rgba(255,255,255,0.4), transparent),
+    radial-gradient(0.8px 0.8px at 65% 50%, rgba(255,255,255,0.3), transparent),
+    radial-gradient(1.2px 1.2px at 15% 40%, rgba(255,255,255,0.5), transparent),
+    radial-gradient(1px 1px at 55% 30%, rgba(255,255,255,0.4), transparent),
+    radial-gradient(0.8px 0.8px at 35% 55%, rgba(212,168,71,0.3), transparent),
+    radial-gradient(1px 1px at 75% 75%, rgba(138,92,246,0.2), transparent),
+    radial-gradient(1.5px 1.5px at 95% 5%, rgba(74,124,247,0.3), transparent);
+  pointer-events: none; z-index: 0;
+}
+
+/* ----- 头部导航 ----- */
+#header {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+  background: rgba(10,14,26,0.85);
+  backdrop-filter: blur(12px);
+  border-bottom: var(--glass-border);
+  transition: var(--transition);
+}
+.header-inner {
+  max-width: 1400px; margin: 0 auto; padding: 0 20px;
+  display: flex; align-items: center; height: 64px;
+  gap: 24px;
+}
+.logo { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+.logo-icon { font-size: 24px; color: var(--accent-gold); }
+.logo-text { font-family: 'Noto Serif SC', serif; font-size: 18px; font-weight: 700; }
+.logo-sub { font-size: 11px; color: var(--text-muted); display: none; }
+#main-nav { display: flex; gap: 4px; overflow-x: auto; flex: 1; scrollbar-width: none; }
+#main-nav::-webkit-scrollbar { display: none; }
+.nav-link {
+  padding: 6px 14px; border-radius: 20px; font-size: 13px; font-weight: 500;
+  white-space: nowrap; color: var(--text-secondary); transition: var(--transition); position: relative;
+}
+.nav-link i { margin-right: 4px; font-size: 12px; }
+.nav-link:hover, .nav-link.active {
+  color: var(--accent-gold); background: rgba(212,168,71,0.1);
+}
+.nav-link.active::after {
+  content: ''; position: absolute; bottom: -1px; left: 50%; transform: translateX(-50%);
+  width: 20px; height: 2px; background: var(--accent-gold); border-radius: 2px;
+}
+#menu-toggle { display: none; background: none; border: none; color: var(--text-primary); font-size: 20px; cursor: pointer; }
+
+/* ----- 通用区块 ----- */
+.section {
+  padding: 80px 20px 60px; position: relative; z-index: 1;
+}
+.section-inner {
+  max-width: 1200px; margin: 0 auto;
+}
+.section-title {
+  font-size: 28px; text-align: center; margin-bottom: 8px;
+  color: var(--text-primary); letter-spacing: 2px;
+}
+.section-title i { color: var(--accent-gold); margin-right: 8px; }
+.section-desc {
+  text-align: center; color: var(--text-secondary); font-size: 14px; margin-bottom: 32px;
+}
+.system-header { text-align: center; margin-bottom: 40px; }
+.system-icon { font-size: 48px; display: block; margin-bottom: 8px; }
+
+/* ----- 英雄区 ----- */
+#hero {
+  min-height: 100vh; display: flex; align-items: center; justify-content: center;
+  position: relative; z-index: 1; padding: 80px 20px;
+}
+.hero-content { text-align: center; max-width: 700px; }
+.hero-title {
+  font-size: clamp(36px, 8vw, 72px); font-weight: 900; letter-spacing: 6px;
+  background: linear-gradient(135deg, #f0c850, #d4a847, #8b5cf6);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text; margin-bottom: 16px; position: relative;
+}
+.hero-title::after {
+  content: ''; display: block; width: 60px; height: 2px;
+  background: linear-gradient(90deg, transparent, var(--accent-gold), transparent);
+  margin: 16px auto; border-radius: 2px;
+}
+.hero-subtitle { font-size: clamp(16px, 2.5vw, 22px); color: var(--accent-gold); margin-bottom: 12px; letter-spacing: 3px; }
+.hero-desc { color: var(--text-secondary); font-size: 15px; margin-bottom: 32px; line-height: 1.8; }
+.btn-hero {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 14px 36px; border-radius: 50px;
+  background: linear-gradient(135deg, var(--accent-gold), #b8912a);
+  color: #0a0e1a; font-weight: 700; font-size: 16px; border: none; cursor: pointer;
+  transition: var(--transition); letter-spacing: 2px;
+}
+.btn-hero:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(212,168,71,0.4); }
+
+/* ----- 表单 ----- */
+.master-form {
+  background: var(--gradient-card); backdrop-filter: blur(8px);
+  border: var(--glass-border); border-radius: var(--radius);
+  padding: 32px; max-width: 700px; margin: 0 auto;
+}
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+.form-group { display: flex; flex-direction: column; gap: 6px; }
+.form-group label { font-size: 13px; color: var(--text-secondary); font-weight: 500; }
+.form-group label i { width: 18px; color: var(--accent-gold); }
+.form-group input, .form-group select {
+  padding: 10px 14px; border-radius: var(--radius-sm);
+  background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.08);
+  color: var(--text-primary); font-size: 14px; font-family: inherit;
+  transition: var(--transition);
+}
+.form-group input:focus, .form-group select:focus {
+  outline: none; border-color: var(--accent-gold); box-shadow: 0 0 12px rgba(212,168,71,0.15);
+}
+.form-group input::placeholder { color: var(--text-muted); }
+.btn-submit {
+  width: 100%; padding: 14px; margin-top: 8px;
+  background: linear-gradient(135deg, var(--accent-gold), #b8912a);
+  color: #0a0e1a; font-weight: 700; font-size: 16px; letter-spacing: 3px;
+  border: none; border-radius: var(--radius-sm); cursor: pointer;
+  transition: var(--transition);
+}
+.btn-submit:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(212,168,71,0.3); }
+
+/* ----- 系统区块通用 ----- */
+.system-section { display: none; }
+.system-section.active { display: block; animation: fadeIn 0.6s ease; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+/* ----- 结果卡片 ----- */
+.result-grid, .result-container {
+  display: grid; gap: 16px;
+}
+.result-grid.auto { grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
+.result-card {
+  background: var(--gradient-card); border: var(--glass-border); border-radius: var(--radius);
+  padding: 24px; transition: var(--transition);
+}
+.result-card:hover { background: var(--bg-card-hover); transform: translateY(-2px); }
+.result-card .card-title {
+  font-size: 16px; color: var(--accent-gold); margin-bottom: 12px; display: flex; align-items: center; gap: 8px;
+}
+.result-card .card-value { font-size: 22px; font-weight: 700; margin-bottom: 8px; }
+.result-card .card-desc { color: var(--text-secondary); font-size: 13px; line-height: 1.7; }
+.result-card .card-tag {
+  display: inline-block; padding: 2px 10px; border-radius: 12px; font-size: 12px;
+  background: rgba(212,168,71,0.15); color: var(--accent-gold); margin-top: 8px;
+}
+.placeholder-text { color: var(--text-muted); text-align: center; padding: 40px; font-size: 14px; }
+
+/* ----- MBTI 测试界面 ----- */
+.test-container {
+  max-width: 600px; margin: 0 auto;
+}
+.progress-bar {
+  display: flex; align-items: center; gap: 12px; margin-bottom: 24px;
+}
+.progress-fill {
+  flex: 1; height: 6px; background: rgba(255,255,255,0.08); border-radius: 3px;
+  position: relative; overflow: hidden;
+}
+.progress-fill::after {
+  content: ''; position: absolute; top: 0; left: 0; height: 100%;
+  width: 0%; background: linear-gradient(90deg, var(--accent-gold), var(--accent-purple));
+  border-radius: 3px; transition: width 0.4s ease;
+}
+.progress-text { font-size: 13px; color: var(--text-muted); white-space: nowrap; width: 40px; text-align: right; }
+.question-card {
+  background: var(--gradient-card); border: var(--glass-border); border-radius: var(--radius);
+  padding: 32px; text-align: center;
+}
+.question-text { font-size: 18px; line-height: 1.7; margin-bottom: 24px; }
+.question-options { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; }
+.opt-btn {
+  padding: 10px 24px; border-radius: 50px; border: 1px solid rgba(255,255,255,0.1);
+  background: rgba(0,0,0,0.2); color: var(--text-primary); font-size: 14px; cursor: pointer;
+  transition: var(--transition); font-family: inherit;
+}
+.opt-btn i { margin-right: 6px; }
+.opt-btn:hover { transform: translateY(-2px); }
+.opt-btn.agree:hover { border-color: var(--accent-teal); color: var(--accent-teal); }
+.opt-btn.neutral:hover { border-color: var(--accent-blue); color: var(--accent-blue); }
+.opt-btn.disagree:hover { border-color: var(--accent-pink); color: var(--accent-pink); }
+
+/* ----- 紫微斗数盘 ----- */
+.ziwei-grid {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 2px;
+  max-width: 600px; margin: 0 auto 24px; border: 1px solid rgba(212,168,71,0.2); border-radius: 8px; overflow: hidden;
+}
+.ziwei-cell {
+  background: rgba(0,0,0,0.3); padding: 10px 8px; min-height: 100px;
+  border: 1px solid rgba(255,255,255,0.05); font-size: 12px; line-height: 1.5;
+}
+.ziwei-cell .palace-name { color: var(--accent-gold); font-weight: 700; display: block; margin-bottom: 4px; }
+.ziwei-cell .star-name { color: var(--accent-teal); display: block; }
+
+/* ----- 人类图 BodyGraph Canvas 容器 ----- */
+#bodygraph-canvas {
+  max-width: 100%; display: block; margin: 0 auto;
+  border-radius: var(--radius); background: rgba(0,0,0,0.2);
+}
+
+/* ----- 星盘 Canvas 容器 ----- */
+#chart-canvas { max-width: 100%; display: block; margin: 0 auto; border-radius: var(--radius); }
+
+/* ----- 页脚 ----- */
+#footer {
+  text-align: center; padding: 40px 20px; border-top: var(--glass-border);
+  color: var(--text-muted); font-size: 14px; position: relative; z-index: 1;
+}
+#footer .footer-small { font-size: 12px; margin-top: 8px; color: rgba(255,255,255,0.15); font-style: italic; }
+
+/* ----- 响应式 ----- */
+@media (max-width: 900px) {
+  .form-row { grid-template-columns: 1fr; }
+  #main-nav { position: fixed; top: 64px; left: 0; right: 0; background: rgba(10,14,26,0.98); padding: 12px 20px; flex-wrap: wrap; display: none; }
+  #main-nav.open { display: flex; }
+  #menu-toggle { display: block; }
+}
+@media (max-width: 600px) {
+  .section-title { font-size: 22px; }
+  .ziwei-grid { grid-template-columns: repeat(2, 1fr); }
+  .master-form { padding: 20px; }
+}
+
+
+/* emoji fallback icons (替换 Font Awesome) */
+.emoji-star:before { content: '⭐'; }
+.emoji-home:before { content: '🏠'; }
+.emoji-sun:before { content: '☀️'; }
+.emoji-moon:before { content: '🌙'; }
+.emoji-brain:before { content: '🧠'; }
+.emoji-bolt:before { content: '⚡'; }
+.emoji-route:before { content: '🛤️'; }
+.emoji-compass:before { content: '🧭'; }
+.emoji-tag:before { content: '🏷️'; }
+.emoji-book:before { content: '📖'; }
+.emoji-wave:before { content: '〰️'; }
+.emoji-music:before { content: '🎵'; }
+.emoji-question:before { content: '❓'; }
+.emoji-dragon:before { content: '🐉'; }
+.emoji-cube:before { content: '📦'; }
+.emoji-tags:before { content: '🏷️'; }
+.emoji-scale:before { content: '⚖️'; }
+.emoji-up:before { content: '⬆️'; }
+.emoji-heartbeat:before { content: '💓'; }
+.emoji-eye:before { content: '👁️'; }
+.emoji-case:before { content: '💼'; }
+.emoji-heart:before { content: '❤️'; }
+.emoji-bulb:before { content: '💡'; }
+.emoji-warn:before { content: '⚠️'; }
+.emoji-check:before { content: '✅'; }
+.emoji-cross:before { content: '❌'; }
+.emoji-minus:before { content: '➖'; }
+.emoji-user:before { content: '👤'; }
+.emoji-edit:before { content: '✏️'; }
+.emoji-cal:before { content: '📅'; }
+.emoji-clock:before { content: '🕐'; }
+.emoji-pin:before { content: '📍'; }
+.emoji-magic:before { content: '✨'; }
+.emoji-gender:before { content: '⚤'; }
+.emoji-globe:before { content: '🌏'; }
+.emoji-down:before { content: '⬇️'; }
+
+</style>
+  <!-- Font Awesome -->
+  
+  <!-- 中文优雅字体 -->
+  
+  
+</head>
+<body>
+  <!-- ===== 星空粒子背景 ===== -->
+  <div id="stars-bg"></div>
+
+  <!-- ===== 顶部导航 ===== -->
+  <header id="header">
+    <div class="header-inner">
+      <div class="logo">
+        <span class="logo-icon">✦</span>
+        <span class="logo-text">万象分析</span>
+        <span class="logo-sub">Life Discovery Hub</span>
+      </div>
+      <nav id="main-nav">
+        <a href="#mbti" class="nav-link active" data-system="mbti">• MBTI</a>
+        <a href="#zodiac" class="nav-link" data-system="zodiac">• 星座</a>
+        <a href="#astrology" class="nav-link" data-system="astrology">• 星盘</a>
+        <a href="#bazi" class="nav-link" data-system="bazi">• 生辰·八字</a>
+        <a href="#ziwei" class="nav-link" data-system="ziwei">• 紫微</a>
+        <a href="#mayan" class="nav-link" data-system="mayan">• 玛雅图腾</a>
+        <a href="#humandesign" class="nav-link" data-system="humandesign">• 人类图</a>
+      </nav>
+      <button id="menu-toggle" aria-label="菜单">•</button>
+    </div>
+  </header>
+
+  <!-- ===== 英雄区 ===== -->
+  <section id="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-content">
+      <h1 class="hero-title">遇见自己</h1>
+      <p class="hero-subtitle">七大系统 · 多维解读 · 重新认识你自己</p>
+      <p class="hero-desc">输入你的出生信息，探索 MBTI、星座、星盘、八字、紫微斗数、玛雅图腾和人类图的奥秘</p>
+      <button id="scroll-to-form" class="btn-hero">
+        • 开始探索
+      </button>
+    </div>
+  </section>
+
+  <!-- ===== 统一输入表单 ===== -->
+  <section id="form-section" class="section">
+    <div class="section-inner">
+      <h2 class="section-title">• 输入你的信息</h2>
+      <p class="section-desc">填写以下信息，我们将在所有系统中进行分析</p>
+      <form id="master-form" class="master-form">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="user-name">• 昵称</label>
+            <input type="text" id="user-name" placeholder="你的名字或昵称" value="小龙虾的朋友" required>
+          </div>
+          <div class="form-group">
+            <label for="user-gender">• 性别</label>
+            <select id="user-gender">
+              <option value="male">男</option>
+              <option value="female">女</option>
+              <option value="other">其他</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="user-birthdate">• 出生日期</label>
+            <input type="date" id="user-birthdate" value="1995-06-15">
+          </div>
+          <div class="form-group">
+            <label for="user-birthtime">• 出生时间</label>
+            <input type="time" id="user-birthtime" value="12:00">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="user-lat">• 纬度</label>
+            <input type="number" id="user-lat" placeholder="如: 39.9042" step="0.0001" value="39.9042">
+          </div>
+          <div class="form-group">
+            <label for="user-lng">• 经度</label>
+            <input type="number" id="user-lng" placeholder="如: 116.4074" step="0.0001" value="116.4074">
+          </div>
+          <div class="form-group">
+            <label for="user-timezone">• 时区</label>
+            <select id="user-timezone">
+              <option value="8">UTC+8 (中国标准时间)</option>
+              <option value="9">UTC+9</option>
+              <option value="7">UTC+7</option>
+              <option value="0">UTC+0</option>
+              <option value="-5">UTC-5</option>
+              <option value="-8">UTC-8</option>
+            </select>
+          </div>
+        </div>
+        <button type="submit" class="btn-submit">
+          • 全面分析
+        </button>
+      </form>
+    </div>
+  </section>
+
+  <!-- ===== MBTI 系统 ===== -->
+  <section id="mbti" class="section system-section" data-system="mbti">
+    <div class="section-inner">
+      <div class="system-header">
+        <span class="system-icon">🧠</span>
+        <h2 class="section-title">MBTI 人格类型</h2>
+        <p class="section-desc">Myers-Briggs Type Indicator · 16种人格类型深度分析</p>
+      </div>
+      <div id="mbti-test" class="test-container">
+        <div id="mbti-progress" class="progress-bar">
+          <div class="progress-fill"></div>
+          <span class="progress-text">0/20</span>
+        </div>
+        <div id="mbti-question" class="question-card">
+          <p class="question-text">加载中...</p>
+          <div class="question-options">
+            <button class="opt-btn agree" data-value="1">• 是</button>
+            <button class="opt-btn neutral" data-value="0">• 中立</button>
+            <button class="opt-btn disagree" data-value="-1">• 否</button>
+          </div>
+        </div>
+        <div id="mbti-result" class="result-container" style="display:none">
+          <!-- result filled by JS -->
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 星座系统 ===== -->
+  <section id="zodiac" class="section system-section" data-system="zodiac">
+    <div class="section-inner">
+      <div class="system-header">
+        <span class="system-icon">♈</span>
+        <h2 class="section-title">星座分析</h2>
+        <p class="section-desc">西方星座 · 太阳星座 · 上升星座 · 月亮星座</p>
+      </div>
+      <div id="zodiac-result" class="result-grid"></div>
+    </div>
+  </section>
+
+  <!-- ===== 星盘系统 ===== -->
+  <section id="astrology" class="section system-section" data-system="astrology">
+    <div class="section-inner">
+      <div class="system-header">
+        <span class="system-icon">🌞</span>
+        <h2 class="section-title">星盘解读</h2>
+        <p class="section-desc">出生星盘 · 行星位置 · 宫位系统 · 相位分析</p>
+      </div>
+      <div id="astrology-result">
+        <canvas id="chart-canvas"></canvas>
+        <div id="chart-data" class="result-grid"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 生辰·八字系统 ===== -->
+  <section id="bazi" class="section system-section" data-system="bazi">
+    <div class="section-inner">
+      <div class="system-header">
+        <span class="system-icon">☯</span>
+        <h2 class="section-title">生辰 · 八字</h2>
+        <p class="section-desc">中国传统命理学 · 四柱八字 · 五行分析</p>
+      </div>
+      <div id="bazi-result" class="result-container"></div>
+    </div>
+  </section>
+
+  <!-- ===== 紫微斗数系统 ===== -->
+  <section id="ziwei" class="section system-section" data-system="ziwei">
+    <div class="section-inner">
+      <div class="system-header">
+        <span class="system-icon">⭐</span>
+        <h2 class="section-title">紫微斗数</h2>
+        <p class="section-desc">紫微斗数 · 命盘十二宫 · 主星辅星 · 四化飞星</p>
+      </div>
+      <div id="ziwei-result" class="result-container">
+        <div id="ziwei-chart" class="ziwei-grid"></div>
+        <div id="ziwei-analysis" class="result-grid"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 玛雅图腾系统 ===== -->
+  <section id="mayan" class="section system-section" data-system="mayan">
+    <div class="section-inner">
+      <div class="system-header">
+        <span class="system-icon">🌙</span>
+        <h2 class="section-title">玛雅图腾</h2>
+        <p class="section-desc">卓尔金历 · 20图腾 · 13银河音阶 · 内在神殿</p>
+      </div>
+      <div id="mayan-result" class="result-container"></div>
+    </div>
+  </section>
+
+  <!-- ===== 人类图系统 ===== -->
+  <section id="humandesign" class="section system-section" data-system="humandesign">
+    <div class="section-inner">
+      <div class="system-header">
+        <span class="system-icon">🧬</span>
+        <h2 class="section-title">人类图</h2>
+        <p class="section-desc">Human Design · 能量类型 · 人生策略 · 内在权威 · 轮回交叉</p>
+      </div>
+      <div id="humandesign-result" class="result-container">
+        <canvas id="bodygraph-canvas" width="600" height="700"></canvas>
+        <div id="humandesign-analysis" class="result-grid"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 综合报告 ===== -->
+  <section id="summary" class="section">
+    <div class="section-inner">
+      <div class="system-header">
+        <span class="system-icon">📊</span>
+        <h2 class="section-title">综合评语</h2>
+        <p class="section-desc">AI 综合分析 · 七大系统交叉解读</p>
+      </div>
+      <div id="summary-result" class="result-card">
+        <p class="placeholder-text">请先输入信息并点击"全面分析"</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 页脚 ===== -->
+  <footer id="footer">
+    <p>✦ 万象分析 · 仅供娱乐参考 ✦</p>
+    <p class="footer-small">知人者智，自知者明。 — 老子</p>
+  </footer>
+
+  <!-- Scripts — 用 try-catch 包装，单个文件报错不影响整体 -->
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  <!-- app.js 最后加载，做好防护 -->
+  
+<script>
+// ===== js/systems/astronomy.js =====
+/* ======================================
+   天文学辅助库 · Astronomy Utils
+   用于星盘、八字等系统的历法计算
+   ====================================== */
+
+const Astronomy = {
+  // 儒略日计算
+  julianDay: function(year, month, day, hour=12) {
+    if (month <= 2) { year--; month += 12; }
+    const A = Math.floor(year / 100);
+    const B = 2 - A + Math.floor(A / 4);
+    const JD = Math.floor(365.25 * (year + 4716)) + Math.floor(30.6001 * (month + 1))
+             + day + hour/24 + B - 1524.5;
+    return JD;
+  },
+
+  // 计算太阳黄经（简化版）
+  solarLongitude: function(jd) {
+    const T = (jd - 2451545.0) / 36525;
+    const L0 = 280.46646 + 36000.76983 * T + 0.0003032 * T * T;
+    const M = 357.52911 + 35999.05029 * T - 0.0001537 * T * T;
+    const C = (1.914602 - 0.004817 * T - 0.000014 * T * T) * Math.sin(M * Math.PI / 180)
+            + (0.019993 - 0.000101 * T) * Math.sin(2 * M * Math.PI / 180)
+            + 0.000289 * Math.sin(3 * M * Math.PI / 180);
+    let lambda = L0 + C;
+    return ((lambda % 360) + 360) % 360;
+  },
+
+  // 确定节气（简化版，返回节气索引 0-23）
+  solarTerm: function(year, month, day) {
+    const terms = [
+      '立春','雨水','惊蛰','春分','清明','谷雨',
+      '立夏','小满','芒种','夏至','小暑','大暑',
+      '立秋','处暑','白露','秋分','寒露','霜降',
+      '立冬','小雪','大雪','冬至','小寒','大寒'
+    ];
+    const jd = this.julianDay(year, month, day);
+    const sl = this.solarLongitude(jd);
+    const idx = Math.floor(sl / 15);
+    return { index: idx % 24, name: terms[idx % 24], longitude: sl };
+  },
+
+  // 获取中国年份干支（天干地支）
+  chineseYearGanzhi: function(year) {
+    const tiangan = ['甲','乙','丙','丁','戊','己','庚','辛','壬','癸'];
+    const dizhi   = ['子','丑','寅','卯','辰','巳','午','未','申','酉','戌','亥'];
+    return {
+      gan: tiangan[(year - 4) % 10],
+      zhi: dizhi[(year - 4) % 12],
+      full: tiangan[(year - 4) % 10] + dizhi[(year - 4) % 12]
+    };
+  },
+
+  // 月柱计算（基于年干 + 月份）
+  monthGanzhi: function(yearGan, monthNum) {
+    const tiangan = ['甲','乙','丙','丁','戊','己','庚','辛','壬','癸'];
+    const dizhi   = ['寅','卯','辰','巳','午','未','申','酉','戌','亥','子','丑'];
+    // 年干 -> 月干起始
+    const ganStart = [2, 4, 6, 8, 0]; // 甲乙丙丁戊
+    const startIdx = ganStart[yearGan % 5];
+    const ganIdx = (startIdx + monthNum - 1) % 10;
+    return { gan: tiangan[ganIdx], zhi: dizhi[monthNum - 1], full: tiangan[ganIdx] + dizhi[monthNum - 1] };
+  },
+
+  // 日柱计算（基于儒略日）
+  dayGanzhi: function(jd) {
+    const tiangan = ['甲','乙','丙','丁','戊','己','庚','辛','壬','癸'];
+    const dizhi   = ['子','丑','寅','卯','辰','巳','午','未','申','酉','戌','亥'];
+    const ganIdx = ((Math.floor(jd + 0.5) + 49) % 60) % 10;
+    const zhiIdx = ((Math.floor(jd + 0.5) + 49) % 60) % 12;
+    return { gan: tiangan[ganIdx], zhi: dizhi[zhiIdx], full: tiangan[ganIdx] + dizhi[zhiIdx] };
+  },
+
+  // 时柱计算（基于日干 + 时辰）
+  hourGanzhi: function(dayGan, hour) {
+    const tiangan = ['甲','乙','丙','丁','戊','己','庚','辛','壬','癸'];
+    const dizhi   = ['子','丑','寅','卯','辰','巳','午','未','申','酉','戌','亥'];
+    const hourIdx = Math.floor((hour + 1) / 2) % 12; // 23-1=子, 1-3=丑...
+    const startGan = (dayGan % 5) * 2;
+    const ganIdx = (startGan + hourIdx) % 10;
+    return { gan: tiangan[ganIdx], zhi: dizhi[hourIdx], full: tiangan[ganIdx] + dizhi[hourIdx] };
+  },
+
+  // 八字（四柱）
+  bazi: function(year, month, day, hour, timezone=8) {
+    const utcHour = hour - timezone;
+    const adjustedJD = this.julianDay(year, month, day, utcHour);
+    
+    const yearGanZhi = this.chineseYearGanzhi(year);
+    const yearGanIndex = ['甲','乙','丙','丁','戊','己','庚','辛','壬','癸'].indexOf(yearGanZhi.gan);
+    
+    // 农历月份近似（基于节气）
+    const term = this.solarTerm(year, month, day);
+    let lunarMonth = Math.floor(term.index / 2) + 1;
+    if (lunarMonth > 12) lunarMonth -= 12;
+    // 如果是立春之前，年柱仍用上一年
+    let actualYear = year;
+    let actualYearGZ = yearGanZhi;
+    if (term.index < 1) { // 立春(索引0)之前
+      actualYear = year - 1;
+      actualYearGZ = this.chineseYearGanzhi(actualYear);
+    }
+    
+    const monthGZ = this.monthGanzhi(
+      ['甲','乙','丙','丁','戊','己','庚','辛','壬','癸'].indexOf(actualYearGZ.gan),
+      lunarMonth
+    );
+    const dayGZ = this.dayGanzhi(adjustedJD);
+    const hourGZ = this.hourGanzhi(
+      ['甲','乙','丙','丁','戊','己','庚','辛','壬','癸'].indexOf(dayGZ.gan),
+      hour
+    );
+    
+    return { year: actualYearGZ, month: monthGZ, day: dayGZ, hour: hourGZ };
+  },
+
+  // 生肖
+  chineseZodiac: function(year) {
+    const animals = ['鼠','牛','虎','兔','龙','蛇','马','羊','猴','鸡','狗','猪'];
+    const elements = ['金','水','木','火','土'];
+    const idx = (year - 4) % 12;
+    const elemIdx = Math.floor(((year - 4) % 10) / 2);
+    return { animal: animals[idx], element: elements[elemIdx] };
+  },
+
+  // 西方星座
+  westernZodiac: function(month, day) {
+    const signs = [
+      { name:'摩羯座', symbol:'♑', date:'12/22-1/19', element:'土', quality:'开创', ruler:'土星' },
+      { name:'水瓶座', symbol:'♒', date:'1/20-2/18', element:'风', quality:'固定', ruler:'天王星' },
+      { name:'双鱼座', symbol:'♓', date:'2/19-3/20', element:'水', quality:'变动', ruler:'海王星' },
+      { name:'白羊座', symbol:'♈', date:'3/21-4/19', element:'火', quality:'开创', ruler:'火星' },
+      { name:'金牛座', symbol:'♉', date:'4/20-5/20', element:'土', quality:'固定', ruler:'金星' },
+      { name:'双子座', symbol:'♊', date:'5/21-6/20', element:'风', quality:'变动', ruler:'水星' },
+      { name:'巨蟹座', symbol:'♋', date:'6/21-7/22', element:'水', quality:'开创', ruler:'月亮' },
+      { name:'狮子座', symbol:'♌', date:'7/23-8/22', element:'火', quality:'固定', ruler:'太阳' },
+      { name:'处女座', symbol:'♍', date:'8/23-9/22', element:'土', quality:'变动', ruler:'水星' },
+      { name:'天秤座', symbol:'♎', date:'9/23-10/22', element:'风', quality:'开创', ruler:'金星' },
+      { name:'天蝎座', symbol:'♏', date:'10/23-11/21', element:'水', quality:'固定', ruler:'冥王星' },
+      { name:'射手座', symbol:'♐', date:'11/22-12/21', element:'火', quality:'变动', ruler:'木星' }
+    ];
+    const cutoff = [20, 19, 21, 20, 21, 21, 23, 23, 23, 23, 22, 22];
+    // 当天数 < 该月界限日 → 沿用上月星座；否则进入本月星座
+    const idx = (day < cutoff[month-1]) ? month - 1 : month % 12;
+    return signs[idx];
+  },
+
+  // 行星近似位置（简化版，用于星盘）
+  planetPositions: function(jd) {
+    const T = (jd - 2451545.0) / 36525;
+    // 简化版行星黄经
+    const planets = [
+      { name:'太阳', symbol:'☉', degree: ((280.46646 + 36000.76983*T) % 360 + 360) % 360 },
+      { name:'月亮', symbol:'☽', degree: ((218.3165 + 481267.8813*T) % 360 + 360) % 360 },
+      { name:'水星', symbol:'☿', degree: ((252.2509 + 538101.6286*T) % 360 + 360) % 360 },
+      { name:'金星', symbol:'♀', degree: ((181.9798 + 58517.8157*T) % 360 + 360) % 360 },
+      { name:'火星', symbol:'♂', degree: ((355.4530 + 19140.3027*T) % 360 + 360) % 360 },
+      { name:'木星', symbol:'♃', degree: ((34.3515 + 3034.9057*T) % 360 + 360) % 360 },
+      { name:'土星', symbol:'♄', degree: ((50.0774 + 1222.1138*T) % 360 + 360) % 360 },
+      { name:'天王星', symbol:'♅', degree: ((314.0550 + 428.4668*T) % 360 + 360) % 360 },
+      { name:'海王星', symbol:'♆', degree: ((304.3486 + 218.4864*T) % 360 + 360) % 360 },
+      { name:'冥王星', symbol:'♇', degree: ((238.9293 + 145.2078*T) % 360 + 360) % 360 }
+    ];
+    
+    // 计算星座位置
+    const zodiacSigns = ['白羊','金牛','双子','巨蟹','狮子','处女','天秤','天蝎','射手','摩羯','水瓶','双鱼'];
+    return planets.map(p => {
+      const deg = p.degree % 360;
+      const signIdx = Math.floor(deg / 30);
+      const posInSign = deg % 30;
+      return {
+        ...p,
+        degree: deg.toFixed(2),
+        sign: zodiacSigns[signIdx],
+        position: `${zodiacSigns[signIdx]} ${posInSign.toFixed(1)}°`
+      };
+    });
+  },
+
+  // 玛雅卓尔金历
+  mayanTzolkin: function(jd) {
+    const offset = 584282; // 与卓尔金历的差
+    const tzolkinDay = Math.floor(jd - offset) % 260;
+    if (tzolkinDay < 0) tzolkinDay += 260;
+    
+    const tones = [
+      { num: 1, name: '磁性的', action: '吸引', power: '合一' },
+      { num: 2, name: '月亮的', action: '挑战', power: '极性' },
+      { num: 3, name: '电力的', action: '服务', power: '连结' },
+      { num: 4, name: '自我存在的', action: '定义', power: '形式' },
+      { num: 5, name: '超频的', action: '放射', power: '显化' },
+      { num: 6, name: '韵律的', action: '组织', power: '平等' },
+      { num: 7, name: '共振的', action: '启发', power: '通道' },
+      { num: 8, name: '银河的', action: '整合', power: '和谐' },
+      { num: 9, name: '太阳的', action: '意图', power: '脉动' },
+      { num: 10, name: '行星的', action: '显化', power: '完美' },
+      { num: 11, name: '光谱的', action: '解放', power: '消解' },
+      { num: 12, name: '水晶的', action: '奉献', power: '普世' },
+      { num: 13, name: '宇宙的', action: '超越', power: '存在' }
+    ];
+    
+    const glyphs = [
+      { num: 1, name:'红龙', keyword:'诞生', color:'红' },
+      { num: 2, name:'白风', keyword:'沟通', color:'白' },
+      { num: 3, name:'蓝夜', keyword:'梦境', color:'蓝' },
+      { num: 4, name:'黄种子', keyword:'开花', color:'黄' },
+      { num: 5, name:'红蛇', keyword:'生存', color:'红' },
+      { num: 6, name:'白世界桥', keyword:'死亡', color:'白' },
+      { num: 7, name:'蓝手', keyword:'疗愈', color:'蓝' },
+      { num: 8, name:'黄星星', keyword:'优雅', color:'黄' },
+      { num: 9, name:'红月', keyword:'净化', color:'红' },
+      { num: 10, name:'白狗', keyword:'忠诚', color:'白' },
+      { num: 11, name:'蓝猴', keyword:'魔法', color:'蓝' },
+      { num: 12, name:'黄人', keyword:'自由意志', color:'黄' },
+      { num: 13, name:'红天行者', keyword:'探索', color:'红' },
+      { num: 14, name:'白巫师', keyword:'永恒', color:'白' },
+      { num: 15, name:'蓝鹰', keyword:'洞见', color:'蓝' },
+      { num: 16, name:'黄战士', keyword:'追问', color:'黄' },
+      { num: 17, name:'红地球', keyword:'导航', color:'红' },
+      { num: 18, name:'白镜子', keyword:'反射', color:'白' },
+      { num: 19, name:'蓝风暴', keyword:'催化', color:'蓝' },
+      { num: 20, name:'黄太阳', keyword:'开悟', color:'黄' }
+    ];
+    
+    const toneIdx = tzolkinDay % 13;
+    const glyphIdx = tzolkinDay % 20;
+    
+    return {
+      kin: tzolkinDay + 1,
+      tone: tones[toneIdx],
+      glyph: glyphs[glyphIdx],
+      fullName: `${tones[toneIdx].name}的${glyphs[glyphIdx].name}`,
+      galacticSignature: `${tones[toneIdx].num}·${glyphs[glyphIdx].color}${glyphs[glyphIdx].name}`
+    };
+  }
+};
+
+
+// ===== js/systems/mbti-data.js =====
+/* ======================================
+   MBTI 测试数据与类型分析
+   ====================================== */
+
+const MBTIData = {
+  questions: [
+    // E/I (外向/内向) - 5题
+    { id:1, text:"聚会时你更喜欢和人聊天而不是安静待着", dim:'EI', dir:1 },
+    { id:2, text:"独处太久会让你感觉精力耗尽", dim:'EI', dir:1 },
+    { id:3, text:"你更喜欢和一两个密友深入交流而不是一大群人", dim:'EI', dir:-1 },
+    { id:4, text:"你经常是主动开启话题的那个人", dim:'EI', dir:1 },
+    { id:5, text:"你的社交圈子很广，认识很多人", dim:'EI', dir:1 },
+    // S/N (实感/直觉) - 5题
+    { id:6, text:"你更关注事物「是什么」而非「可能是什么」", dim:'SN', dir:-1 },
+    { id:7, text:"你经常陷入天马行空的想象中", dim:'SN', dir:1 },
+    { id:8, text:"你更喜欢具体明确的任务说明而非开放性的创意任务", dim:'SN', dir:-1 },
+    { id:9, text:"你对抽象概念和哲学问题很感兴趣", dim:'SN', dir:1 },
+    { id:10, text:"你更相信眼见为实的经验而非直觉", dim:'SN', dir:-1 },
+    // T/F (思考/情感) - 5题
+    { id:11, text:"做决定时你更依赖逻辑分析而非个人感受", dim:'TF', dir:1 },
+    { id:12, text:"你很容易察言观色，感受到别人的情绪", dim:'TF', dir:-1 },
+    { id:13, text:"你觉得公平比和睦更重要", dim:'TF', dir:1 },
+    { id:14, text:"你常常因为别人的故事而感动落泪", dim:'TF', dir:-1 },
+    { id:15, text:"批评别人时你更看重说真话而非考虑对方感受", dim:'TF', dir:1 },
+    // J/P (判断/感知) - 5题
+    { id:16, text:"你习惯提前制定详细的计划", dim:'JP', dir:1 },
+    { id:17, text:"你的生活方式比较随性，不喜欢被时间表束缚", dim:'JP', dir:-1 },
+    { id:18, text:"做完决定后你很少会反悔", dim:'JP', dir:1 },
+    { id:19, text:"你喜欢留出弹性空间而不是把日程排满", dim:'JP', dir:-1 },
+    { id:20, text:"你更喜欢事情有明确的结论和结果", dim:'JP', dir:1 }
+  ],
+
+  types: {
+    'INTJ': {
+      name:'建筑师', en:'Architect', desc:'富有想象力和战略性的思想家，一切皆在计划之中。',
+      strengths:'独立自主、远见卓识、高度自信、善于分析',
+      weaknesses:'过于挑剔、不善情感表达、固执己见、社交冷淡',
+      career:'科学家、工程师、战略顾问、建筑师、程序员',
+      love:'追求精神共鸣，需要深度理解和思想层面的一致性',
+      advice:'学会欣赏当下，不要为了完美而错过美好的可能性',
+      color:'#6366f1'
+    },
+    'INTP': {
+      name:'逻辑学家', en:'Logician', desc:'具有创造力的发明家，对知识有着永不满足的渴望。',
+      strengths:'分析力强、创造力丰富、客观理性、思维开阔',
+      weaknesses:'社交障碍、完美主义、过于理论化、情感疏离',
+      career:'学者、研究员、程序员、数据分析师、发明家',
+      love:'喜欢智识型伴侣，对无意义的闲聊感到厌倦',
+      advice:'理论与实践需要平衡，偶尔走出脑海，体验真实世界',
+      color:'#8b5cf6'
+    },
+    'ENTJ': {
+      name:'指挥官', en:'Commander', desc:'大胆、富有想象力且意志强大的领导者，总能找到或创造解决方案。',
+      strengths:'领导力强、高度自信、战略思维、执行力强',
+      weaknesses:'专横跋扈、缺乏耐心、情感迟钝、苛求完美',
+      career:'CEO、项目经理、律师、企业家、管理顾问',
+      love:'寻找能与自己匹敌的伴侣，喜欢直接的沟通方式',
+      advice:'软实力同样重要，学会倾听和共情会让你的领导力更卓越',
+      color:'#dc2626'
+    },
+    'ENTP': {
+      name:'辩手', en:'Debater', desc:'聪明好奇的思想者，不会放弃任何智力挑战。',
+      strengths:'机智幽默、创新思维、善于辩论、适应力强',
+      weaknesses:'好胜心强、不够专注、不切实际、敏感度低',
+      career:'创业者、营销策划、律师、记者、产品经理',
+      love:'喜欢刺激的智力火花碰撞，需要自由不能被束缚',
+      advice:'选定一个方向深耕下去，深度和广度同样重要',
+      color:'#f97316'
+    },
+    'INFJ': {
+      name:'提倡者', en:'Advocate', desc:'安静而神秘，同时鼓舞人心且不知疲倦的理想主义者。',
+      strengths:'洞察力强、理想主义、善解人意、坚定有信念',
+      weaknesses:'过于理想化、容易倦怠、对自己太苛刻、过于私密',
+      career:'心理咨询师、作家、教师、人力资源、设计师',
+      love:'追求灵魂伴侣，渴望深度的情感连接和精神共鸣',
+      advice:'保护好你的能量，学会适度放手，不需要拯救所有人',
+      color:'#a21caf'
+    },
+    'INFP': {
+      name:'调停者', en:'Mediator', desc:'诗意、善良的利他主义者，总是热情地为正义事业而战。',
+      strengths:'共情力强、创意丰富、热爱和谐、忠于价值观',
+      weaknesses:'过于理想化、自我批判、情感脆弱、不善计划',
+      career:'作家、心理咨询师、设计师、音乐人、公益从业者',
+      love:'追求浪漫深刻的爱情，相信灵魂的共鸣',
+      advice:'你的敏感是天赋而非弱点，学会用它创造而非承受',
+      color:'#ec4899'
+    },
+    'ENFJ': {
+      name:'主人公', en:'Protagonist', desc:'富有魅力且鼓舞人心的天生领导者，能照亮听众的生活。',
+      strengths:'感染力强、有责任感、善解人意、组织力强',
+      weaknesses:'过度付出、容易受伤、难以拒绝、追求认可',
+      career:'教师、培训师、人力资源、公关、政治人物',
+      love:'给予型爱人，会全心全意支持伴侣的成长',
+      advice:'记得照顾好自己，你的能量需要定期充电',
+      color:'#e11d48'
+    },
+    'ENFP': {
+      name:'竞选者', en:'Campaigner', desc:'富有自由精神且热情洋溢的社会活动家，总能找到快乐所在。',
+      strengths:'热情洋溢、创意无限、人缘好、好奇心强',
+      weaknesses:'容易分心、过于敏感、执行力弱、缺乏条理',
+      career:'记者、设计师、演员、心理咨询师、品牌策划',
+      love:'浪漫主义诗人，追求充满激情和可能性的关系',
+      advice:'把创意的种子种进现实的土壤里，你会惊喜',
+      color:'#f59e0b'
+    },
+    'ISTJ': {
+      name:'物流师', en:'Logistician', desc:'实际且注重事实的人，可靠性不容怀疑。',
+      strengths:'责任心强、稳重可靠、条理清晰、忠诚踏实',
+      weaknesses:'固执保守、不善变通、情感内敛、刻板严肃',
+      career:'会计师、审计师、法官、军人、银行从业者',
+      love:'用行动表达爱意，承诺对他们是神圣的',
+      advice:'偶尔打破常规，新的体验会带来意想不到的成长',
+      color:'#1e40af'
+    },
+    'ISFJ': {
+      name:'守卫者', en:'Defender', desc:'非常专注且温暖的守护者，时刻准备保护所爱之人。',
+      strengths:'温暖体贴、责任心强、细致耐心、忠诚可靠',
+      weaknesses:'过于自我牺牲、害怕改变、压抑感受、过度担忧',
+      career:'护士、教师、行政主管、社会工作者、图书馆员',
+      love:'细腻温柔的爱人，用点滴关怀编织温暖的关系',
+      advice:'你值得被同样对待，学会表达自己的需求',
+      color:'#0d9488'
+    },
+    'ESTJ': {
+      name:'总经理', en:'Executive', desc:'出色的管理者，在管理事物和人员方面无与伦比。',
+      strengths:'组织力强、执行力高、正直可靠、务实高效',
+      weaknesses:'固执专断、过于强势、难以放松、情感迟钝',
+      career:'管理者、法官、军官、项目经理、银行家',
+      love:'传统而忠诚，认为责任是爱情的重要组成部分',
+      advice:'柔软不等于软弱，学会在刚硬中保留温柔的余地',
+      color:'#059669'
+    },
+    'ESFJ': {
+      name:'执政官', en:'Consul', desc:'极受欢迎且富有同情心的人，总是热情地帮助他人。',
+      strengths:'热心肠、责任心强、善于合作、实际可靠',
+      weaknesses:'过于在意他人看法、不愿改变、容易被利用、依赖认可',
+      career:'教师、护士、人力资源、公关、社区工作者',
+      love:'渴望传统稳定的关系，喜欢被需要和被感激',
+      advice:'你的善良是礼物但不是义务，学会说"不"',
+      color:'#0891b2'
+    },
+    'ISTP': {
+      name:'鉴赏家', en:'Virtuoso', desc:'大胆而实际的实干家，擅长使用各种形式的工具。',
+      strengths:'动手能力强、冷静理性、观察力敏锐、独立灵活',
+      weaknesses:'难以投入感情、过于追求刺激、不擅规划、不善表达',
+      career:'工程师、程序开发者、飞行员、法医、运动员',
+      love:'喜欢一起做事的伴侣，行动比言语更能表达爱意',
+      advice:'别忘了处理情绪也是需要练习的技能',
+      color:'#65a30d'
+    },
+    'ISFP': {
+      name:'探险家', en:'Adventurer', desc:'灵活有魅力的艺术家，时刻准备体验新鲜事物。',
+      strengths:'艺术天赋、敏感细腻、友善随和、热爱自然',
+      weaknesses:'过于内敛、容易焦虑、缺乏规划、不敢冲突',
+      career:'设计师、摄影师、插画师、舞蹈家、花艺师',
+      love:'敏感而深情的爱人，用美和感受来交流',
+      advice:'你的声音值得被听见，不要害怕展现真实的自己',
+      color:'#d97706'
+    },
+    'ESTP': {
+      name:'企业家', en:'Entrepreneur', desc:'聪明、精力充沛且感知敏锐的人，真正享受冒险和风险。',
+      strengths:'行动力强、机智灵活、善于社交、适应力强',
+      weaknesses:'缺乏耐心、风险偏好过高、不够敏感、不拘小节',
+      career:'创业者、销售经理、运动员、侦探、投资人',
+      love:'喜欢刺激有趣的伴侣关系，需要空间和自由',
+      advice:'慢下来思考长期后果，不是所有冒险都值得尝试',
+      color:'#ca8a04'
+    },
+    'ESFP': {
+      name:'表演者', en:'Entertainer', desc:'天生的表演者，热爱在聚光灯下，让周围充满欢乐。',
+      strengths:'积极乐观、善于社交、感染力强、应变力好',
+      weaknesses:'容易分心、过于敏感、不善规划、容易冲动',
+      career:'演员、主持人、销售、导游、活动策划',
+      love:'热情洋溢的爱人，把关系变成一场精彩的冒险',
+      advice:'深度与广度同样重要，花时间独处也是成长',
+      color:'#f43f5e'
+    }
+  },
+
+  analyze: function(scores) {
+    const EI = scores.EI >= 0 ? 'E' : 'I';
+    const SN = scores.SN >= 0 ? 'N' : 'S';
+    const TF = scores.TF >= 0 ? 'T' : 'F';
+    const JP = scores.JP >= 0 ? 'J' : 'P';
+    const type = EI + SN + TF + JP;
+    const data = this.types[type];
+    return {
+      type: type,
+      scores: scores,
+      dimensions: [
+        { name:'外向(E)/内向(I)', value: scores.EI, label: scores.EI >= 0 ? '外向' : '内向', pct: Math.round(Math.abs(scores.EI)/5*100) },
+        { name:'直觉(N)/实感(S)', value: scores.SN, label: scores.SN >= 0 ? '直觉' : '实感', pct: Math.round(Math.abs(scores.SN)/5*100) },
+        { name:'思考(T)/情感(F)', value: scores.TF, label: scores.TF >= 0 ? '思考' : '情感', pct: Math.round(Math.abs(scores.TF)/5*100) },
+        { name:'判断(J)/感知(P)', value: scores.JP, label: scores.JP >= 0 ? '判断' : '感知', pct: Math.round(Math.abs(scores.JP)/5*100) }
+      ],
+      data: data
+    };
+  }
+};
+
+
+// ===== js/systems/zodiac-data.js =====
+/* ======================================
+   星座深度分析数据
+   ====================================== */
+
+const ZodiacData = {
+  all: {
+    '摩羯座': {
+      symbol:'♑', emoji:'🐐', dates:'12/22-1/19',
+      element:'土', quality:'开创', ruler:'土星',
+      personality:'脚踏实地、责任心强、有野心、自律严谨、耐心坚韧。摩羯座是天生的实干家，习惯用努力换结果。',
+      strength:'高度自律、目标感强、组织力卓越、稳重可靠、成熟务实',
+      weakness:'过于严肃、不善变通、容易焦虑、情感表达困难、工作狂倾向',
+      career:'管理者、金融分析师、建筑师、律师、公务员',
+      love:'慢热但专一，用行动而非言语表达爱意，需要安全感和尊重',
+      luck:'幸运色：深棕色、墨绿 | 幸运数字：8 | 幸运日：周六',
+      health:'需要注意骨骼、关节和皮肤问题，压力管理是关键'
+    },
+    '水瓶座': {
+      symbol:'♒', emoji:'🏺', dates:'1/20-2/18',
+      element:'风', quality:'固定', ruler:'天王星',
+      personality:'独立创新、人道主义、思维前卫。水瓶座是未来主义者，总是领先时代一步。',
+      strength:'创造性强、独立思考、公平正义、友善开放、智识非凡',
+      weakness:'情感疏离、固执叛逆、过于理性、不切实际、难以捉摸',
+      career:'科学家、程序员、社会活动家、发明家、作家',
+      love:'追求精神共鸣，需要理解和尊重彼此的独立性',
+      luck:'幸运色：天蓝、银色 | 幸运数字：4 | 幸运日：周三',
+      health:'关注循环系统和神经系统，保持规律作息'
+    },
+    '双鱼座': {
+      symbol:'♓', emoji:'🐟', dates:'2/19-3/20',
+      element:'水', quality:'变动', ruler:'海王星',
+      personality:'富有同情心、艺术天赋高、直觉敏锐。双鱼座是十二星座最富灵性的梦想家。',
+      strength:'同理心极强、创意丰富、直觉敏锐、适应力好、无私奉献',
+      weakness:'过于理想化、缺乏边界、容易逃避、优柔寡断、情绪化',
+      career:'艺术家、音乐人、心理咨询师、演员、作家',
+      love:'浪漫主义者，追求灵魂层面的合一，但要注意保护自己',
+      luck:'幸运色：海蓝、紫色 | 幸运数字：7 | 幸运日：周四',
+      health:'足部和免疫系统较脆弱，注意心理健康和睡眠'
+    },
+    '白羊座': {
+      symbol:'♈', emoji:'🐏', dates:'3/21-4/19',
+      element:'火', quality:'开创', ruler:'火星',
+      personality:'勇敢直率、充满活力、天生的开拓者。白羊座永远保持一颗赤子之心。',
+      strength:'勇敢果断、充满热情、领导力强、坦率真诚、行动力满分',
+      weakness:'冲动急躁、缺乏耐心、自我中心、好胜心过强、容易三分钟热度',
+      career:'创业者、运动员、消防员、军人、项目经理',
+      love:'热情主动的追求者，喜欢挑战和被挑战',
+      luck:'幸运色：红色、金色 | 幸运数字：1 | 幸运日：周二',
+      health:'关注头部和面部，容易头痛，需要学会控制脾气'
+    },
+    '金牛座': {
+      symbol:'♉', emoji:'🐂', dates:'4/20-5/20',
+      element:'土', quality:'固定', ruler:'金星',
+      personality:'稳健务实、感官丰富、坚定忠诚。金牛座是生活中最可靠的大地守护者。',
+      strength:'坚韧不拔、忠诚可靠、审美出众、理财有道、耐心十足',
+      weakness:'固执己见、抗拒变化、占有欲强、过于安逸、懒散倾向',
+      career:'金融师、厨师、园艺师、设计师、音乐家',
+      love:'用感官表达爱意，注重质量陪伴和物质安全感',
+      luck:'幸运色：绿色、粉色 | 幸运数字：6 | 幸运日：周五',
+      health:'咽喉和甲状腺是薄弱环节，注意饮食和体重管理'
+    },
+    '双子座': {
+      symbol:'♊', emoji:'👯', dates:'5/21-6/20',
+      element:'风', quality:'变动', ruler:'水星',
+      personality:'机智多变、善于沟通、好奇心十足。双子座是信息世界的常青树。',
+      strength:'反应敏捷、口才出众、学习力强、社交高手、适应力强',
+      weakness:'三心二意、难以深入、善变不定、神经质、不够可靠',
+      career:'记者、讲师、翻译、营销策划、程序开发者',
+      love:'需要智识刺激和交流的伴侣，喜欢新鲜有趣的互动',
+      luck:'幸运色：黄色、浅蓝 | 幸运数字：5 | 幸运日：周三',
+      health:'手臂和肺部需留意，神经系统容易紧张'
+    },
+    '巨蟹座': {
+      symbol:'♋', emoji:'🦀', dates:'6/21-7/22',
+      element:'水', quality:'开创', ruler:'月亮',
+      personality:'情感丰富、家庭至上、直觉敏锐。巨蟹座是情感的深海，温柔而强大。',
+      strength:'共情力强、保护欲强、忠诚顾家、直觉敏锐、有耐心',
+      weakness:'情绪起伏大、过度敏感、防卫心强、依赖心重、容易受伤',
+      career:'心理咨询师、教师、护士、厨师、房地产',
+      love:'渴望建立家庭的人，用无微不至的关怀表达爱意',
+      luck:'幸运色：银色、白色 | 幸运数字：2 | 幸运日：周一',
+      health:'消化系统和情绪紧密相连，注意胃部和心情管理'
+    },
+    '狮子座': {
+      symbol:'♌', emoji:'🦁', dates:'7/23-8/22',
+      element:'火', quality:'固定', ruler:'太阳',
+      personality:'自信耀眼、慷慨大方、天生的王者和舞台中心。',
+      strength:'自信满满、领导力强、慷慨大方、创造力旺盛、忠诚热烈',
+      weakness:'自我中心、虚荣心重、固执好面、缺乏耐心、喜欢支配',
+      career:'演员、管理职位、教师、主持人、企业领导者',
+      love:'热情似火地付出，也需要被崇拜和被赞美',
+      luck:'幸运色：金色、橙色 | 幸运数字：1 | 幸运日：周日',
+      health:'关注心脏和脊椎，过度消耗容易导致疲惫'
+    },
+    '处女座': {
+      symbol:'♍', emoji:'👩‍⚕️', dates:'8/23-9/22',
+      element:'土', quality:'变动', ruler:'水星',
+      personality:'细致完美、理性分析、追求卓越。处女座是精益求精的匠人。',
+      strength:'勤勉认真、分析力强、追求完美、可靠细心、实用主义',
+      weakness:'吹毛求疵、过度批判、焦虑倾向、过于保守、不善放松',
+      career:'研究员、医生、会计师、编辑、数据分析师',
+      love:'用服务的行动表达爱，注重细节和小事的完美',
+      luck:'幸运色：灰色、海军蓝 | 幸运数字：5 | 幸运日：周三',
+      health:'消化系统是敏感区域，过度操劳容易引发健康问题'
+    },
+    '天秤座': {
+      symbol:'♎', emoji:'⚖️', dates:'9/23-10/22',
+      element:'风', quality:'开创', ruler:'金星',
+      personality:'优雅平衡、社交达人、追求和谐。天秤座是美的使者和和平的缔造者。',
+      strength:'魅力出众、公平公正、品味一流、善于协调、社交达人',
+      weakness:'优柔寡断、害怕冲突、表面化、依赖他人、被动消极',
+      career:'外交官、法官、设计师、公关、演员',
+      love:'追求优雅浪漫的关系，极度需要陪伴和平衡',
+      luck:'幸运色：粉色、浅蓝 | 幸运数字：6 | 幸运日：周五',
+      health:'肾脏和腰部需要关注，平衡是关键'
+    },
+    '天蝎座': {
+      symbol:'♏', emoji:'🦂', dates:'10/23-11/21',
+      element:'水', quality:'固定', ruler:'冥王星/火星',
+      personality:'深邃敏锐、意志坚定、充满神秘感。天蝎座是十二星座最具深度的探秘者。',
+      strength:'洞察力极强、意志坚定、忠诚专一、冷静果断、有魅力',
+      weakness:'控制欲强、容易嫉妒、过于神秘、记仇报复、极端倾向',
+      career:'侦探、研究员、心理学家、医生、投资分析师',
+      love:'深情而极端，要么不爱，要么爱到刻骨铭心',
+      luck:'幸运色：深红、黑色 | 幸运数字：9 | 幸运日：周二',
+      health:'生殖系统和膀胱是薄弱点，情绪管理至关重要'
+    },
+    '射手座': {
+      symbol:'♐', emoji:'🏹', dates:'11/22-12/21',
+      element:'火', quality:'变动', ruler:'木星',
+      personality:'乐观自由、热爱冒险、追求真理。射手座是永远在路上的哲学家。',
+      strength:'乐观积极、热爱自由、豁达开朗、诚实直率、有哲学头脑',
+      weakness:'鲁莽冲动、不负责任、过于直接、承诺恐惧、缺乏耐心',
+      career:'旅行家、教授、哲学家、外交官、体育教练',
+      love:'需要能一起冒险的伴侣，最怕被束缚',
+      luck:'幸运色：紫色、宝蓝 | 幸运数字：3 | 幸运日：周四',
+      health:'肝脏和臀部容易出现问题，注意运动和饮食'
+    }
+  },
+
+  // 星座匹配
+  compatibility: {
+    '白羊座': '狮子座、射手座、双子座、水瓶座',
+    '金牛座': '处女座、摩羯座、巨蟹座、双鱼座',
+    '双子座': '天秤座、水瓶座、白羊座、狮子座',
+    '巨蟹座': '天蝎座、双鱼座、金牛座、处女座',
+    '狮子座': '白羊座、射手座、双子座、天秤座',
+    '处女座': '金牛座、摩羯座、巨蟹座、天蝎座',
+    '天秤座': '双子座、水瓶座、狮子座、射手座',
+    '天蝎座': '巨蟹座、双鱼座、处女座、摩羯座',
+    '射手座': '白羊座、狮子座、双子座、天秤座',
+    '摩羯座': '金牛座、处女座、天蝎座、双鱼座',
+    '水瓶座': '双子座、天秤座、白羊座、射手座',
+    '双鱼座': '巨蟹座、天蝎座、金牛座、摩羯座'
+  },
+
+  // 上升星座简易计算（基于出生时间）
+  risingSign: function(hour) {
+    const signs = ['白羊','金牛','双子','巨蟹','狮子','处女','天秤','天蝎','射手','摩羯','水瓶','双鱼'];
+    const idx = Math.floor(hour / 2) % 12;
+    return signs[idx];
+  },
+
+  // 月亮星座简易计算（基于农历日期，简化）
+  moonSign: function(month, day) {
+    const moon = (month * 3 + day) % 12;
+    const signs = ['金牛','双子','巨蟹','狮子','处女','天秤','天蝎','射手','摩羯','水瓶','双鱼','白羊'];
+    return signs[moon];
+  }
+};
+
+
+// ===== js/systems/astrology-data.js =====
+/* ======================================
+   星盘分析数据
+   ====================================== */
+
+const AstrologyData = {
+  // 宫位含义
+  houses: [
+    { num:1, name:'命宫', desc:'自我、外貌、性格、人生开端', keywords:'个性·外貌·生命力' },
+    { num:2, name:'财帛宫', desc:'财富、价值观、物质资源、自我价值', keywords:'金钱·价值观·资源' },
+    { num:3, name:'兄弟宫', desc:'沟通、学习、兄弟姐妹、短途旅行', keywords:'交流·学习·邻里' },
+    { num:4, name:'田宅宫', desc:'家庭、根源、房产、内在情感', keywords:'家庭·根源·安全感' },
+    { num:5, name:'子女宫', desc:'爱情、创意、子女、娱乐、投机', keywords:'恋爱·创造·享乐' },
+    { num:6, name:'奴仆宫', desc:'健康、工作、服务、日常规范', keywords:'健康·工作·服务' },
+    { num:7, name:'夫妻宫', desc:'婚姻、合作关系、公开的敌人', keywords:'伴侣·合作·契约' },
+    { num:8, name:'疾厄宫', desc:'深度变革、遗产、性、心理', keywords:'蜕变·遗产·奥秘' },
+    { num:9, name:'迁移宫', desc:'高等教育、旅行、哲学、信仰', keywords:'远行·学问·信仰' },
+    { num:10, name:'官禄宫', desc:'事业、社会地位、声望、天命', keywords:'事业·成就·公众' },
+    { num:11, name:'福德宫', desc:'社交、理想、团体、希望', keywords:'社交·愿景·群体' },
+    { num:12, name:'玄秘宫', desc:'潜意识、灵性、隐藏、修行', keywords:'灵性·秘密·业力' }
+  ],
+
+  // 行星含义
+  planets: {
+    '太阳':   { sign:'自我核心', desc:'你的核心本质、生命力、自我表达', body:'心脏' },
+    '月亮':   { sign:'情感本能', desc:'你的情绪反应、潜意识、安全感来源', body:'胃' },
+    '水星':   { sign:'思维沟通', desc:'你的思维方式、沟通风格、学习模式', body:'神经系统' },
+    '金星':   { sign:'爱与美', desc:'你的爱情观、审美、价值观、社交风格', body:'肾脏' },
+    '火星':   { sign:'行动力', desc:'你的行动方式、欲望、能量指向', body:'肌肉' },
+    '木星':   { sign:'扩张幸运', desc:'你的好运来源、成长方向、慷慨之处', body:'肝脏' },
+    '土星':   { sign:'责任考验', desc:'你的课题、限制、成熟的方向', body:'骨骼' },
+    '天王星': { sign:'变革独立', desc:'你的叛逆之处、独特天赋', body:'循环系统' },
+    '海王星': { sign:'梦想灵性', desc:'你的灵感、迷惘、需要清醒的领域', body:'松果体' },
+    '冥王星': { sign:'深度蜕变', desc:'你的转化力量、最深的驱动力', body:'生殖系统' }
+  },
+
+  // 相位角度含义
+  aspects: {
+    '0°合相':   { symbol:'☌', orb:8, desc:'融合、加强、聚焦', nature:'中性' },
+    '60°六分相': { symbol:'⚹', orb:6, desc:'机会、和谐、助力', nature:'吉' },
+    '90°四分相': { symbol:'□', orb:6, desc:'挑战、冲突、张力', nature:'凶' },
+    '120°三分相': { symbol:'△', orb:8, desc:'天赋、和谐、顺遂', nature:'吉' },
+    '180°对分相': { symbol:'☍', orb:8, desc:'对立、互补、投射', nature:'中性' }
+  },
+
+  // 星盘解读
+  generateReading: function(planets, sunSign) {
+    const reading = {
+      summary: `${sunSign}的你，太阳赋予你${AstrologyData.planets['太阳'].desc}的特质。`,
+      houses: [],
+      planets: []
+    };
+
+    planets.forEach(p => {
+      if (AstrologyData.planets[p.name]) {
+        const info = AstrologyData.planets[p.name];
+        reading.planets.push({
+          name: p.name,
+          symbol: p.symbol,
+          sign: `${p.sign} ${p.position}`,
+          info: info
+        });
+      }
+    });
+
+    // 简易宫位解读
+    const houseIdx = Math.floor((parseFloat(planets[0]?.degree || 0) % 360) / 30);
+    AstrologyData.houses.forEach(h => {
+      reading.houses.push(h);
+    });
+
+    return reading;
+  }
+};
+
+
+// ===== js/systems/bazi-engine.js =====
+/* ======================================
+   八字引擎 · 命理分析
+   ====================================== */
+
+const BaziEngine = {
+  // 五行
+  wuxing: ['金','水','木','火','土'],
+
+  // 天干五行
+  ganWuxing: { '甲':'木','乙':'木','丙':'火','丁':'火','戊':'土','己':'土','庚':'金','辛':'金','壬':'水','癸':'水' },
+
+  // 地支五行
+  zhiWuxing: { '子':'水','丑':'土','寅':'木','卯':'木','辰':'土','巳':'火','午':'火','未':'土','申':'金','酉':'金','戌':'土','亥':'水' },
+
+  // 地支藏干
+  zhiCanggan: {
+    '子':['癸'], '丑':['己','癸','辛'], '寅':['甲','丙','戊'],
+    '卯':['乙'], '辰':['戊','乙','癸'], '巳':['丙','庚','戊'],
+    '午':['丁','己'], '未':['己','丁','乙'], '申':['庚','壬','戊'],
+    '酉':['辛'], '戌':['戊','辛','丁'], '亥':['壬','甲']
+  },
+
+  // 十神关系
+  shishen: function(dayGan, otherGan) {
+    const ganOrder = ['甲','乙','丙','丁','戊','己','庚','辛','壬','癸'];
+    const dayIdx = ganOrder.indexOf(dayGan);
+    const otherIdx = ganOrder.indexOf(otherGan);
+    const diff = ((otherIdx - dayIdx) % 10 + 10) % 10;
+    
+    const meWuxing = this.ganWuxing[dayGan];
+    const otherWuxing = this.ganWuxing[otherGan];
+    const relation = this.wuxingRelation(meWuxing, otherWuxing);
+    
+    // 同阴阳为偏/正
+    const sameYinYang = (dayIdx % 2) === (otherIdx % 2);
+    const gender = sameYinYang ? '偏' : '正';
+    
+    const names = {
+      '同我': { 正:'比肩', 偏:'劫财' },
+      '我生': { 正:'食神', 偏:'伤官' },
+      '生我': { 正:'正印', 偏:'偏印' },
+      '克我': { 正:'正官', 偏:'七杀' },
+      '我克': { 正:'正财', 偏:'偏财' }
+    };
+    
+    return { relation, gender, name: names[relation][gender] };
+  },
+
+  // 五行关系
+  wuxingRelation: function(me, other) {
+    const cycle = ['木','火','土','金','水'];
+    const meIdx = cycle.indexOf(me);
+    const otherIdx = cycle.indexOf(other);
+    const diff = ((otherIdx - meIdx) % 5 + 5) % 5;
+    if (diff === 0) return '同我';
+    if (diff === 1) return '我生';
+    if (diff === 2) return '我克';
+    if (diff === 3) return '克我';
+    if (diff === 4) return '生我';
+    return '同我';
+  },
+
+  // 纳音（简化版）
+  nanyin: function(gan, zhi) {
+    const pairs = {
+      '甲子': '海中金', '乙丑': '海中金', '丙寅': '炉中火', '丁卯': '炉中火',
+      '戊辰': '大林木', '己巳': '大林木', '庚午': '路旁土', '辛未': '路旁土',
+      '壬申': '剑锋金', '癸酉': '剑锋金', '甲戌': '山头火', '乙亥': '山头火',
+      '丙子': '涧下水', '丁丑': '涧下水', '戊寅': '城头土', '己卯': '城头土',
+      '庚辰': '白蜡金', '辛巳': '白蜡金', '壬午': '杨柳木', '癸未': '杨柳木',
+      '甲申': '泉中水', '乙酉': '泉中水', '丙戌': '屋上土', '丁亥': '屋上土',
+      '戊子': '霹雳火', '己丑': '霹雳火', '庚寅': '松柏木', '辛卯': '松柏木',
+      '壬辰': '长流水', '癸巳': '长流水', '甲午': '沙中金', '乙未': '沙中金',
+      '丙申': '山下火', '丁酉': '山下火', '戊戌': '平地木', '己亥': '平地木',
+      '庚子': '壁上土', '辛丑': '壁上土', '壬寅': '金箔金', '癸卯': '金箔金',
+      '甲辰': '覆灯火', '乙巳': '覆灯火', '丙午': '天河水', '丁未': '天河水',
+      '戊申': '大驿土', '己酉': '大驿土', '庚戌': '钗钏金', '辛亥': '钗钏金',
+      '壬子': '桑柘木', '癸丑': '桑柘木', '甲寅': '大溪水', '乙卯': '大溪水',
+      '丙辰': '沙中土', '丁巳': '沙中土', '戊午': '天上火', '己未': '天上火',
+      '庚申': '石榴木', '辛酉': '石榴木', '壬戌': '大海水', '癸亥': '大海水'
+    };
+    return pairs[gan + zhi] || '未知';
+  },
+
+  // 命局分析
+  analyze: function(bazi, year, month, day, hour, gender) {
+    const tiangan = ['甲','乙','丙','丁','戊','己','庚','辛','壬','癸'];
+    const dizhi   = ['子','丑','寅','卯','辰','巳','午','未','申','酉','戌','亥'];
+    
+    // 统计五行
+    const allChars = [bazi.year.gan, bazi.year.zhi, bazi.month.gan, bazi.month.zhi,
+                      bazi.day.gan, bazi.day.zhi, bazi.hour.gan, bazi.hour.zhi];
+    
+    const wuxingCount = { '金':0, '木':0, '水':0, '火':0, '土':0 };
+    allChars.forEach(c => {
+      const wx = this.ganWuxing[c] || this.zhiWuxing[c];
+      if (wx) wuxingCount[wx]++;
+    });
+    
+    // 找旺衰
+    const dayWuxing = this.ganWuxing[bazi.day.gan];
+    const sortedWx = Object.entries(wuxingCount).sort((a,b) => b[1] - a[1]);
+    const mostWx = sortedWx[0][0];
+    const leastWx = sortedWx[sortedWx.length-1][0];
+    
+    // 日主
+    const riZhu = bazi.day.gan;
+    const riZhuWuxing = dayWuxing;
+    
+    // 生肖
+    const shengxiaoIdx = (year - 4) % 12;
+    const shengxiao = ['鼠','牛','虎','兔','龙','蛇','马','羊','猴','鸡','狗','猪'][shengxiaoIdx];
+    
+    // 十神
+    const shishenPillars = {
+      year: this.shishen(bazi.day.gan, bazi.year.gan),
+      month: this.shishen(bazi.day.gan, bazi.month.gan),
+      hour: this.shishen(bazi.day.gan, bazi.hour.gan)
+    };
+
+    // 纳音
+    const nanyin = {
+      year: this.nanyin(bazi.year.gan, bazi.year.zhi),
+      month: this.nanyin(bazi.month.gan, bazi.month.zhi),
+      day: this.nanyin(bazi.day.gan, bazi.day.zhi),
+      hour: this.nanyin(bazi.hour.gan, bazi.hour.zhi)
+    };
+
+    // 生成分析文本
+    const analysis = this.generateAnalysis(bazi, wuxingCount, dayWuxing, mostWx, leastWx, gender);
+    
+    return {
+      bazi: bazi,
+      shengxiao: shengxiao,
+      wuxing: wuxingCount,
+      riZhu: riZhu,
+      riZhuWuxing: riZhuWuxing,
+      mostWx: mostWx,
+      leastWx: leastWx,
+      shishen: shishenPillars,
+      nanyin: nanyin,
+      analysis: analysis,
+      summary: this.summaryText(bazi, wuxingCount, dayWuxing)
+    };
+  },
+
+  generateAnalysis: function(bazi, wx, dayWx, most, least, gender) {
+    const lines = [];
+    
+    const wxDescriptions = {
+      '金': '金性主义，刚毅果断，意志坚定，有决断力和组织能力。',
+      '木': '木性主仁，生发向上，温和宽厚，有慈悲心和创造力。',
+      '水': '水性主智，智慧灵活，善于变通，有包容力和洞察力。',
+      '火': '火性主礼，热情奔放，积极进取，有感染力和领导力。',
+      '土': '土性主信，稳重踏实，诚信可靠，有承载力和包容力。'
+    };
+    
+    lines.push(`日主为【${bazi.day.gan}${dayWx}】，${wxDescriptions[dayWx] || ''}`);
+    
+    // 五行多寡分析
+    const missing = Object.entries(wx).filter(([k,v]) => v === 0).map(([k]) => k);
+    if (missing.length > 0) {
+      lines.push(`命局缺【${missing.join('、')}】，需在这些方面多加留意和补充。`);
+    }
+    lines.push(`五行最旺：【${most}】，五行最弱：【${least}】。`);
+    
+    // 格局判断
+    const wxStr = Object.entries(wx).sort((a,b) => b[1]-a[1]).map(([k,v]) => `${k}${v}`).join(' ');
+    lines.push(`五行分布：${wxStr}`);
+    
+    // 简评
+    if (wx[dayWx] >= 3) {
+      lines.push('日主强旺，意志坚定，能担重任。');
+    } else if (wx[dayWx] >= 2) {
+      lines.push('日主中和，平衡发展。');
+    } else {
+      lines.push('日主偏弱，宜加强自身能量，多借助外力。');
+    }
+    
+    return lines.join('\n');
+  },
+
+  summaryText: function(bazi, wx, dayWx) {
+    const signNames = {
+      '金': '白虎', '木': '青龙', '水': '玄武', '火': '朱雀', '土': '麒麟'
+    };
+    return `你是${bazi.year.full}年出生，属${signNames[dayWx]}命格（${dayWx}命）。
+八字：${bazi.year.full}年 ${bazi.month.full}月 ${bazi.day.full}日 ${bazi.hour.full}时。
+五行分布：${Object.entries(wx).sort((a,b)=>b[1]-a[1]).map(([k,v])=>`${k}${v}`).join('、')}。`;
+  }
+};
+
+
+// ===== js/systems/ziwei-engine.js =====
+/* ======================================
+   紫微斗数引擎 · 增强版
+   十四主星 + 六吉六煞 + 详细宫位解读
+   ====================================== */
+
+const ZiweiEngine = {
+  // 十四主星
+  mainStars: {
+    '紫微': { code:'紫', symbol:'👑', type:'帝王', desc:'帝王之星，统领全局，尊贵非凡，化气为尊', color:'#f0c850' },
+    '天机': { code:'机', symbol:'🧠', type:'智谋', desc:'智慧之星，思辨敏捷，善谋略，化气为善', color:'#4a7cf7' },
+    '太阳': { code:'日', symbol:'☀️', type:'官禄', desc:'光明之星，慷慨热情，贵气照人，化气为贵', color:'#f97316' },
+    '武曲': { code:'武', symbol:'⚔️', type:'财帛', desc:'财富之星，刚毅果决，理财能手，化气为财', color:'#dc2626' },
+    '天同': { code:'同', symbol:'🎵', type:'福德', desc:'福气之星，温和慈善，人缘好，化气为福', color:'#06d6a0' },
+    '廉贞': { code:'廉', symbol:'⚖️', type:'次桃花', desc:'次桃花星，刚正不阿，情感丰富，化气为囚', color:'#e11d48' },
+    '天府': { code:'府', symbol:'🏛️', type:'库藏', desc:'库藏之星，稳重保守，积攒能力，化气为库', color:'#65a30d' },
+    '太阴': { code:'阴', symbol:'🌙', type:'田宅', desc:'温柔之星，细腻敏感，有艺术气质，化气为富', color:'#8b5cf6' },
+    '贪狼': { code:'狼', symbol:'🐺', type:'桃花', desc:'第一桃花星，多才多艺，社交能手，化气为欲', color:'#ec4899' },
+    '巨门': { code:'巨', symbol:'🚪', type:'口舌', desc:'是非之星，口才出众，以言为业，化气为暗', color:'#6366f1' },
+    '天相': { code:'相', symbol:'🤝', type:'印绶', desc:'辅佐之星，协调沟通，温和有礼，化气为印', color:'#0d9488' },
+    '天梁': { code:'梁', symbol:'🏔️', type:'荫寿', desc:'长寿之星，慈悲为怀，有领导风范，化气为荫', color:'#74b200' },
+    '七杀': { code:'杀', symbol:'🗡️', type:'肃杀', desc:'将星之首，果断强势，威震四方，化气为威', color:'#7c3aed' },
+    '破军': { code:'破', symbol:'💥', type:'消耗', desc:'变革之星，破旧立新，开创局面，化气为耗', color:'#f43f5e' }
+  },
+
+  // 六吉星
+  auspiciousStars: {
+    '文昌': { code:'昌', symbol:'📚', desc:'文星之首，才华横溢，学业有成', color:'#4a7cf7' },
+    '文曲': { code:'曲', symbol:'🎭', desc:'才艺之星，口才出众，艺术天赋', color:'#06d6a0' },
+    '左辅': { code:'辅', symbol:'🤲', desc:'助力之星，贵人相助，人缘广阔', color:'#f0c850' },
+    '右弼': { code:'弼', symbol:'🤝', desc:'辅助之星，幕后助力，稳固支持', color:'#65a30d' },
+    '天魁': { code:'魁', symbol:'🏆', desc:'贵人星，长辈提携，机遇之门', color:'#f97316' },
+    '天钺': { code:'钺', symbol:'⚜️', desc:'贵人星，同辈相助，仕途顺遂', color:'#8b5cf6' }
+  },
+
+  // 六煞星
+  maleficStars: {
+    '擎羊': { code:'羊', symbol:'⚡', desc:'刑伤之星，冲突激烈，快速应验', color:'#dc2626' },
+    '陀罗': { code:'陀', symbol:'🌀', desc:'拖延之星，反复纠缠，迟来结果', color:'#7c3aed' },
+    '火星': { code:'火', symbol:'🔥', desc:'暴躁之星，突发变动，热情冲动', color:'#ef4444' },
+    '铃星': { code:'铃', symbol:'🔔', desc:'惊愕之星，意外冲击，暗中不利', color:'#f43f5e' },
+    '地空': { code:'空', symbol:'💨', desc:'空虚之星，理想落空，财务波动', color:'#6366f1' },
+    '地劫': { code:'劫', symbol:'🌪️', desc:'劫煞之星，突遭变故，得而复失', color:'#a21caf' }
+  },
+
+  // 十二宫名称与详细解读
+  palaceNames: ['命宫','兄弟宫','夫妻宫','子女宫','财帛宫','疾厄宫','迁移宫','交友宫','官禄宫','田宅宫','福德宫','父母宫'],
+  
+  palaceDetail: {
+    '命宫': {
+      keywords:'自我·性格·一生格局',
+      fortune:'命运核心，决定一生的基本格局和方向',
+      detail: function(star) {
+        if (!star) return '命宫无主星，需借对宫（迁移宫）来看。一生格局多变，受环境影响较大。';
+        const map = {
+          '紫微': '帝王坐命，气质尊贵，有领导才能，不甘人下。自尊心强，有主见，重面子。',
+          '天机': '聪明绝顶，思虑周密，擅长策划。但易钻牛角尖，心思过细，缺乏执行力。',
+          '太阳': '光明磊落，热心助人，胸怀宽广。但过于直率，易得罪人。庙旺则吉，落陷则劳碌。',
+          '武曲': '刚毅果断，性格刚强，有管理能力。财运佳，但人际关系易有距离感。',
+          '天同': '温和谦让，人缘极佳，有福气。但过于懒散，缺乏进取心，容易安于现状。',
+          '廉贞': '聪明干练，有才艺，情感丰富。但易招惹是非，情路多波折。'
+        };
+        return map[star.name] || star.name + '坐命，性格受' + star.name + '星特质影响较大。';
+      }
+    },
+    '兄弟宫': {
+      keywords:'手足·朋友·沟通',
+      fortune: '兄弟姐妹缘分、人际关系的暗示',
+      detail: function(star) {
+        if (!star) return '兄弟宫无主星，手足缘分较淡或感情疏离。';
+        const map = {
+          '紫微': '兄弟姐妹中有杰出之人，能得他们相助。',
+          '天机': '与兄弟姐妹关系融洽，常有思想交流。',
+          '武曲': '兄弟姐妹个性刚强，相处时有竞争关系。',
+          '天同': '手足情深，相处和睦，能得到兄弟姐妹的关怀。'
+        };
+        return map[star.name] || star.name + '星入兄弟宫，与手足间的关系受此星特质影响。';
+      }
+    },
+    '夫妻宫': {
+      keywords:'婚姻·伴侣·感情',
+      fortune: '婚姻状况、配偶特质和感情生活的核心宫位',
+      detail: function(star) {
+        if (!star) return '夫妻宫无主星，需借对宫（官禄宫）来看。婚姻格局受六煞星影响较大。';
+        const map = {
+          '紫微': '配偶有社会地位，自尊心强，年龄可能较大。婚姻中你需给予对方足够的尊重。',
+          '天机': '配偶聪明机敏，善解人意。但感情中容易出现猜忌和犹豫不决。',
+          '太阳': '配偶光明正大，热心外向。但太阳落陷时夫妻易有聚少离多的情况。',
+          '武曲': '配偶性格刚强，经济能力强。但感情表达较为冷淡，需互相理解。',
+          '天同': '婚姻美满，伴侣温柔体贴，夫妻生活和谐愉快。',
+          '太阴': '配偶温柔细腻，有艺术气质。感情细腻丰富，婚姻生活浪漫有情调。',
+          '贪狼': '配偶多才多艺，社交能力强。但桃花较重，需注意感情中的诱惑。',
+          '廉贞': '情感丰富，但感情之路易有波折。配偶占有欲强，需互相包容。'
+        };
+        return map[star.name] || '夫妻感情受' + star.name + '特质影响，需要双方用心经营。';
+      }
+    },
+    '子女宫': {
+      keywords:'子女·创作·晚年',
+      fortune: '子女缘分、创作能力的展现',
+      detail: function(star) {
+        if (!star) return '子女宫无主星，与子女缘分需看四化。';
+        return star.name + '入子女宫，子女受其星性影响，聪明或有特殊才能。';
+      }
+    },
+    '财帛宫': {
+      keywords:'财富·理财·经济',
+      fortune: '财富状况和理财能力',
+      detail: function(star) {
+        if (!star) return '财帛宫无主星，财运起伏较大，需借对宫（福德宫）看。';
+        const map = {
+          '紫微': '财运丰隆，能聚财。但花销也大，有"大进大出"的倾向。',
+          '武曲': '正财星入财帛宫，财运极佳，善于理财，是致富的象征。最吉利的财星组合。',
+          '太阴': '财源稳定，擅长储蓄。偏向通过不动产或稳健投资获利。',
+          '天府': '财库安稳，善于守财。不愁吃穿，但发大财的机会较少。'
+        };
+        return map[star.name] || star.name + '入财帛宫，财运受其星性影响。';
+      }
+    },
+    '疾厄宫': {
+      keywords:'健康·体质·疾病',
+      fortune: '身体状况和抵抗力的强弱',
+      detail: function(star) {
+        if (!star) return '疾厄宫无主星，体质中等，需注意生活习惯。';
+        const map = {
+          '天同': '体质良好，一生少病，有福气。',
+          '太阳': '心脏和眼睛需注意，火力旺盛但也要防过犹不及。',
+          '武曲': '呼吸系统和骨骼需留意，个性刚强也容易积劳成疾。'
+        };
+        return map[star.name] || '需留意' + star.name + '星对应的身体部位健康。';
+      }
+    },
+    '迁移宫': {
+      keywords:'外出·人际·变动',
+      fortune: '外出运势和社交能力',
+      detail: function(star) {
+        if (!star) return '迁移宫无主星，外出发展需更多努力。';
+        return star.name + '入迁移宫，外出发展有利，能结交各方朋友。';
+      }
+    },
+    '交友宫': {
+      keywords:'朋友·社交·助力',
+      fortune: '人际关系和朋友圈',
+      detail: function(star) {
+        if (!star) return '交友宫无主星，朋友不多但贵在精。';
+        const map = {
+          '紫微': '朋友中有地位高者，社交圈高端但你也会付出较多。',
+          '天同': '人缘极好，朋友众多，常能得朋友帮助。'
+        };
+        return map[star.name] || '朋友类型受' + star.name + '星影响。';
+      }
+    },
+    '官禄宫': {
+      keywords:'事业·学业·地位',
+      fortune: '事业发展和成就高度',
+      detail: function(star) {
+        if (!star) return '官禄宫无主星，事业方向需借对宫（夫妻宫）看。';
+        const map = {
+          '紫微': '事业上有领导才能，适合管理岗位或自主创业。有领袖气质。',
+          '太阳': '官禄宫最喜太阳，事业光明，仕途顺畅，有公职缘。',
+          '武曲': '适合金融、军警、工程技术等方向。实干起家，凭实力晋升。',
+          '天同': '适合文化、教育、服务行业。工作环境和谐，但升迁步调较慢。'
+        };
+        return map[star.name] || star.name + '入官禄宫，事业发展受其星性引导。';
+      }
+    },
+    '田宅宫': {
+      keywords:'房产·家庭·积蓄',
+      fortune: '不动产和家庭环境',
+      detail: function(star) {
+        if (!star) return '田宅宫无主星，房产运需借对宫（子女宫）看。';
+        const map = {
+          '紫微': '能得祖产，或靠自己置产。住宅地段佳，家居有品味。',
+          '太阴': '田宅宫主星，房产运佳，善于通过房地产积累财富。',
+          '天府': '不动产丰足，居家安稳，是理财的好位置。'
+        };
+        return map[star.name] || star.name + '入田宅宫，置业能力受其星性影响。';
+      }
+    },
+    '福德宫': {
+      keywords:'精神·福气·晚年',
+      fortune: '精神生活和晚运',
+      detail: function(star) {
+        if (!star) return '福德宫无主星，精神追求多变。';
+        const map = {
+          '天同': '福德宫主星在此，福气深厚，晚年幸福美满。',
+          '太阳': '心地光明，乐善好施。晚年精神生活充实丰富。'
+        };
+        return map[star.name] || '精神生活受' + star.name + '星影响。';
+      }
+    },
+    '父母宫': {
+      keywords:'父母·遗传·背景',
+      fortune: '双亲缘分和家族背景',
+      detail: function(star) {
+        if (!star) return '父母宫无主星，与父母缘分较淡，或需借对宫看。';
+        return star.name + '入父母宫，父母一方有此星特质。';
+      }
+    }
+  },
+
+  // 四化星
+  huas: {
+    '化禄': { code:'禄', desc:'财禄入命，财运亨通', color:'#06d6a0' },
+    '化权': { code:'权', desc:'权威入命，升迁有望', color:'#4a7cf7' },
+    '化科': { code:'科', desc:'功名入命，名声远播', color:'#f0c850' },
+    '化忌': { code:'忌', desc:'是非入命，需注意所在宫位', color:'#dc2626' }
+  },
+
+  // 根据生辰生成紫微命盘（增强简化版）
+  generateChart: function(year, month, day, hour, gender) {
+    const palaceCount = 12;
+    
+    // 紫微星定位（简化公式）
+    const ziweiIndex = ((year * 3 + month * 7 + day * 5) % palaceCount + palaceCount) % palaceCount;
+    
+    // 十四主星排列（紫微系 + 天府系）
+    const starChart = this.calculateStarPositions(ziweiIndex);
+    
+    // 构建命盘
+    const chart = [];
+    for (let i = 0; i < 12; i++) {
+      const palaceName = this.palaceNames[(ziweiIndex + i) % 12];
+      const stars = starChart.filter(function(s) { return s.palaceOffset === i; });
+      
+      chart.push({
+        palace: palaceName,
+        mainStars: stars.filter(function(s) { return s.rank === 'main'; }),
+        auxStars: stars.filter(function(s) { return s.rank === 'aux'; }),
+        allStars: stars
+      });
+    }
+
+    return chart;
+  },
+
+  calculateStarPositions: function(ziweiIndex) {
+    // 十四主星入宫位置（偏移量）
+    const mainStarOffsets = {
+      '紫微': 0, '天机': 1, '太阳': 4, '武曲': 5, '天同': 6, '廉贞': 8,
+      '天府': 0, '太阴': 1, '贪狼': 2, '巨门': 3, '天相': 4, '天梁': 5, '七杀': 6, '破军': 9
+    };
+    
+    const starList = [];
+    const mainNames = ['紫微','天机','太阳','武曲','天同','廉贞','天府','太阴','贪狼','巨门','天相','天梁','七杀','破军'];
+    
+    mainNames.forEach(function(name) {
+      var info = ZiweiEngine.mainStars[name];
+      var offset = mainStarOffsets[name];
+      if (offset !== undefined) {
+        starList.push({
+          name: name,
+          info: info,
+          palaceOffset: (ziweiIndex + offset) % 12,
+          rank: 'main'
+        });
+      }
+    });
+    
+    // 六吉星
+    var auxNames = Object.keys(ZiweiEngine.auspiciousStars);
+    auxNames.forEach(function(name, idx) {
+      var offset = ((ziweiIndex + idx * 3 + Math.floor(idx / 2) * 5) % 12);
+      starList.push({
+        name: name,
+        info: ZiweiEngine.auspiciousStars[name],
+        palaceOffset: offset,
+        rank: 'aux'
+      });
+    });
+    
+    // 六煞星
+    var badNames = Object.keys(ZiweiEngine.maleficStars);
+    badNames.forEach(function(name, idx) {
+      var offset = ((ziweiIndex + idx * 7 + 3) % 12);
+      starList.push({
+        name: name,
+        info: ZiweiEngine.maleficStars[name],
+        palaceOffset: offset,
+        rank: 'aux'
+      });
+    });
+    
+    return starList;
+  },
+
+  // 命盘解读（增强版）
+  analyze: function(chart) {
+    var analysis = [];
+    
+    chart.forEach(function(palace) {
+      var pd = ZiweiEngine.palaceDetail[palace.palace] || { keywords:'', fortune:'' };
+      var mainStarNames = palace.mainStars.map(function(s) { return s.name; }).join('、');
+      var mainDesc = '';
+      
+      if (palace.mainStars.length > 0) {
+        var firstStar = palace.mainStars[0];
+        mainDesc = pd.detail ? pd.detail(firstStar.info) : '';
+      } else {
+        mainDesc = '无主星，借对宫查看。命运受辅星影响较大，格局灵活多变。';
+      }
+      
+      var auxStarNames = palace.auxStars.map(function(s) {
+        return s.name;
+      });
+      
+      var auxDesc = '';
+      if (auxStarNames.length > 0) {
+        var goodAux = auxStarNames.filter(function(n) { return ZiweiEngine.auspiciousStars[n]; });
+        var badAux = auxStarNames.filter(function(n) { return ZiweiEngine.maleficStars[n]; });
+        if (goodAux.length > 0) auxDesc += ('吉星：' + goodAux.join('、') + '。带来助力与好运。');
+        if (badAux.length > 0) auxDesc += ('煞星：' + badAux.join('、') + '。需多加留意和化解。');
+      }
+      
+      var starDetails = palace.mainStars.map(function(s) { return s.name + ' ' + s.info.desc; }).join('；');
+      
+      analysis.push({
+        palace: palace.palace,
+        keywords: pd.keywords || '',
+        fortune: pd.fortune || '',
+        mainStars: mainStarNames || '无主星',
+        starSymbol: palace.mainStars.length > 0 ? palace.mainStars[0].info.symbol : '—',
+        starType: palace.mainStars.length > 0 ? palace.mainStars[0].info.type : '—',
+        color: palace.mainStars.length > 0 ? palace.mainStars[0].info.color : '#666',
+        mainDesc: mainDesc,
+        auxStars: auxStarNames.join('、') || '无',
+        auxDesc: auxDesc,
+        starDetail: starDetails
+      });
+    });
+    
+    return analysis;
+  }
+};
+
+
+// ===== js/systems/mayan-engine.js =====
+/* ======================================
+   玛雅图腾 · 卓尔金历引擎
+   ====================================== */
+
+const MayanEngine = {
+  // 13个银河音阶完整信息
+  tones: [
+    { num:1,  name:'磁性的', action:'吸引', power:'合一', question:'我的目的是什么？' },
+    { num:2,  name:'月亮的', action:'挑战', power:'极性', question:'我的挑战是什么？' },
+    { num:3,  name:'电力的', action:'服务', power:'连结', question:'最好的服务方式是什么？' },
+    { num:4,  name:'自我存在的', action:'定义', power:'形式', question:'我以什么形式服务？' },
+    { num:5,  name:'超频的', action:'放射', power:'显化', question:'如何赋予我最大的力量？' },
+    { num:6,  name:'韵律的', action:'组织', power:'平等', question:'如何将平等扩展？' },
+    { num:7,  name:'共振的', action:'启发', power:'通道', question:'如何调整自己服务他人？' },
+    { num:8,  name:'银河的', action:'整合', power:'和谐', question:'我是否活出信仰？' },
+    { num:9,  name:'太阳的', action:'意图', power:'脉动', question:'我的意图是什么？' },
+    { num:10, name:'行星的', action:'显化', power:'完美', question:'如何达成完美？' },
+    { num:11, name:'光谱的', action:'解放', power:'消解', question:'如何释放与放下？' },
+    { num:12, name:'水晶的', action:'奉献', power:'普世', question:'如何奉献自己？' },
+    { num:13, name:'宇宙的', action:'超越', power:'存在', question:'如何超越自己？' }
+  ],
+
+  // 20个太阳图腾完整信息
+  glyphs: [
+    { num:1,  name:'红龙', color:'红', keyword:'诞生',  tribe:'极性', desc:'源头、诞生、滋养、存在。你是开创者，带着原始的生命力。', affirm:'我为了滋养而诞生' },
+    { num:2,  name:'白风', color:'白', keyword:'沟通',  tribe:'智慧', desc:'呼吸、沟通、交流、灵气。你是传递信息的使者。', affirm:'我为了沟通而呼吸' },
+    { num:3,  name:'蓝夜', color:'蓝', keyword:'梦境',  tribe:'魔法', desc:'丰盛、梦境、直觉、潜意识。你是梦的实现者。', affirm:'我为了丰盛而梦想' },
+    { num:4,  name:'黄种子', color:'黄', keyword:'开花', tribe:'魔法', desc:'目标、觉察、开花、结果。你是种下未来的人。', affirm:'我为了目标而觉察' },
+    { num:5,  name:'红蛇', color:'红', keyword:'生存',  tribe:'智慧', desc:'生命力、本能、生存、热情。你用热情点燃生命。', affirm:'我为了生存而激发热情' },
+    { num:6,  name:'白世界桥', color:'白', keyword:'死亡', tribe:'魔法', desc:'平等、死亡、连接、机会。你是桥梁，连接两个世界。', affirm:'我为了平等而死' },
+    { num:7,  name:'蓝手', color:'蓝', keyword:'疗愈',  tribe:'魔法', desc:'完成、疗愈、知晓、行动。你用手创造和疗愈。', affirm:'我为了疗愈而知晓' },
+    { num:8,  name:'黄星星', color:'黄', keyword:'优雅',  tribe:'智慧', desc:'美丽、艺术、优雅、装饰。你是闪亮的星星。', affirm:'我为了美丽而优雅' },
+    { num:9,  name:'红月', color:'红', keyword:'净化',  tribe:'魔法', desc:'宇宙之水、净化、流动、情绪。你如潮水般流动。', affirm:'我为了净化而流动' },
+    { num:10, name:'白狗', color:'白', keyword:'忠诚',  tribe:'魔法', desc:'心、忠诚、爱、陪伴。你以无条件的爱待人。', affirm:'我为了爱而忠诚' },
+    { num:11, name:'蓝猴', color:'蓝', keyword:'魔法',  tribe:'智慧', desc:'幻象、游戏、魔法、欢笑。你用欢笑化解一切。', affirm:'我为了魔法而游戏' },
+    { num:12, name:'黄人', color:'黄', keyword:'自由意志',tribe:'智慧', desc:'自由意志、智慧、影响、选择。你是自己的主人。', affirm:'我因自由意志而智慧' },
+    { num:13, name:'红天行者',color:'红', keyword:'探索', tribe:'智慧', desc:'空间、探索、觉醒、预言。你是不停探索的旅人。', affirm:'我为了探索而觉醒' },
+    { num:14, name:'白巫师',color:'白', keyword:'永恒', tribe:'魔法', desc:'接受、永恒、魔法、当下。你活在永恒的当下。', affirm:'我因接受而永恒' },
+    { num:15, name:'蓝鹰',color:'蓝', keyword:'洞见',  tribe:'智慧', desc:'视野、创造、洞见、心智。你看清全貌。', affirm:'我为了洞见而创造' },
+    { num:16, name:'黄战士',color:'黄', keyword:'追问', tribe:'智慧', desc:'无畏、追问、智慧、才智。你为真理而战斗。', affirm:'我为了追问而无畏' },
+    { num:17, name:'红地球',color:'红', keyword:'导航', tribe:'智慧', desc:'共时性、导航、进化、自然。你与大地同步前进。', affirm:'我为了导航而进化' },
+    { num:18, name:'白镜子',color:'白', keyword:'反射', tribe:'魔法', desc:'反射、秩序、无止境、真实。你是真相的镜子。', affirm:'我为了反射而秩序' },
+    { num:19, name:'蓝风暴',color:'蓝', keyword:'催化', tribe:'魔法', desc:'自体运生、催化、能量、蜕变。你带来风暴般的变革。', affirm:'我为了催化而运化' },
+    { num:20, name:'黄太阳',color:'黄', keyword:'开悟', tribe:'魔法', desc:'宇宙之火、开悟、生命、觉醒。你是照亮世界的光。', affirm:'我为了开悟而燃烧' }
+  ],
+
+  // 13个银河调性 & 20个图腾 完整周期表
+  calendar: function(year, month, day) {
+    // 计算公历到卓尔金历的转换
+    const jd = Astronomy.julianDay(year, month, day);
+    const tzolkin = Astronomy.mayanTzolkin(jd);
+    
+    // 找到对应的图腾和音阶
+    const glyph = this.glyphs.find(g => g.num === tzolkin.glyph.num);
+    const tone = this.tones.find(t => t.num === tzolkin.tone.num);
+    
+    // 波符计算
+    const waveGlyphNum = (tzolkin.glyph.num % 20);
+    const waveGlyph = this.glyphs.find(g => g.num === waveGlyphNum);
+    
+    // 内在神殿/指引力量
+    const guideNum = ((tzolkin.glyph.num + 7) % 20);
+    const guide = this.glyphs.find(g => g.num === (guideNum === 0 ? 20 : guideNum));
+    
+    // 相似力量
+    const similarNum = ((tzolkin.glyph.num + 10) % 20);
+    const similar = this.glyphs.find(g => g.num === (similarNum === 0 ? 20 : similarNum));
+    
+    // 相反力量
+    const oppositeNum = ((tzolkin.glyph.num + 9) % 20);
+    const opposite = this.glyphs.find(g => g.num === (oppositeNum === 0 ? 20 : oppositeNum));
+    
+    // 颜色家族
+    const colorFamilies = { '红':'启动族 · 红龙部落','白':'基础族 · 智者部落','蓝':'蜕变族 · 魔法师部落','黄':'成熟族 · 太阳部落' };
+    
+    // 波符中的位置
+    const wavePos = ((tzolkin.tone.num) % 13);
+    const wavePositions = ['磁性的','月亮的','电力的','自我存在的','超频的','韵律的','共振的','银河的','太阳的','行星的','光谱的','水晶的','宇宙的'];
+    
+    return {
+      kin: tzolkin.kin,
+      galacticSignature: `${tone.num}.${glyph.color}${glyph.name}`,
+      
+      // 主图腾
+      mainGlyph: glyph,
+      mainTone: tone,
+      
+      // 神殿力量
+      guide: guide,
+      similar: similar,
+      opposite: opposite,
+      
+      // 波符
+      wave: {
+        name: `${waveGlyph.name}波符`,
+        glyph: waveGlyph,
+        position: wavePositions[wavePos],
+        positionNum: wavePos + 1
+      },
+      
+      // 颜色家族
+      colorFamily: colorFamilies[glyph.color],
+      
+      // 完整信息
+      full: {
+        signature: tzolkin.fullName,
+        question: tone.question,
+        affirmation: glyph.affirm,
+        desc: glyph.desc
+      }
+    };
+  },
+
+  analyze: function(year, month, day) {
+    const info = this.calendar(year, month, day);
+    const analysis = this.generateAnalysis(info);
+    return { info, analysis };
+  },
+
+  generateAnalysis: function(info) {
+    const lines = [];
+    const g = info.mainGlyph;
+    const t = info.mainTone;
+    
+    lines.push(`你的玛雅印记是【${g.color}${g.name}】—— ${g.desc}`);
+    lines.push(`银河音阶是【${t.name}】，调性${t.num}：${t.action}的力量、${t.power}的本体。`);
+    lines.push(`你的提问是：${t.question}`);
+    lines.push(`肯定语：${info.full.affirmation}`);
+    lines.push(`所在的波符：${info.wave.name}，位置：第${info.wave.positionNum}格 ${info.wave.position}`);
+    
+    // 支持力量
+    if (info.guide) lines.push(`🌟 指引力量：【${info.guide.color}${info.guide.name}】— ${info.guide.keyword}`);
+    if (info.similar) lines.push(`🤝 相似力量：【${info.similar.color}${info.similar.name}】— ${info.similar.keyword}`);
+    if (info.opposite) lines.push(`⚡ 挑战力量：【${info.opposite.color}${info.opposite.name}】— ${info.opposite.keyword}`);
+    
+    lines.push(`颜色家族：${info.colorFamily}`);
+    lines.push(`银河印记：${info.galacticSignature} | KIN ${info.kin}`);
+    
+    return lines.join('\n');
+  }
+};
+
+
+// ===== js/systems/humandesign-engine.js =====
+/* ======================================
+   人类图引擎 · Human Design
+   ====================================== */
+
+const HumanDesignEngine = {
+  // 5种能量类型
+  types: {
+    '显示者': {
+      en:'Manifestor', symbol:'🎙️', pct:'8%',
+      desc:'能够独立发起行动的能量类型，是世界的"发动机"。你有能力在不等待他人的情况下启动事物。',
+      strategy:'告知——在行动前告知相关的人，可以减少阻力，让你的能量顺畅展现。',
+      aura:'封闭而具保护性的能量场，像一道盾牌。',
+      notSelf:'愤怒——当你感受到愤怒时，说明你偏离了正确的运作方式。',
+      advice:'你的使命是发起和开创。记得在行动前告知他人，这不是请求许可，而是释放能量。'
+    },
+    '显示生产型': {
+      en:'Manifesting Generator', symbol:'⚡', pct:'35%',
+      desc:'结合了显示者和生产者特质的能量。你是多才多艺、高效能的赋能者，能同时处理多项任务。',
+      strategy:'等待回应 + 告知——先对外界刺激做出回应，再通过告知来有效推进。',
+      aura:'开放且包裹性的能量场，环绕并覆盖他人。',
+      notSelf:'不耐烦——当你感到不耐烦时，意味着你在强行推进而非等待正确的回应。',
+      advice:'你拥有强大的多重处理能力，但关键是先通过回应找到正确的方向，然后快速执行。'
+    },
+    '生产型': {
+      en:'Generator', symbol:'🔋', pct:'37%',
+      desc:'持续的生产力和创造力来源，是世界的"建设者"。你拥有持续工作的能量，当你做热爱之事时能量无限。',
+      strategy:'等待回应——不要主动发起，而是对生活中的事物做出回应。你的"嗯"或"嗯哼"就是信号。',
+      aura:'开放而包裹的能量场，像温暖的怀抱。',
+      notSelf:'挫败感——当你感到挫败时，说明你在做不喜欢的事或错误的方向。',
+      advice:'找到能让你满足感爆棚的事情，那就是你正确的方向。回应而非发起。'
+    },
+    '投射者': {
+      en:'Projector', symbol:'👁️', pct:'21%',
+      desc:'天生的引导者和顾问，能看到他人的能量系统。你是这个世界的"指引者"，不是来工作的。',
+      strategy:'等待邀请——在特定领域成功的关键是等待正确的人认识到你的价值并发来邀请。',
+      aura:'聚焦且吸收型的能量场，能深入他人。',
+      notSelf:'苦涩——当你感到苦涩时，说明你在错误的关系或环境中。',
+      advice:'你不是来工作的，你是来引导的。等待认可的邀请，你的能力需要在正确的平台上发挥。'
+    },
+    '反映者': {
+      en:'Reflector', symbol:'🌙', pct:'1%',
+      desc:'最稀有、最敏感的类型，像一面纯净的镜子反映周遭环境。你是社区健康的"温度计"。',
+      strategy:'等待28天——在做重大决定前，等待一个完整的月亮周期。你的决策需要时间。',
+      aura:'开放且坚韧的能量场，如同抗敏的筛网。',
+      notSelf:'失望——当你感到失望时，说明你处在不适合的环境中。',
+      advice:'你是珍贵的"镜子"，你的价值在于反映出周围环境的品质。选择好的环境对你至关重要。'
+    }
+  },
+
+  // 9个能量中心
+  centers: [
+    { num:1, name:'头顶中心', sanskrit:'顶轮', desc:'灵感、压力、形而上的思考' },
+    { num:2, name:'脑中心', sanskrit:'眉心轮', desc:'概念化、思维方式、分析能力' },
+    { num:3, name:'喉咙中心', sanskrit:'喉轮', desc:'沟通、表达、行动的外显' },
+    { num:4, name:'G中心', sanskrit:'心轮', desc:'方向、爱、自我认同、存在' },
+    { num:5, name:'意志力中心', sanskrit:'太阳神经丛', desc:'意志力、自我价值、承诺' },
+    { num:6, name:'荐骨中心', sanskrit:'脐轮', desc:'生命能量、工作活力、性创造力' },
+    { num:7, name:'脾中心', sanskrit:'本我轮', desc:'直觉、本能、生存意识、健康' },
+    { num:8, name:'情绪中心', sanskrit:'腹轮', desc:'情绪感知、敏感度、感受力' },
+    { num:9, name:'根部中心', sanskrit:'海底轮', desc:'压力、肾上腺素、行动驱动力' }
+  ],
+
+  // 6条人生角色（Profile）
+  profiles: {
+    '1/3': { name:'探究者/烈士', desc:'在尝试和错误中学习的探究者，通过亲身经历获得智慧。' },
+    '1/4': { name:'探究者/机会主义者', desc:'通过深入研究后建立稳固的社交网络，学习后分享。' },
+    '2/4': { name:'隐士/机会主义者', desc:'需要独处的天才，但社交网络是施展才华的舞台。' },
+    '2/5': { name:'隐士/异端者', desc:'孤独的天才，被召唤来解决大众问题，有强大的影响力。' },
+    '3/5': { name:'烈士/异端者', desc:'在错误中成长，经历足以让他人借鉴的实践者。' },
+    '3/6': { name:'烈士/人生典范', desc:'通过试错走向智慧的榜样，年轻时犯错，中年后成为楷模。' },
+    '4/1': { name:'机会主义者/探究者', desc:'建立在深厚研究基础上的社交网络，深入且稳固。' },
+    '4/6': { name:'机会主义者/人生典范', desc:'通过社交接触找到真理，最终在人生中找到可作为榜样的角色。' },
+    '5/1': { name:'异端者/探究者', desc:'被赋予解决实际问题的研究型领袖，有实用权威。' },
+    '5/2': { name:'异端者/隐士', desc:'看似孤僻却有解决实际问题的超人能力。' },
+    '6/2': { name:'人生典范/隐士', desc:'经历了三个阶段：试错、观察、成为榜样。' },
+    '6/3': { name:'人生典范/烈士', desc:'通过经验积累智慧，最终超越自我成为榜样。' }
+  },
+
+  // 内在权威
+  authorities: {
+    '情绪型': '你的决策需要经历情绪波动的完整周期。不要在不稳定的情绪下做决定，等待清明时刻。',
+    '荐骨型': '你的身体会给你最直接的"嗯"或"嗯哼"的回应。关注身体的声觉回应。',
+    '直觉型': '你的直觉在当下给你清晰的信号。关注身体在当下的感知。',
+    '意志力型': '你的意志力中心定义，承诺就是你的力量。关注你真正愿意承诺的事情。',
+    '自我投射型': '你的G中心引导你朝正确的方向。关注你内心深处的"方向感"。',
+    '环境型': '你的决策需要与周围环境和人互动后获得清晰。'
+  },
+
+  // 人生类型判定（简化版）
+  determineType: function(year, month, day, hour) {
+    // 基于出生数据判定（简化算法）
+    const total = year + month + day + Math.floor(hour);
+    const typeNum = total % 5;
+    const types = ['显示者','显示生产型','生产型','投射者','反映者'];
+    const type = types[typeNum];
+    return {
+      type: type,
+      typeData: this.types[type],
+      profileKey: `${(year % 6) + 1}/${(day % 6) + 1}`,
+      profile: this.profiles[`${(year % 6) + 1}/${(day % 6) + 1}`],
+      authority: Object.keys(this.authorities)[month % 6]
+    };
+  },
+
+  // 绘制人体图（BodyGraph）的简化画布数据
+  bodyGraphData: function() {
+    return {
+      centers: [
+        { id:'head', x:300, y:40, r:22, name:'头顶中心', number:1 },
+        { id:'ajna', x:300, y:120, r:22, name:'脑中心', number:2 },
+        { id:'throat', x:300, y:200, r:20, name:'喉咙中心', number:3 },
+        { id:'g', x:240, y:300, r:20, name:'G中心', number:4 },
+        { id:'ego', x:360, y:300, r:18, name:'意志力中心', number:5 },
+        { id:'sacral', x:300, y:390, r:22, name:'荐骨中心', number:6 },
+        { id:'spleen', x:210, y:460, r:18, name:'脾中心', number:7 },
+        { id:'solar', x:390, y:460, r:18, name:'情绪中心', number:8 },
+        { id:'root', x:300, y:540, r:20, name:'根部中心', number:9 }
+      ],
+      channels: [
+        [1,2], [2,3], [3,4], [3,5], [4,6], [4,7], [5,8], [6,7], [6,8], [7,9], [8,9]
+      ]
+    };
+  },
+
+  analyze: function(year, month, day, hour) {
+    const typeInfo = this.determineType(year, month, day, hour);
+    const bodyGraph = this.bodyGraphData();
+    const authorityDesc = this.authorities[typeInfo.authority] || '';
+    
+    const summary = [];
+    summary.push(`你的人类图类型：【${typeInfo.type}】—— ${typeInfo.typeData.desc}`);
+    summary.push(`人生角色：【${typeInfo.profileKey}】${typeInfo.profile?.desc || ''}`);
+    summary.push(`策略：${typeInfo.typeData.strategy}`);
+    summary.push(`内在权威：${typeInfo.authority}型——${authorityDesc}`);
+    summary.push(`非自己主题：${typeInfo.typeData.notSelf}`);
+    summary.push(`能量场特质：${typeInfo.typeData.aura}`);
+    summary.push(`给你的建议：${typeInfo.typeData.advice}`);
+    
+    return {
+      typeInfo: typeInfo,
+      bodyGraph: bodyGraph,
+      summary: summary.join('\n')
+    };
+  }
+};
+
+
+// ===== js/systems/summary-engine.js =====
+/* ======================================
+   综合引擎 · 七大系统交叉解读
+   ====================================== */
+
+const SummaryEngine = {
+  generate: function(allResults) {
+    const { user, mbti, zodiac, zodiacSign, astrology, bazi, baziResult, ziwei, mayan, humandesign } = allResults;
+    
+    const sections = [];
+    let title = `${user.name}的全面人生解读报告`;
+    
+    // MBTI 片段
+    if (mbti) {
+      sections.push(`【人格画像】你的MBTI类型是${mbti.type}（${mbti.data.name}），本质上是${mbti.data.desc.slice(0,30)}。`);
+    }
+    
+    // 星座片段
+    if (zodiac) {
+      sections.push(`【星座特质】太阳${zodiacSign.name}（${zodiacSign.symbol}），${zodiacSign.element}象${zodiacSign.quality}星座，守护星${zodiacSign.ruler}。你的上升星座为${zodiac.rising}，月亮落在${zodiac.moon}。`);
+    }
+    
+    // 八字片段
+    if (baziResult) {
+      sections.push(`【传统命理】你是${baziResult.shengxiao}年生人，八字为【${baziResult.bazi.year.full}年 ${baziResult.bazi.month.full}月 ${baziResult.bazi.day.full}日 ${baziResult.bazi.hour.full}时】。日主${baziResult.riZhu}五行属${baziResult.riZhuWuxing}。`);
+    }
+    
+    // 星盘片段
+    if (astrology && astrology.planets && astrology.planets.length > 0) {
+      const planetNames = astrology.planets.slice(0, 5).map(p => p.name).join('、');
+      sections.push(`【星空格局】你的星盘中${planetNames}等行星的能量分布为你的性格提供了宇宙维度的解读。`);
+    }
+    
+    // 紫微片段
+    if (ziwei && ziwei.length > 0) {
+      const hasStar = ziwei.filter(p => p.star !== '无主星');
+      const starNames = hasStar.slice(0, 3).map(p => `${p.palace}（${p.star}）`).join('、');
+      sections.push(`【紫微命盘】你的命盘中${starNames}等宫位构成了你的人生格局。`);
+    }
+    
+    // 玛雅片段
+    if (mayan) {
+      const kin = mayan.info;
+      sections.push(`【玛雅印记】你的银河印记是【${kin.galacticSignature}】，KIN ${kin.kin}，位于${kin.wave.name}的第${kin.wave.positionNum}格。你是${kin.mainGlyph.desc.slice(0,20)}。`);
+    }
+    
+    // 人类图片段
+    if (humandesign) {
+      sections.push(`【人类赋能】你属于${humandesign.typeInfo.type}能量类型（${humandesign.typeInfo.typeData.desc.slice(0,20)}），人生角色${humandesign.typeInfo.profileKey}，内在权威为${humandesign.typeInfo.authority}型。`);
+    }
+    
+    // 综合启发性段落
+    const insights = this.generateInsights(mbti, zodiacSign, baziResult, mayan, humandesign);
+    
+    return {
+      title: title,
+      sections: sections,
+      insights: insights
+    };
+  },
+
+  generateInsights: function(mbti, zodiac, bazi, mayan, hd) {
+    const insights = [];
+    
+    // 基于交叉系统的启发
+    if (mbti && zodiac) {
+      const ie = mbti.scores.EI >= 0 ? '外向' : '内向';
+      const element = zodiac.element;
+      const elementEnergy = element === '火' || element === '风' ? '向外释放' : '向内沉淀';
+      insights.push(`你的能量流动：${ie}的你在星座能量上呈现${element}象的${elementEnergy}趋势，内外呼应，构成了你独特的能量交互模式。`);
+    }
+    
+    if (mbti && bazi) {
+      insights.push(`内在驱动力：MBTI告诉你"你如何与世界互动"，八字揭示了你与生俱来的五行能量格局。两者的结合揭示了你在"天然倾向"和"潜在能量"之间的张力。`);
+    }
+    
+    if (mayan && zodiac) {
+      insights.push(`时间维度的你：星座基于太阳历，玛雅印记基于卓尔金历。一个属于太阳系，一个属于银河系。两者共同定位了你在宇宙中的独特时空坐标。`);
+    }
+    
+    if (hd) {
+      insights.push(`核心提醒：根据人类图，你的"非自己主题"是"${hd.typeInfo.typeData.notSelf}"——当你感到这种情绪时，停下来重新校准。`);
+    }
+    
+    if (insights.length === 0) {
+      insights.push('你是一个独特的宇宙存在。没有两张相同的命盘，没有两段相同的人生。以上分析仅供多维参考。');
+    }
+    
+    insights.push('✨ 知人者智，自知者明。七大系统从不同维度照亮了你的某一个侧面，而真正的你，比所有系统的总和还要丰富。');
+    
+    return insights;
+  }
+};
+
+
+// ===== js/app.js =====
+/* ======================================
+   万象分析 · 核心分析引擎
+   Life Discovery Hub - Main Logic
+   ====================================== */
+
+// ===== 全局状态 =====
+const AppState = {
+  user: null,
+  mbtiScores: { EI: 0, SN: 0, TF: 0, JP: 0 },
+  mbtiCurrent: 0,
+  mbtiResults: null,
+  allResults: {}
+};
+
+// ===== MBTI 初始化（需页面加载后） =====
+function initMBTI() {
+  console.log('🧠 MBTI 初始化...');
+  renderMBTIQuestion();
+}
+
+function renderMBTIQuestion() {
+  const qs = MBTIData.questions;
+  const current = AppState.mbtiCurrent;
+  
+  if (current >= qs.length) {
+    finishMBTI();
+    return;
+  }
+  
+  const q = qs[current];
+  const progress = ((current) / qs.length) * 100;
+  
+  const progressFill = $('#mbti-progress .progress-fill');
+  const progressText = $('#mbti-progress .progress-text');
+  const questionText = $('#mbti-question .question-text');
+  
+  if (progressFill) progressFill.style.width = progress + '%';
+  if (progressText) progressText.textContent = `${current}/${qs.length}`;
+  if (questionText) questionText.textContent = q.text;
+  
+  // 绑定按钮
+  $('#mbti-question .opt-btn').forEach(function(btn) {
+    btn.onclick = function() {
+      const val = parseInt(this.dataset.value);
+      const score = val * q.dir;
+      AppState.mbtiScores[q.dim] += score;
+      AppState.mbtiCurrent++;
+      renderMBTIQuestion();
+    };
+  });
+}
+
+function finishMBTI() {
+  const qContainer = $('#mbti-question');
+  const resultContainer = $('#mbti-result');
+  
+  if (qContainer) qContainer.style.display = 'none';
+  if (resultContainer) {
+    resultContainer.style.display = 'block';
+    resultContainer.innerHTML = '';
+  }
+  
+  const result = MBTIData.analyze(AppState.mbtiScores);
+  AppState.mbtiResults = result;
+  AppState.allResults.mbti = result;
+  
+  renderMBTIResult(result);
+  renderSummary();
+}
+
+function renderMBTIResult(result) {
+  const container = $('#mbti-result');
+  if (!container) return;
+  
+  const t = result.data;
+  
+  container.innerHTML = ''
+    + '<div class="result-card" style="text-align:center; border-color: ' + t.color + '44;">'
+    + '<div style="font-size:48px; margin-bottom:8px;">🧠</div>'
+    + '<div style="font-size:32px; font-weight:900; color:' + t.color + '; letter-spacing:4px;">' + result.type + '</div>'
+    + '<div style="font-size:20px; font-weight:700; margin:4px 0;">' + t.name + '</div>'
+    + '<div style="font-size:13px; color:var(--text-secondary); margin-bottom:16px;">' + t.en + '</div>'
+    + '<div style="font-size:14px; color:var(--text-secondary); max-width:400px; margin:0 auto 16px; line-height:1.7;">' + t.desc + '</div>'
+    + '</div>'
+    
+    + '<div class="result-grid auto" style="grid-template-columns:repeat(4,1fr);">'
+    + result.dimensions.map(function(d) {
+      var pct = Math.abs(d.value)/5*100;
+      return '<div class="result-card" style="text-align:center;">'
+        + '<div style="font-size:12px; color:var(--text-muted); margin-bottom:4px;">' + d.name + '</div>'
+        + '<div style="height:4px; background:rgba(255,255,255,0.08); border-radius:2px; margin:8px 0;position:relative;">'
+        + '<div style="position:absolute; height:100%; border-radius:2px; background:var(--accent-gold); width:' + pct + '%;'
+        + (d.value < 0 ? 'left:0;' : 'right:0;') + '"></div></div>'
+        + '<div style="font-size:14px; color:var(--accent-gold);">' + d.label + '</div>'
+        + '</div>';
+    }).join('')
+    + '</div>'
+    
+    + '<div class="result-grid auto" style="grid-template-columns:repeat(2,1fr);">'
+    + '<div class="result-card"><div class="card-title"><i class="emoji-star"></i> 优势</div><div class="card-desc">' + t.strengths + '</div></div>'
+    + '<div class="result-card"><div class="card-title"><i class="emoji-warn"></i> 短板</div><div class="card-desc">' + t.weaknesses + '</div></div>'
+    + '<div class="result-card"><div class="card-title"><i class="emoji-case"></i> 适合职业</div><div class="card-desc">' + t.career + '</div></div>'
+    + '<div class="result-card"><div class="card-title"><i class="emoji-heart"></i> 爱情观</div><div class="card-desc">' + t.love + '</div></div>'
+    + '<div class="result-card" style="grid-column:1/-1;"><div class="card-title"><i class="emoji-bulb"></i> 成长建议</div><div class="card-desc">' + t.advice + '</div></div>'
+    + '</div>';
+}
+
+// =============================================
+// 全系统运行 — 公开为全局函数供 inline script 调用
+// =============================================
+window.runAllSystems = function(year, month, day, hour, user) {
+  console.log('🚀 开始全系统分析:', year, month, day, hour);
+  AppState.allResults = { user: user };
+  
+  try { renderZodiac(year, month, day, hour); } catch(e) { console.error('Zodiac error:', e); }
+  try { renderBazi(year, month, day, hour, user); } catch(e) { console.error('Bazi error:', e); }
+  try { renderAstrology(year, month, day, hour); } catch(e) { console.error('Astrology error:', e); }
+  try { renderZiwei(year, month, day, hour, user.gender); } catch(e) { console.error('Ziwei error:', e); }
+  try { renderMayan(year, month, day); } catch(e) { console.error('Mayan error:', e); }
+  try { renderHumanDesign(year, month, day, hour); } catch(e) { console.error('HumanDesign error:', e); }
+  
+  // MBTI 需用户交互
+  initMBTI();
+};
+
+// =============================================
+// 星座模块
+// =============================================
+function renderZodiac(year, month, day, hour) {
+  const sunSign = Astronomy.westernZodiac(month, day);
+  const rising = ZodiacData.risingSign(hour);
+  const moon = ZodiacData.moonSign(month, day);
+  const compat = ZodiacData.compatibility[sunSign.name] || '';
+  const chineseZodiac = Astronomy.chineseZodiac(year);
+  
+  AppState.allResults.zodiac = { sunSign, rising, moon, compat, chineseZodiac };
+  AppState.allResults.zodiacSign = sunSign;
+  
+  const container = $('#zodiac-result');
+  if (!container) return;
+  
+  container.innerHTML = ''
+    + '<div class="result-card" style="text-align:center;">'
+    + '<div style="font-size:60px;">' + sunSign.symbol + '</div>'
+    + '<div style="font-size:28px; font-weight:700; letter-spacing:4px;">' + sunSign.name + '</div>'
+    + '<div style="font-size:13px; color:var(--text-muted);">' + sunSign.element + '象 · ' + sunSign.quality + ' · 守护星' + sunSign.ruler + '</div>'
+    + '</div>'
+    
+    + '<div class="result-grid auto">'
+    + '<div class="result-card"><div class="card-title"><i class="emoji-sun"></i> 太阳星座</div><div class="card-value">' + sunSign.name + ' ' + sunSign.symbol + '</div><div class="card-desc">' + sunSign.personality.slice(0, 60) + '...</div></div>'
+    + '<div class="result-card"><div class="card-title"><i class="emoji-up"></i> 上升星座</div><div class="card-value">' + rising + '</div><div class="card-desc">你在外的面具和给人的第一印象</div></div>'
+    + '<div class="result-card"><div class="card-title"><i class="emoji-moon"></i> 月亮星座</div><div class="card-value">' + moon + '</div><div class="card-desc">你的情感需求和情绪反应模式</div></div>'
+    + '<div class="result-card"><div class="card-title"><i class="emoji-dragon"></i> 生肖</div><div class="card-value">' + chineseZodiac.animal + ' · ' + chineseZodiac.element + '</div><div class="card-desc">' + chineseZodiac.element + '命' + chineseZodiac.animal + '</div></div>'
+    + '</div>'
+    
+    + '<div class="result-grid auto">'
+    + '<div class="result-card"><div class="card-title"><i class="emoji-brain"></i> 性格特质</div><div class="card-desc">' + sunSign.personality + '</div></div>'
+    + '<div class="result-card"><div class="card-title"><i class="emoji-check" style="color:var(--accent-teal);"></i> 优势</div><div class="card-desc">' + sunSign.strength + '</div><span class="card-tag">长处</span></div>'
+    + '<div class="result-card"><div class="card-title"><i class="emoji-cross" style="color:var(--accent-pink);"></i> 弱点</div><div class="card-desc">' + sunSign.weakness + '</div><span class="card-tag">需注意</span></div>'
+    + '<div class="result-card"><div class="card-title"><i class="emoji-case"></i> 职业方向</div><div class="card-desc">' + sunSign.career + '</div></div>'
+    + '<div class="result-card"><div class="card-title"><i class="emoji-heart"></i> 爱情</div><div class="card-desc">' + sunSign.love + '</div><span class="card-tag">最佳配对：' + compat + '</span></div>'
+    + '<div class="result-card"><div class="card-title"><i class="emoji-heartbeat"></i> 健康</div><div class="card-desc">' + sunSign.health + '</div></div>'
+    + '<div class="result-card"><div class="card-title"><i class="emoji-star"></i> 幸运信息</div><div class="card-desc">' + sunSign.luck + '</div></div>'
+    + '</div>';
+}
+
+// =============================================
+// 星盘模块
+// =============================================
+function renderAstrology(year, month, day, hour) {
+  const jd = Astronomy.julianDay(year, month, day, hour);
+  const planets = Astronomy.planetPositions(jd);
+  const sunSign = Astronomy.westernZodiac(month, day);
+  
+  const reading = AstrologyData.generateReading(planets, sunSign.name);
+  AppState.allResults.astrology = reading;
+  
+  const container = $('#chart-data');
+  if (!container) return;
+  
+  container.innerHTML = ''
+    + '<div class="result-card" style="grid-column:1/-1;"><div class="card-title"><i class="emoji-sun"></i> 星盘总览</div><div class="card-desc">' + reading.summary + '</div></div>'
+    + reading.planets.map(function(p) {
+      return '<div class="result-card"><div class="card-title">' + p.symbol + ' ' + p.name + '</div><div class="card-value" style="font-size:16px;">' + p.sign + '</div><div class="card-desc">' + p.info.desc + '</div><span class="card-tag">对应：' + p.info.body + '</span></div>';
+    }).join('')
+    + '<div class="result-card" style="grid-column:1/-1;"><div class="card-title"><i class="emoji-home"></i> 宫位系统</div>'
+    + '<div class="result-grid auto" style="grid-template-columns:repeat(4,1fr);">'
+    + reading.houses.map(function(h) {
+      return '<div style="background:rgba(255,255,255,0.03); padding:12px; border-radius:8px; text-align:center;">'
+        + '<div style="font-weight:700; color:var(--accent-gold); font-size:13px;">第' + h.num + '宫</div>'
+        + '<div style="font-size:14px; margin:4px 0;">' + h.name + '</div>'
+        + '<div style="font-size:11px; color:var(--text-muted);">' + h.keywords + '</div></div>';
+    }).join('')
+    + '</div></div>';
+  
+  drawChart(planets);
+}
+
+function drawChart(planets) {
+  const canvas = $('#chart-canvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  
+  var size = Math.min(600, window.innerWidth - 40);
+  canvas.width = size;
+  canvas.height = size;
+  
+  const cx = size/2, cy = size/2;
+  const outerR = size/2 - 20;
+  const midR = outerR * 0.75;
+  const innerR = outerR * 0.65;
+  
+  ctx.clearRect(0, 0, size, size);
+  
+  const colors12 = ['#ff6b6b','#ffa94d','#ffd43b','#69db7c','#38d9a9','#22b8cf','#339af0','#748ffc','#9775fa','#f06595','#f783ac','#e599f7'];
+  const signNames = ['♈白羊','♉金牛','♊双子','♋巨蟹','♌狮子','♍处女','♎天秤','♏天蝎','♐射手','♑摩羯','♒水瓶','♓双鱼'];
+  
+  for (let i = 0; i < 12; i++) {
+    const startAngle = (i / 12) * 2 * Math.PI - Math.PI/2;
+    const endAngle = ((i + 1) / 12) * 2 * Math.PI - Math.PI/2;
+    
+    ctx.beginPath();
+    ctx.arc(cx, cy, outerR, startAngle, endAngle);
+    ctx.arc(cx, cy, midR, endAngle, startAngle, true);
+    ctx.closePath();
+    ctx.fillStyle = colors12[i] + '15';
+    ctx.fill();
+    ctx.strokeStyle = 'rgba(255,255,255,0.1)';
+    ctx.lineWidth = 1;
+    ctx.stroke();
+    
+    const midAngle = (startAngle + endAngle) / 2;
+    const textR = (outerR + midR) / 2;
+    const tx = cx + Math.cos(midAngle) * textR;
+    const ty = cy + Math.sin(midAngle) * textR;
+    ctx.fillStyle = 'rgba(255,255,255,0.5)';
+    ctx.font = Math.max(10, size/40) + 'px sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText(signNames[i], tx, ty + 4);
+  }
+  
+  ctx.beginPath();
+  ctx.arc(cx, cy, innerR, 0, 2 * Math.PI);
+  ctx.strokeStyle = 'rgba(255,255,255,0.08)';
+  ctx.lineWidth = 1;
+  ctx.stroke();
+  
+  planets.forEach(function(p) {
+    const deg = parseFloat(p.degree);
+    const angle = (deg / 360) * 2 * Math.PI - Math.PI/2;
+    const r = outerR * 0.6;
+    const x = cx + Math.cos(angle) * r;
+    const y = cy + Math.sin(angle) * r;
+    
+    ctx.beginPath();
+    ctx.arc(x, y, 8, 0, 2*Math.PI);
+    ctx.fillStyle = 'rgba(212,168,71,0.3)';
+    ctx.fill();
+    ctx.strokeStyle = 'rgba(212,168,71,0.6)';
+    ctx.lineWidth = 1;
+    ctx.stroke();
+    
+    ctx.fillStyle = '#d4a847';
+    ctx.font = '12px sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText(p.symbol, x, y + 4);
+  });
+  
+  ctx.beginPath();
+  ctx.arc(cx, cy, 3, 0, 2*Math.PI);
+  ctx.fillStyle = '#d4a847';
+  ctx.fill();
+}
+
+// =============================================
+// 八字模块
+// =============================================
+function renderBazi(year, month, day, hour, user) {
+  const bazi = Astronomy.bazi(year, month, day, hour, user.timezone);
+  const result = BaziEngine.analyze(bazi, year, month, day, hour, user.gender);
+  
+  AppState.allResults.bazi = bazi;
+  AppState.allResults.baziResult = result;
+  
+  const container = $('#bazi-result');
+  if (!container) return;
+  
+  const pillars = [result.bazi.year, result.bazi.month, result.bazi.day, result.bazi.hour];
+  
+  container.innerHTML = ''
+    + '<div class="result-card" style="text-align:center;">'
+    + '<div style="display:flex; justify-content:center; gap:12px; margin-bottom:16px; flex-wrap:wrap;">'
+    + pillars.map(function(p) {
+      return '<div style="background:rgba(212,168,71,0.1); padding:8px 16px; border-radius:8px; text-align:center;">'
+        + '<div style="font-size:24px; font-weight:900; color:var(--accent-gold); letter-spacing:4px;">' + p.full + '</div>'
+        + '<div style="font-size:11px; color:var(--text-muted); margin-top:4px;">' + p.gan + '' + p.zhi + '</div></div>';
+    }).join('')
+    + '</div>'
+    + '<div style="font-size:14px; color:var(--text-secondary);">年柱' + result.nanyin.year + ' · 月柱' + result.nanyin.month + ' · 日柱' + result.nanyin.day + ' · 时柱' + result.nanyin.hour + '</div>'
+    + '</div>'
+    
+    + '<div class="result-grid auto">'
+    + '<div class="result-card"><div class="card-title"><i class="emoji-dragon"></i> 生肖</div><div class="card-value">' + result.shengxiao + '</div></div>'
+    + '<div class="result-card"><div class="card-title"><i class="emoji-user"></i> 日主</div><div class="card-value">' + result.riZhu + ' · ' + result.riZhuWuxing + '</div><div class="card-desc">日干代表你自己</div></div>'
+    + '<div class="result-card"><div class="card-title"><i class="emoji-cube"></i> 五行分布</div>'
+    + '<div style="display:flex; gap:8px; flex-wrap:wrap;">'
+    + Object.entries(result.wuxing).map(function(e) {
+      var bars = '';
+      for (var i = 0; i < 3; i++) { bars += (i < e[1]) ? '●' : '○'; }
+      return '<span style="padding:4px 12px; border-radius:6px; background:rgba(255,255,255,0.05); font-size:13px;">' + e[0] + ': <strong style="color:var(--accent-gold);">' + bars + '</strong></span>';
+    }).join('')
+    + '</div></div></div>'
+    
+    + '<div class="result-card"><div class="card-title"><i class="emoji-scale"></i> 命理分析</div><div class="card-desc" style="white-space:pre-line;">' + result.analysis + '</div></div>'
+    
+    + '<div class="result-card"><div class="card-title"><i class="emoji-tags"></i> 十神</div>'
+    + '<div class="result-grid auto" style="grid-template-columns:repeat(3,1fr);">'
+    + Object.entries(result.shishen).map(function(e) {
+      var k = e[0], v = e[1];
+      var label = k === 'year' ? '年柱' : k === 'month' ? '月柱' : '时柱';
+      return '<div style="text-align:center;"><div style="font-size:12px; color:var(--text-muted);">' + label + '</div><div style="font-weight:700; color:var(--accent-teal); font-size:14px;">' + v.name + '</div><div style="font-size:11px; color:var(--text-secondary);">' + (v.relation === '生我' ? '被生' : v.relation === '克我' ? '被克' : v.relation) + '·' + v.gender + '</div></div>';
+    }).join('')
+    + '</div></div>';
+}
+
+// =============================================
+// 紫微斗数模块
+// =============================================
+function renderZiwei(year, month, day, hour, gender) {
+  const chart = ZiweiEngine.generateChart(year, month, day, hour, gender);
+  const analysis = ZiweiEngine.analyze(chart);
+  
+  AppState.allResults.ziwei = analysis;
+  
+  const gridContainer = $('#ziwei-chart');
+  const analysisContainer = $('#ziwei-analysis');
+  
+  if (gridContainer) {
+    gridContainer.innerHTML = chart.map(function(p) {
+      var stars = p.mainStars.map(function(s) { 
+        return '<span class="star-name" style="color:' + s.info.color + ';">' + s.info.symbol + ' ' + s.name + '</span>';
+      }).join('');
+      if (!stars) stars = '<span style="color:#444; font-size:11px;">无主星</span>';
+      var aux = p.auxStars.map(function(s) {
+        return '<span style="color:' + s.info.color + '; font-size:10px; display:inline-block; margin:1px 2px;">' + s.name + '</span>';
+      }).join('');
+      return '<div class="ziwei-cell"><span class="palace-name">' + p.palace + '</span>' + stars + (aux ? '<div style="font-size:10px; margin-top:4px; border-top:1px solid rgba(255,255,255,0.05); padding-top:2px;">' + aux + '</div>' : '') + '</div>';
+    }).join('');
+  }
+  
+  if (analysisContainer) {
+    analysisContainer.innerHTML = ''
+      + '<div class="result-card" style="grid-column:1/-1;"><div class="card-title"><i class="emoji-star"></i> 十二宫详解</div><div class="card-desc">紫微斗数十四主星入十二宫，配合六吉六煞，推断一生格局。</div></div>'
+      + analysis.map(function(a) {
+        return '<div class="result-card" style="border-left: 3px solid ' + a.color + ';">'
+          + '<div class="card-title"><span style="color:' + a.color + ';">' + a.starSymbol + '</span> ' + a.palace
+          + '<span style="font-weight:400; font-size:12px; color:var(--text-muted); margin-left:auto;">' + a.keywords + '</span></div>'
+          + '<div style="font-size:12px; color:var(--accent-gold); margin-bottom:6px;">主星：' + a.mainStars + ' | ' + a.starType + '</div>'
+          + '<div class="card-desc" style="margin-bottom:6px;">' + a.fortune + '</div>'
+          + '<div class="card-desc" style="margin-bottom:6px; line-height:1.7;">' + a.mainDesc + '</div>'
+          + (a.auxStars !== '无' ? '<div style="font-size:12px; color:var(--text-secondary); border-top:1px solid rgba(255,255,255,0.05); padding-top:6px;"><span style="color:var(--accent-teal);">辅星：</span>' + a.auxStars + '</div><div class="card-desc" style="font-size:12px; margin-top:4px;">' + a.auxDesc + '</div>' : '')
+          + '</div>';
+      }).join('');
+  }
+}
+
+// =============================================
+// 玛雅图腾模块
+// =============================================
+function renderMayan(year, month, day) {
+  const result = MayanEngine.analyze(year, month, day);
+  AppState.allResults.mayan = result;
+  
+  const container = $('#mayan-result');
+  if (!container) return;
+  
+  const g = result.info.mainGlyph;
+  const t = result.info.mainTone;
+  
+  const colorEmoji = g.color === '红' ? '🔴' : g.color === '白' ? '⚪' : g.color === '蓝' ? '🔵' : '🟡';
+  const colorHex = g.color === '红' ? '#ef4444' : g.color === '白' ? '#e2e8f0' : g.color === '蓝' ? '#3b82f6' : '#eab308';
+  
+  container.innerHTML = ''
+    + '<div class="result-card" style="text-align:center;">'
+    + '<div style="font-size:60px;">' + colorEmoji + '</div>'
+    + '<div style="font-size:32px; font-weight:900; letter-spacing:4px; color:' + colorHex + ';">' + g.name + '</div>'
+    + '<div style="font-size:18px;">' + result.info.galacticSignature + '</div>'
+    + '<div style="font-size:24px; margin:8px 0; color:var(--accent-gold);">KIN ' + result.info.kin + '</div>'
+    + '</div>'
+    
+    + '<div class="result-grid auto">'
+    + '<div class="result-card"><div class="card-title"><i class="emoji-music"></i> 银河音阶</div><div class="card-value" style="font-size:18px;">' + t.name + ' 调性' + t.num + '</div><div class="card-desc">行动：' + t.action + ' · 力量：' + t.power + '</div></div>'
+    + '<div class="result-card"><div class="card-title"><i class="emoji-question"></i> 生命提问</div><div class="card-desc" style="font-size:15px;">"' + result.info.full.question + '"</div></div>'
+    + '<div class="result-card"><div class="card-title"><i class="emoji-wave"></i> 波符</div><div class="card-value" style="font-size:18px;">' + result.info.wave.name + '</div><div class="card-desc">第' + result.info.wave.positionNum + '格 · ' + result.info.wave.position + '</div></div>'
+    + '<div class="result-card"><div class="card-title">🎨 颜色家族</div><div class="card-desc">' + result.info.colorFamily + '</div></div>'
+    + '</div>'
+    
+    + '<div class="result-card"><div class="card-title"><i class="emoji-book"></i> 图腾解读</div><div class="card-desc" style="white-space:pre-line;">' + result.analysis + '</div></div>'
+    
+    + '<div class="result-grid auto" style="grid-template-columns:repeat(3,1fr);">'
+    + [result.info.guide, result.info.similar, result.info.opposite].filter(Boolean).map(function(p) {
+      var ce = p.color === '红' ? '🔴' : p.color === '白' ? '⚪' : p.color === '蓝' ? '🔵' : '🟡';
+      return '<div class="result-card" style="text-align:center;"><div style="font-size:24px;">' + ce + '</div><div class="card-value" style="font-size:16px;">' + p.name + '</div><div class="card-desc">' + p.keyword + '</div></div>';
+    }).join('')
+    + '</div>';
+}
+
+// =============================================
+// 人类图模块
+// =============================================
+function renderHumanDesign(year, month, day, hour) {
+  const result = HumanDesignEngine.analyze(year, month, day, hour);
+  AppState.allResults.humandesign = result;
+  
+  const container = $('#humandesign-analysis');
+  if (!container) return;
+  
+  container.innerHTML = ''
+    + '<div class="result-card" style="grid-column:1/-1;"><div class="card-title"><i class="emoji-bolt"></i> ' + result.typeInfo.type + ' · ' + result.typeInfo.typeData.en + '</div><div class="card-desc" style="white-space:pre-line; font-size:14px;">' + result.summary + '</div></div>'
+    + '<div class="result-grid auto">'
+    + '<div class="result-card" style="text-align:center;"><div style="font-size:36px;">' + result.typeInfo.typeData.symbol + '</div><div class="card-value" style="font-size:18px;">' + result.typeInfo.type + ' (' + result.typeInfo.typeData.pct + ')</div><div class="card-desc">' + result.typeInfo.typeData.en + '</div></div>'
+    + '<div class="result-card"><div class="card-title"><i class="emoji-route"></i> 人生策略</div><div class="card-desc">' + result.typeInfo.typeData.strategy + '</div></div>'
+    + '<div class="result-card"><div class="card-title"><i class="emoji-compass"></i> 内在权威</div><div class="card-value" style="font-size:18px;">' + result.typeInfo.authority + '型</div></div>'
+    + '<div class="result-card"><div class="card-title"><i class="emoji-tag"></i> 人生角色</div><div class="card-value" style="font-size:18px;">' + result.typeInfo.profileKey + '</div><div class="card-desc">' + (result.typeInfo.profile ? result.typeInfo.profile.desc : '') + '</div></div>'
+    + '</div>';
+  
+  drawBodyGraph(result.bodyGraph);
+}
+
+function drawBodyGraph(bg) {
+  const canvas = $('#bodygraph-canvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  
+  canvas.width = 600;
+  canvas.height = 700;
+  
+  ctx.clearRect(0, 0, 600, 700);
+  
+  ctx.strokeStyle = 'rgba(212,168,71,0.15)';
+  ctx.lineWidth = 3;
+  ctx.setLineDash([5, 5]);
+  bg.channels.forEach(function(pair) {
+    var c1 = bg.centers.find(function(c) { return c.number === pair[0]; });
+    var c2 = bg.centers.find(function(c) { return c.number === pair[1]; });
+    if (c1 && c2) {
+      ctx.beginPath();
+      ctx.moveTo(c1.x, c1.y);
+      ctx.lineTo(c2.x, c2.y);
+      ctx.stroke();
+    }
+  });
+  ctx.setLineDash([]);
+  
+  bg.centers.forEach(function(c) {
+    ctx.beginPath();
+    ctx.arc(c.x, c.y, c.r, 0, 2*Math.PI);
+    ctx.fillStyle = 'rgba(212,168,71,0.08)';
+    ctx.fill();
+    ctx.strokeStyle = 'rgba(212,168,71,0.3)';
+    ctx.lineWidth = 1.5;
+    ctx.stroke();
+    
+    ctx.fillStyle = 'rgba(255,255,255,0.6)';
+    ctx.font = '11px sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText(c.name, c.x, c.y + 4);
+  });
+  
+  ctx.fillStyle = 'rgba(255,255,255,0.2)';
+  ctx.font = '12px sans-serif';
+  ctx.textAlign = 'center';
+  ctx.fillText('BodyGraph · 人体图', 300, 680);
+}
+
+// =============================================
+// 综合报告
+// =============================================
+function renderSummary() {
+  const allResults = AppState.allResults;
+  if (!allResults.mbti) return;
+  
+  const summary = SummaryEngine.generate(allResults);
+  
+  const container = $('#summary-result');
+  if (!container) return;
+  
+  container.innerHTML = ''
+    + '<div style="text-align:center; margin-bottom:24px;">'
+    + '<h3 style="font-size:22px; color:var(--accent-gold); letter-spacing:2px;">' + summary.title + '</h3>'
+    + '<div style="width:40px; height:2px; background:var(--accent-gold); margin:12px auto;"></div></div>'
+    
+    + '<div class="result-grid auto">'
+    + summary.sections.map(function(s) {
+      return '<div class="result-card" style="grid-column:1/-1;"><div class="card-desc" style="font-size:14px; line-height:1.8;">' + s + '</div></div>';
+    }).join('')
+    + '</div>'
+    
+    + '<div class="result-card" style="margin-top:16px; border-color:rgba(212,168,71,0.3);">'
+    + '<div class="card-title"><i class="emoji-bulb" style="color:var(--accent-gold);"></i> 综合洞察</div>'
+    + summary.insights.map(function(i) {
+      return '<div style="font-size:14px; line-height:1.8; margin-bottom:12px; padding-left:16px; border-left:2px solid rgba(212,168,71,0.2);">' + i + '</div>';
+    }).join('')
+    + '</div>'
+    
+    + '<div style="text-align:center; margin-top:16px; color:var(--text-muted); font-size:12px; font-style:italic;">'
+    + '以上分析综合了MBTI、星座、星盘、八字、紫微斗数、玛雅图腾和人类图七大系统。<br>人生充满可能，此分析仅供参考。</div>';
+}
+
+console.log('✅ app.js 加载完成，系统就绪！');
+console.log('🌐 七大系统已全部注册');
+
+
+
+</script>
+</body>
+</html>
