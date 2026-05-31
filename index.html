@@ -2939,6 +2939,32 @@ function bindAllExpand() {
     ]
   };
 
+
+// ===== DOM 初始化 =====
+function $(sel) { return document.querySelector(sel); }
+function $$(sel) { return Array.from(document.querySelectorAll(sel)); }
+
+document.addEventListener('DOMContentLoaded', function() {
+  const form = $('#master-form');
+  if (!form) return;
+  
+  form.addEventListener('submit', function(e) {
+    e.preventDefault();
+    const name = $('#name').value || '访客';
+    const gender = $('#gender').value || 'male';
+    const year = parseInt($('#birth-year').value) || 2000;
+    const month = parseInt($('#birth-month').value) || 1;
+    const day = parseInt($('#birth-day').value) || 1;
+    const hour = parseInt($('#birth-hour').value) || 12;
+    window.runAllSystems(year, month, day, hour, { name: name, gender: gender, timezone: 8 });
+  });
+  
+  // 设置默认值
+  var yEl = $('#birth-year'); if (yEl) yEl.value = 1990;
+  var mEl = $('#birth-month'); if (mEl) mEl.value = 6;
+  var dEl = $('#birth-day'); if (dEl) dEl.value = 15;
+});
+
 console.log('✅ app.js 加载完成，系统就绪！');
 console.log('🌐 十大系统已全部注册');
 
