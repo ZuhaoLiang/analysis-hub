@@ -840,12 +840,13 @@ const Astronomy = {
     
     // 农历月份近似（基于节气）
     const term = this.solarTerm(year, month, day);
-    let lunarMonth = Math.floor(term.index / 2) + 1;
-    if (lunarMonth > 12) lunarMonth -= 12;
-    // 如果是立春之前，年柱仍用上一年
+    // 节气索引0=春分, 21=立春。月柱以立春为正月（寅月）
+    // 将索引偏移+3使立春(21)→24%24=0→月份1
+    let lunarMonth = Math.floor(((term.index + 3) % 24) / 2) + 1;
+    // 如果是立春之前（索引<21），年柱用上一年
     let actualYear = year;
     let actualYearGZ = yearGanZhi;
-    if (term.index < 1) { // 立春(索引0)之前
+    if (term.index < 21) {
       actualYear = year - 1;
       actualYearGZ = this.chineseYearGanzhi(actualYear);
     }
