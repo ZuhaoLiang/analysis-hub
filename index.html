@@ -2309,8 +2309,8 @@ const SummaryEngine = {
     
     // 紫微片段
     if (ziwei && ziwei.length > 0) {
-      const hasStar = ziwei.filter(p => p.star !== '无主星');
-      const starNames = hasStar.slice(0, 3).map(p => `${p.palace}（${p.star}）`).join('、');
+      const hasStar = ziwei.filter(p => p.mainStars !== '无主星' && p.mainStars !== '');
+      const starNames = hasStar.slice(0, 3).map(function(p) { return p.palace + '（' + p.mainStars + '）'; }).join('、');
       sections.push(`【紫微命盘】你的命盘中${starNames}等宫位构成了你的人生格局。`);
     }
     
