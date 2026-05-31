@@ -1354,11 +1354,13 @@ const ZodiacData = {
 
   // 月亮星座（基于天文计算）
   moonSign: function(year, month, day) {
-    // 儒略日计算
+    // 正确儒略日计算（格里高利历）
     var y = year, m = month, d = day;
     if (m <= 2) { y -= 1; m += 12; }
-    var jd = Math.floor(365.25 * (y + 4716)) + Math.floor(30.6001 * (m + 1)) + d - 1524.5;
-    // 月球平黄经计算
+    var A = Math.floor(y / 100);
+    var B = 2 - A + Math.floor(A / 4);
+    var jd = Math.floor(365.25 * (y + 4716)) + Math.floor(30.6001 * (m + 1)) + d + B - 1524.5;
+    // 月球平黄经：218.316° + 13.176396°/天 × 距J2000天数
     var days = jd - 2451545.0;
     var moonLong = (218.316 + 13.176396 * days) % 360;
     if (moonLong < 0) moonLong += 360;
