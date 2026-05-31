@@ -387,21 +387,15 @@ a:hover { color: var(--accent-gold-glow); }
 }
 
 .expand-body {
-  position: absolute; left: 0; right: 0; top: 100%;
-  z-index: 100;
-  background: linear-gradient(145deg, rgba(18,25,50,0.98), rgba(12,18,38,0.95));
-  border: 1px solid rgba(212,168,71,0.12);
-  border-radius: 10px; padding: 12px;
-  margin-top: 6px;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.3s ease;
-  max-height: 400px; overflow-y: auto;
+  max-height: 0; overflow: hidden; opacity: 0;
+  transition: max-height 0.4s ease, opacity 0.3s ease;
+  margin-top: 0;
 }
 .expand-card { position: relative; }
 .expand-card.expanded .expand-body {
-  opacity: 1;
-  pointer-events: auto;
+  max-height: 2000px; opacity: 1;
+  margin-top: 10px; padding-top: 10px;
+  border-top: 1px solid rgba(212,168,71,0.08);
 }
 
 .expand-section-title {
