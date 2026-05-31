@@ -343,10 +343,7 @@ a:hover { color: var(--accent-gold-glow); }
         <a href="#ziwei" class="nav-link" data-system="ziwei">• 紫微</a>
         <a href="#mayan" class="nav-link" data-system="mayan">• 玛雅图腾</a>
         <a href="#humandesign" class="nav-link" data-system="humandesign">• 人类图</a>
-      
-        <a href="#numerology" class="nav-link">• 灵数</a>
-        <a href="#lunarmansion" class="nav-link">• 星宿</a>
-        <a href="#zhengyu" class="nav-link">• 政余</a></nav>
+      </nav>
       <button id="menu-toggle" aria-label="菜单">•</button>
     </div>
   </header>
@@ -356,7 +353,7 @@ a:hover { color: var(--accent-gold-glow); }
     <div class="hero-bg"></div>
     <div class="hero-content">
       <h1 class="hero-title">遇见自己</h1>
-      <p class="hero-subtitle">十大系统 · 多维解读 · 重新认识你自己</p>
+      <p class="hero-subtitle">七大系统 · 多维解读 · 重新认识你自己</p>
       <p class="hero-desc">输入你的出生信息，探索 MBTI、星座、星盘、八字、紫微斗数、玛雅图腾和人类图的奥秘</p>
       <button id="scroll-to-form" class="btn-hero">
         • 开始探索
@@ -531,50 +528,13 @@ a:hover { color: var(--accent-gold-glow); }
     </div>
   </section>
 
-
-  <!-- ===== 灵数系统 ===== -->
-  <section id="numerology" class="section system-section" data-system="numerology">
-    <div class="section-inner">
-      <div class="system-header">
-        <span class="system-icon">🔢</span>
-        <h2 class="section-title">灵数 · 生命数字</h2>
-        <p class="section-desc">Numerology · 生命道路数字</p>
-      </div>
-      <div id="numerology-result" class="result-grid"></div>
-    </div>
-  </section>
-
-  <!-- ===== 星宿系统 ===== -->
-  <section id="lunarmansion" class="section system-section" data-system="lunarmansion">
-    <div class="section-inner">
-      <div class="system-header">
-        <span class="system-icon">🌙</span>
-        <h2 class="section-title">星宿 · 二十八宿</h2>
-        <p class="section-desc">Lunar Mansions · 二十八宿命运解读</p>
-      </div>
-      <div id="lunarmansion-result" class="result-grid"></div>
-    </div>
-  </section>
-
-  <!-- ===== 政余系统 ===== -->
-  <section id="zhengyu" class="section system-section" data-system="zhengyu">
-    <div class="section-inner">
-      <div class="system-header">
-        <span class="system-icon">⚖️</span>
-        <h2 class="section-title">政余 · 政余星命</h2>
-        <p class="section-desc">ZhengYu · 星命推演</p>
-      </div>
-      <div id="zhengyu-result" class="result-grid"></div>
-    </div>
-  </section>
-
   <!-- ===== 综合报告 ===== -->
   <section id="summary" class="section">
     <div class="section-inner">
       <div class="system-header">
         <span class="system-icon">📊</span>
         <h2 class="section-title">综合评语</h2>
-        <p class="section-desc">AI 综合分析 · 十大系统交叉解读</p>
+        <p class="section-desc">AI 综合分析 · 七大系统交叉解读</p>
       </div>
       <div id="summary-result" class="result-card">
         <p class="placeholder-text">请先输入信息并点击"全面分析"</p>
@@ -2115,12 +2075,12 @@ const HumanDesignEngine = {
 
 // ===== js/systems/summary-engine.js =====
 /* ======================================
-   综合引擎 · 十大系统交叉解读
+   综合引擎 · 七大系统交叉解读
    ====================================== */
 
 const SummaryEngine = {
   generate: function(allResults) {
-    const { user, mbti, zodiac, zodiacSign, astrology, bazi, baziResult, ziwei, mayan, humandesign, numerology, lunarmansion, zhengyu } = allResults;
+    const { user, mbti, zodiac, zodiacSign, astrology, bazi, baziResult, ziwei, mayan, humandesign } = allResults;
     
     const sections = [];
     let title = `${user.name}的全面人生解读报告`;
@@ -2157,18 +2117,6 @@ const SummaryEngine = {
     if (mayan) {
       const kin = mayan.info;
       sections.push(`【玛雅印记】你的银河印记是【${kin.galacticSignature}】，KIN ${kin.kin}，位于${kin.wave.name}的第${kin.wave.positionNum}格。你是${kin.mainGlyph.desc.slice(0,20)}。`);
-    }
-    // 灵数
-    if (numerology) {
-      sections.push(`【灵数密码】你的生命数字是【${numerology.lifePath}】。`);
-    }
-    // 星宿
-    if (lunarmansion) {
-      sections.push(`【星宿分野】你的本命星宿是【${lunarmansion.n}】。`);
-    }
-    // 政余
-    if (zhengyu) {
-      sections.push(`【政余星命】你的命格为【${zhengyu.n}】。`);
     }
     
     // 人类图片段
@@ -2213,7 +2161,7 @@ const SummaryEngine = {
       insights.push('你是一个独特的宇宙存在。没有两张相同的命盘，没有两段相同的人生。以上分析仅供多维参考。');
     }
     
-    insights.push('✨ 知人者智，自知者明。十大系统从不同维度照亮了你的某一个侧面，而真正的你，比所有系统的总和还要丰富。');
+    insights.push('✨ 知人者智，自知者明。七大系统从不同维度照亮了你的某一个侧面，而真正的你，比所有系统的总和还要丰富。');
     
     return insights;
   }
@@ -2727,85 +2675,13 @@ function renderSummary() {
     + '</div>'
     
     + '<div style="text-align:center; margin-top:16px; color:var(--text-muted); font-size:12px; font-style:italic;">'
-    + '以上分析综合了MBTI、星座、星盘、八字、紫微斗数、玛雅图腾、人类图、灵数、星宿和政余十大系统。<br>人生充满可能，此分析仅供参考。</div>';
+    + '以上分析综合了MBTI、星座、星盘、八字、紫微斗数、玛雅图腾和人类图七大系统。<br>人生充满可能，此分析仅供参考。</div>';
 }
 
 console.log('✅ app.js 加载完成，系统就绪！');
-console.log('🌐 十大系统已全部注册');
+console.log('🌐 七大系统已全部注册');
 
 
-
-
-
-// ===== 表单处理 =====
-document.addEventListener('DOMContentLoaded', function() {
-  var form = document.getElementById('master-form');
-  if (!form) return;
-  form.addEventListener('submit', function(e) {
-    e.preventDefault();
-    var name = document.getElementById('user-name').value || '访客';
-    var gender = document.getElementById('user-gender').value || 'male';
-    var bd = document.getElementById('user-birthdate').value || '1995-06-15';
-    var bt = document.getElementById('user-birthtime').value || '12:00';
-    var parts = bd.split('-');
-    var tp = bt.split(':');
-    window.runAllSystems(parseInt(parts[0])||1995, parseInt(parts[1])||6, parseInt(parts[2])||15, parseInt(tp[0])||12, {name:name, gender:gender, timezone:8});
-  });
-});
-
-// ===== 灵数 =====
-function renderNumerology(year, month, day) {
-  var sum = year.toString().split('').reduce(function(a,b){return a+ +b;},0) + month + day;
-  while (sum > 9 && sum !== 11 && sum !== 22 && sum !== 33) { sum = sum.toString().split('').reduce(function(a,b){return a+ +b;},0); }
-  var descs = [0,{n:'开创者',d:'数字1是万物之始',c:'#FF4444'},{n:'调和者',d:'数字2是关系的化身',c:'#FF8800'},{n:'表达者',d:'数字3是快乐和创造',c:'#FFCC00'},{n:'建设者',d:'数字4是稳定的基石',c:'#44BB44'},{n:'自由者',d:'数字5是自由的灵魂',c:'#44BBFF'},{n:'守护者',d:'数字6是无条件的爱',c:'#8844FF'},{n:'探寻者',d:'数字7是知识追寻者',c:'#4488FF'},{n:'掌控者',d:'数字8是力量和成就',c:'#CC3333'},{n:'人道者',d:'数字9是智慧的终点',c:'#CC8833'}];
-  var d = descs[sum] || descs[1];
-  var c = document.getElementById('numerology-result');
-  if (!c) return;
-  c.innerHTML = '<div class="result-card" style="text-align:center;"><div style="font-size:60px;">🔢</div><div style="font-size:28px;font-weight:700;color:'+d.c+';">生命数字 '+sum+'</div><div style="color:var(--accent-gold);margin:4px 0;font-size:18px;">'+d.n+'</div><div style="font-size:14px;color:var(--text-secondary);line-height:1.8;max-width:500px;margin:0 auto;">'+d.d+'</div></div>';
-}
-
-// ===== 星宿 =====
-function renderLunarMansion(month, day) {
-  var mansions = [
-    {i:'🦌',n:'角宿',d:'东方青龙之首',g:'青龙',ss:321,ee:404},
-    {i:'🦒',n:'亢宿',d:'青龙之颈',g:'青龙',ss:405,ee:419},
-    {i:'🦚',n:'氐宿',d:'青龙之胸',g:'青龙',ss:420,ee:504}
-  ];
-  var md = month*100+day;
-  var m = mansions[0];
-  for (var i=0; i<mansions.length; i++) {
-    if (md >= mansions[i].ss && md <= mansions[i].ee) { m = mansions[i]; break; }
-  }
-  var c = document.getElementById('lunarmansion-result');
-  if (!c) return;
-  c.innerHTML = '<div class="result-card" style="text-align:center;"><div style="font-size:60px;">'+m.i+'</div><div style="font-size:28px;font-weight:700;">'+m.n+'</div><div style="color:var(--accent-gold);font-size:14px;margin:4px 0;">'+m.g+'</div><div style="font-size:13px;color:var(--text-secondary);">'+m.d+'</div></div>';
-}
-
-// ===== 政余 =====
-function renderZhengyu(year, month, day) {
-  var patterns = [
-    {n:'木星守命',i:'🌳',e:'木',d:'春日之木，生机勃勃'},
-    {n:'火星照命',i:'🔥',e:'火',d:'夏日骄阳，热情四射'}
-  ];
-  var p = patterns[month % patterns.length];
-  var c = document.getElementById('zhengyu-result');
-  if (!c) return;
-  c.innerHTML = '<div class="result-card" style="text-align:center;"><div style="font-size:60px;">'+p.i+'</div><div style="font-size:28px;font-weight:700;">'+p.n+'</div><div style="color:var(--accent-gold);font-size:14px;margin:4px 0;">五行属'+p.e+'</div><div style="font-size:13px;color:var(--text-secondary);">'+p.d+'</div></div>';
-}
-
-// ===== 扩展 runAllSystems =====
-var origRunAll = window.runAllSystems;
-if (typeof origRunAll === 'function') {
-  window.runAllSystems = function(year, month, day, hour, user) {
-    origRunAll(year, month, day, hour, user);
-    try { renderNumerology(year, month, day); } catch(e) { console.error('Num:', e); }
-    try { renderLunarMansion(month, day); } catch(e) { console.error('Man:', e); }
-    try { renderZhengyu(year, month, day); } catch(e) { console.error('Zhen:', e); }
-    document.querySelectorAll('.system-section').forEach(function(s) { s.classList.add('active'); });
-  };
-}
-
-console.log('🌐 十大系统已全部注册');
 
 </script>
 </body>

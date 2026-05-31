@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head><title>Test</title></head>
+<body>
+  <form id="test-form">
+    <input id="test-input" value="hello">
+    <button type="submit">Submit</button>
+  </form>
+  <div id="output"></div>
+  <script>
+    function $(s) { return document.querySelector(s); }
+    document.getElementById('test-form').addEventListener('submit', function(e) {
+      e.preventDefault();
+      document.getElementById('output').textContent = 'Form submitted: ' + document.getElementById('test-input').value;
+    });
+    console.log('Script loaded');
+  </script>
+</body>
+</html>
