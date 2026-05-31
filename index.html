@@ -2950,19 +2950,18 @@ document.addEventListener('DOMContentLoaded', function() {
   
   form.addEventListener('submit', function(e) {
     e.preventDefault();
-    const name = $('#name').value || '访客';
-    const gender = $('#gender').value || 'male';
-    const year = parseInt($('#birth-year').value) || 2000;
-    const month = parseInt($('#birth-month').value) || 1;
-    const day = parseInt($('#birth-day').value) || 1;
-    const hour = parseInt($('#birth-hour').value) || 12;
+    const name = $('#user-name').value || '访客';
+    const gender = $('#user-gender').value || 'male';
+    const birthdate = $('#user-birthdate').value || '1995-06-15';
+    const birthtime = $('#user-birthtime').value || '12:00';
+    const parts = birthdate.split('-');
+    const year = parseInt(parts[0]) || 1995;
+    const month = parseInt(parts[1]) || 6;
+    const day = parseInt(parts[2]) || 15;
+    const timeParts = birthtime.split(':');
+    const hour = parseInt(timeParts[0]) || 12;
     window.runAllSystems(year, month, day, hour, { name: name, gender: gender, timezone: 8 });
   });
-  
-  // 设置默认值
-  var yEl = $('#birth-year'); if (yEl) yEl.value = 1990;
-  var mEl = $('#birth-month'); if (mEl) mEl.value = 6;
-  var dEl = $('#birth-day'); if (dEl) dEl.value = 15;
 });
 
 console.log('✅ app.js 加载完成，系统就绪！');
