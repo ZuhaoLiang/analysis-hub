@@ -1,10 +1,23 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>万象分析 · 全维人生解读系统</title>
-  <style>
+<meta charset="UTF-8">
+<title>万象分析 · 测试</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body { background:#0a0a1a; color:#e0d5c5; font-family:sans-serif; display:flex; flex-direction:column; align-items:center; padding:40px; }
+h1 { color:#daa520; margin-bottom:20px; }
+form { background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); padding:30px; border-radius:12px; width:400px; }
+label { display:block; margin:10px 0 5px; color:#aaa; font-size:13px; }
+input, select { width:100%; padding:10px; background:rgba(0,0,0,0.3); border:1px solid rgba(255,255,255,0.15); border-radius:6px; color:#e0d5c5; font-size:14px; }
+button { width:100%; padding:12px; background:#daa520; color:#0a0a1a; border:none; border-radius:6px; font-size:16px; font-weight:bold; cursor:pointer; margin-top:20px; }
+button:hover { background:#e6b830; }
+#output { margin-top:30px; width:400px; }
+.card { background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); padding:20px; border-radius:12px; margin-bottom:12px; }
+.card h3 { color:#daa520; margin-bottom:8px; }
+.card p { color:#ccc; font-size:14px; line-height:1.6; }
+</style>
+<style>
 /* ======================================
    万象分析 · Life Discovery Hub
    星际主题 · CSS
@@ -316,14 +329,64 @@ a:hover { color: var(--accent-gold-glow); }
 .emoji-globe:before { content: '🌏'; }
 .emoji-down:before { content: '⬇️'; }
 
+
+/* ======================================
+   银河动画背景 + 展开卡片系统
+   ====================================== */
+#galaxy-bg {
+  position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+  z-index: 0; display: block; pointer-events: none;
+}
+#stars-bg { display: none; }
+
+/* 展开卡片系统 */
+.result-card {
+  cursor: pointer; transition: all 0.4s ease;
+  border: var(--glass-border); background: var(--gradient-card);
+  backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+  border-radius: var(--radius); padding: 20px;
+  margin-bottom: 16px; position: relative; overflow: hidden;
+}
+.result-card:hover {
+  transform: translateY(-2px); box-shadow: var(--glass-shadow);
+  border-color: rgba(212,168,71,0.4);
+}
+.expand-body {
+  max-height: 0; overflow: hidden; opacity: 0;
+  transition: max-height 0.6s ease, opacity 0.5s ease, margin 0.4s ease;
+  margin-top: 0; border-top: 0 solid rgba(212,168,71,0.1);
+}
+.expand-card.expanded .expand-body {
+  max-height: 3000px; opacity: 1;
+  margin-top: 16px; border-top-width: 1px; padding-top: 16px;
+}
+.expand-section-title {
+  font-family: 'Noto Serif SC', serif; font-size: 15px;
+  color: var(--accent-gold); margin: 12px 0 8px;
+  display: flex; align-items: center; gap: 6px;
+}
+.expand-indicator {
+  float: right; font-size: 12px; color: var(--accent-gold);
+  opacity: 0.7; transition: var(--transition);
+}
+.expand-card.expanded .expand-indicator { transform: rotate(180deg); }
+.tl-stage-row {
+  display: flex; gap: 12px; padding: 10px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+.tl-stage-row:last-child { border-bottom: none; }
+.tl-stage-icon { font-size: 24px; flex-shrink: 0; line-height: 1.4; }
+.tl-stage-info { flex: 1; }
+.tl-stage-name { font-family: 'Noto Serif SC', serif; font-size: 15px; font-weight: 600; }
+.tl-stage-age { font-size: 12px; color: var(--text-muted); margin: 2px 0 4px; }
+.tl-stage-desc { font-size: 13px; color: var(--text-secondary); line-height: 1.7; }
+
 </style>
-  <!-- Font Awesome -->
-  
-  <!-- 中文优雅字体 -->
-  
-  
+
 </head>
 <body>
+<canvas id="galaxy-bg"></canvas>
+<div id="stars-bg"></div>
   <!-- ===== 星空粒子背景 ===== -->
   <div id="stars-bg"></div>
 
@@ -566,6 +629,7 @@ a:hover { color: var(--accent-gold-glow); }
   <!-- app.js 最后加载，做好防护 -->
   
 <script>
+console.log("SCRIPT STARTED");
 // ===== js/systems/astronomy.js =====
 /* ======================================
    天文学辅助库 · Astronomy Utils
@@ -2654,7 +2718,7 @@ function drawBodyGraph(bg) {
 // =============================================
 function renderSummary() {
   const allResults = AppState.allResults;
-  if (!allResults.mbti) return;
+  if (!allResults.mbti) { allResults.mbti = { type:'?', data:{ name:'待测评', desc:'完成MBTI测试后显示详细人格分析', strengths:'', weaknesses:'', career:'', love:'', advice:'', color:'#666', en:'Pending' }, scores:{EI:0,SN:0,TF:0,JP:0}, dimensions:[] }; }
   
   const summary = SummaryEngine.generate(allResults);
   
@@ -2691,7 +2755,13 @@ console.log('🌐 十大系统已全部注册');
 
 
 // ===== FORM HANDLER =====
+
+
 document.addEventListener('DOMContentLoaded', function() {
+    console.log("DCL FIRED");
+    var _form = document.getElementById("master-form");
+    console.log("MASTER FORM:", _form ? "FOUND" : "NULL");
+    if (!_form) { console.log("ERROR: master-form missing"); return; }
   var form = document.getElementById('master-form');
   if (!form) { console.log('Form not found'); return; }
   form.addEventListener('submit', function(e) {
@@ -2760,6 +2830,184 @@ if (nav) {
 
 console.log('🌐 十大系统');
 
+
+console.log("🌐 十大系统已全部注册");
 </script>
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  var form = document.getElementById("master-form");
+  if (!form) return;
+  form.addEventListener("submit", function(e) {
+    e.preventDefault();
+    var n = document.getElementById("user-name").value || "访客";
+    var bd = document.getElementById("user-birthdate").value || "1995-06-15";
+    var bt = document.getElementById("user-birthtime").value || "12:00";
+    var d = document.getElementById("output");
+    if (d) d.innerHTML = "<div style="background:rgba(255,255,255,0.05);padding:20px;border-radius:12px;margin-top:20px;"><h3>✅ 提交成功</h3><p>姓名: " + n + "<br>日期: " + bd + "<br>时间: " + bt + "</p></div>";
+    if (typeof window.runAllSystems === "function") {
+      var p = bd.split("-");
+      var tp = bt.split(":");
+      window.runAllSystems(parseInt(p[0])||1995, parseInt(p[1])||6, parseInt(p[2])||15, parseInt(tp[0])||12, {name:n, gender:"male", timezone:8});
+    }
+  });
+});
+console.log("HANDLER SCRIPT LOADED");
+
+// =============================================
+// 时间线引擎 · 人生阶段多维解读 (v2)
+// =============================================
+const TimelineEngine = {
+  lifeStages: [
+    { id:'childhood', name:'童年 · 萌芽期', icon:'🌱', ageRange:'0-20岁', color:'#06d6a0', desc:'性格形成、家庭影响、学习启蒙的关键阶段' },
+    { id:'youth', name:'青年 · 探索期', icon:'🔥', ageRange:'20-35岁', color:'#f97316', desc:'事业起步、感情探索、自我认知的黄金时期' },
+    { id:'prime', name:'壮年 · 鼎盛期', icon:'💪', ageRange:'35-50岁', color:'#4a7cf7', desc:'事业巅峰、家庭建设、社会成就的核心阶段' },
+    { id:'middle', name:'中年 · 沉淀期', icon:'🧘', ageRange:'50-65岁', color:'#8b5cf6', desc:'智慧沉淀、传承布局、内心安宁的收获季节' },
+    { id:'elderly', name:'晚年 · 圆满期', icon:'✨', ageRange:'65岁+', color:'#f0c850', desc:'颐养天年、精神升华、人生智慧的终极绽放' }
+  ],
+  stageNames: function() {
+    return this.lifeStages.map(function(s) { return s.name; });
+  },
+  stageDesc: function(id, title) {
+    var m = {
+      childhood: '<b>童年期（0-20岁）</b>—— 关于"' + title + '"的特质，在这个阶段开始悄然萌芽。家庭环境和早期教育为你的一生奠定基础，你学会了观察世界的方式——好奇、模仿、探索是关键词。这个时期形成的安全感和自我认知将深刻影响你对"' + title + '"的表达方式。',
+      youth: '<b>青年期（20-35岁）</b>—— "' + title + '"的影响力在青年时期显著增强。这是身份探索的黄金期：你开始建立自己的价值观、选择职业方向、经历感情体验。这个阶段的所有选择和试错都在为你的人生画卷铺陈底色。对"' + title + '"的理解也在实践中不断深化。',
+      prime: '<b>壮年期（35-50岁）</b>—— "' + title + '"的能量在壮年达到巅峰表达。你在事业、家庭和社会角色中找到属于自己的位置，积累的经验和资源让你能做出更大的贡献。但也需要学会平衡外在追求和内在需求，避免在忙碌中迷失自我。',
+      middle: '<b>中年期（50-65岁）</b>—— "' + title + '"进入深层整合阶段。外在成就逐渐让位于内在意义的追寻。你开始回顾前半生，重新定义什么是对自己真正重要的。这是转折也是新生，对"' + title + '"的理解从外在表现转向内在智慧。',
+      elderly: '<b>晚年期（65岁+）</b>—— 在此阶段，你已在"' + title + '"的维度上积累了深厚智慧。生命经验转化为内在的安宁和对外界的洞察。回顾一生，那些曾经的选择和经历都构成了独一无二的你。此时你更能以平和的心态传承经验、享受生命。'
+    };
+    return m[id] || '<b>' + title + '</b>的"变化贯穿你的一生，在不同阶段呈现不同特质。';
+  }
+};
+
+// =============================================
+// 银河动画 · Canvas 背景
+// =============================================
+function initGalaxyBg() {
+  var canvas = document.getElementById('galaxy-bg');
+  if (!canvas || canvas.dataset._init) return;
+  canvas.dataset._init = '1';
+  var ctx = canvas.getContext('2d');
+  var W, H;
+  function resize() { W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; }
+  resize(); window.addEventListener('resize', resize);
+  
+  // Stars
+  var stars = [];
+  for (var i = 0; i < 300; i++) {
+    stars.push({
+      x: Math.random() * W, y: Math.random() * H,
+      r: Math.random() * 2 + 0.5, speed: Math.random() * 0.3 + 0.05,
+      brightness: Math.random(), dir: 1
+    });
+  }
+  
+  // Nebulae
+  var nebulae = [];
+  var nebColors = ['rgba(74,124,247,0.08)', 'rgba(139,92,246,0.06)', 'rgba(212,168,71,0.05)', 'rgba(6,214,160,0.05)'];
+  for (var j = 0; j < 5; j++) {
+    var cx = Math.random() * W * 1.5 - W * 0.25;
+    var cy = Math.random() * H * 1.5 - H * 0.25;
+    nebulae.push({ x: cx, y: cy, r: Math.random() * 300 + 150, color: nebColors[j % nebColors.length] });
+  }
+  
+  var scrollY = 0;
+  function draw() {
+    ctx.clearRect(0, 0, W, H);
+    
+    // Deep space gradient
+    var grad = ctx.createRadialGradient(W/2, H*0.3, 0, W/2, H*0.3, H*0.8);
+    grad.addColorStop(0, '#121630');
+    grad.addColorStop(0.5, '#0a0e1a');
+    grad.addColorStop(1, '#050810');
+    ctx.fillStyle = grad; ctx.fillRect(0, 0, W, H);
+    
+    // Nebulae (parallax)
+    nebulae.forEach(function(n) {
+      var g = ctx.createRadialGradient(n.x, n.y - scrollY * 0.1, 0, n.x, n.y - scrollY * 0.1, n.r);
+      g.addColorStop(0, n.color); g.addColorStop(1, 'transparent');
+      ctx.fillStyle = g; ctx.fillRect(n.x - n.r, n.y - n.r - scrollY * 0.1, n.r * 2, n.r * 2);
+    });
+    
+    // Stars (parallax)
+    stars.forEach(function(s) {
+      s.brightness += s.speed * 0.01 * s.dir;
+      if (s.brightness > 1) { s.brightness = 1; s.dir = -1; }
+      if (s.brightness < 0.2) { s.brightness = 0.2; s.dir = 1; }
+      var sy = s.y - scrollY * (s.speed * 0.5);
+      ctx.beginPath(); ctx.arc(s.x, sy, s.r, 0, Math.PI * 2);
+      ctx.fillStyle = 'rgba(255,255,255,' + s.brightness + ')'; ctx.fill();
+    });
+    
+    scrollY = window.pageYOffset || document.documentElement.scrollTop || 0;
+    requestAnimationFrame(draw);
+  }
+  draw();
+}
+
+// =============================================
+// 卡片展开系统
+// =============================================
+function buildExpandBody(cardEl) {
+  if (cardEl.classList.contains('expand-card')) return;
+  cardEl.classList.add('expand-card');
+  var body = document.createElement('div'); body.className = 'expand-body';
+  var titleEl = cardEl.querySelector('.card-title');
+  var t = titleEl ? titleEl.textContent.trim() : '详情';
+  var htmlParts = [
+    '<div class="expand-section-title">📖 深度解读</div>',
+    '<div style="font-size:13px;color:var(--text-secondary);line-height:1.8;margin-bottom:12px;">点击展开查看此维度在童年、青年、壮年、中年、晚年各阶段的详细分析和解读。</div>',
+    '<div class="expand-section-title">🕐 人生阶段</div>'
+  ];
+  var ls = window.TimelineEngine ? TimelineEngine.lifeStages : [];
+  ls.forEach(function(s) {
+    var desc = (window.TimelineEngine && TimelineEngine.stageDesc) ? TimelineEngine.stageDesc(s.id, t) : s.desc;
+    htmlParts.push('<div class="tl-stage-row"><div class="tl-stage-icon">' + s.icon + '</div><div class="tl-stage-info"><div class="tl-stage-name" style="color:' + s.color + ';">' + s.name + '</div><div class="tl-stage-age">' + s.ageRange + '</div><div class="tl-stage-desc">' + desc + '</div></div></div>');
+  });
+  body.innerHTML = htmlParts.join('');
+  cardEl.appendChild(body);
+}
+
+// =============================================
+// 初始化展开
+// =============================================
+function bindAllCardExpands() {
+  var cards = document.querySelectorAll('.result-grid .result-card, #mbti-result .result-card');
+  cards.forEach(function(card) {
+    if (card.classList.contains('_exp')) return;
+    card.classList.add('_exp');
+    card.style.cursor = 'pointer';
+    card.addEventListener('click', function(e) {
+      if (e.target.closest('button,a,input,select,textarea,.opt-btn,.question-card')) return;
+      if (!this.classList.contains('expand-card')) buildExpandBody(this);
+      this.classList.toggle('expanded');
+    });
+  });
+}
+
+// =============================================
+// MutationObserver: 新卡片动态绑定
+// =============================================
+function watchCardExpands() {
+  var observer = new MutationObserver(function() { bindAllCardExpands(); });
+  ['#zodiac-result','#bazi-result','#chart-data','#ziwei-analysis','#mayan-result','#humandesign-analysis','#mbti-result','#summary-result'].forEach(function(id) {
+    var el = document.querySelector(id);
+    if (el) observer.observe(el, { childList: true, subtree: true });
+  });
+}
+
+// Patch runAllSystems to call expand + galaxy init
+var _origRunAll = window.runAllSystems;
+window.runAllSystems = function(y,m,d,h,u) {
+  if (typeof _origRunAll === 'function') _origRunAll(y,m,d,h,u);
+  setTimeout(function() {
+    try { bindAllCardExpands(); watchCardExpands(); } catch(e) { console.error('Expand err:', e); }
+  }, 1000);
+  setTimeout(function() {
+    try { initGalaxyBg(); } catch(e) { console.error('Galaxy err:', e); }
+  }, 100);
+};
+</script>
+
+
 </body>
 </html>
