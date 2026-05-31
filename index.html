@@ -1352,12 +1352,20 @@ const ZodiacData = {
     return signs[idx];
   },
 
-  // 月亮星座简易计算（基于农历日期，简化）
-  moonSign: function(month, day) {
-    const moon = (month * 3 + day) % 12;
-    const signs = ['金牛','双子','巨蟹','狮子','处女','天秤','天蝎','射手','摩羯','水瓶','双鱼','白羊'];
-    return signs[moon];
-  }
+  // 月亮星座（基于天文计算）
+  moonSign: function(year, month, day) {
+    // 儒略日计算
+    var y = year, m = month, d = day;
+    if (m <= 2) { y -= 1; m += 12; }
+    var jd = Math.floor(365.25 * (y + 4716)) + Math.floor(30.6001 * (m + 1)) + d - 1524.5;
+    // 月球平黄经计算
+    var days = jd - 2451545.0;
+    var moonLong = (218.316 + 13.176396 * days) % 360;
+    if (moonLong < 0) moonLong += 360;
+    var signIdx = Math.floor(moonLong / 30) % 12;
+    var signs = ['白羊','金牛','双子','巨蟹','狮子','处女','天秤','天蝎','射手','摩羯','水瓶','双鱼'];
+    return signs[signIdx];
+  },
 };
 
 
@@ -2517,7 +2525,7 @@ window.runAllSystems = function(year, month, day, hour, user) {
 function renderZodiac(year, month, day, hour) {
   const sunSign = Astronomy.westernZodiac(month, day);
   const rising = ZodiacData.risingSign(hour);
-  const moon = ZodiacData.moonSign(month, day);
+  const moon = ZodiacData.moonSign(year, month, day);
   const compat = ZodiacData.compatibility[sunSign.name] || '';
   const chineseZodiac = Astronomy.chineseZodiac(year);
   
