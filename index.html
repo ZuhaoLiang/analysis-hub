@@ -629,6 +629,10 @@ a:hover { color: var(--accent-gold-glow); }
   <!-- app.js 最后加载，做好防护 -->
   
 <script>
+// DOM 辅助函数（必须在所有系统前定义）
+function $(id) { return document.getElementById(id); }
+function $$(sel) { return document.querySelectorAll(sel); }
+
 console.log("SCRIPT STARTED");
 // ===== js/systems/astronomy.js =====
 /* ======================================
@@ -2843,7 +2847,7 @@ document.addEventListener("DOMContentLoaded", function() {
     var bd = document.getElementById("user-birthdate").value || "1995-06-15";
     var bt = document.getElementById("user-birthtime").value || "12:00";
     var d = document.getElementById("output");
-    if (d) d.innerHTML = "<div style="background:rgba(255,255,255,0.05);padding:20px;border-radius:12px;margin-top:20px;"><h3>✅ 提交成功</h3><p>姓名: " + n + "<br>日期: " + bd + "<br>时间: " + bt + "</p></div>";
+    if (d) d.innerHTML = '<div style="background:rgba(255,255,255,0.05);padding:20px;border-radius:12px;margin-top:20px;"><h3>✅ 提交成功</h3><p>姓名: ' + n + '<br>日期: ' + bd + '<br>时间: ' + bt + '</p></div>';
     if (typeof window.runAllSystems === "function") {
       var p = bd.split("-");
       var tp = bt.split(":");
@@ -2852,12 +2856,6 @@ document.addEventListener("DOMContentLoaded", function() {
   });
 });
 console.log("HANDLER SCRIPT LOADED");
-
-// =============================================
-// DOM 辅助函数
-// =============================================
-function $(id) { return document.getElementById(id); }
-function $$(sel) { return document.querySelectorAll(sel); }
 
 // =============================================
 // 时间线引擎 · 人生阶段多维解读 (v2)
