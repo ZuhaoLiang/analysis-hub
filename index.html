@@ -280,10 +280,20 @@ a:hover { color: var(--accent-gold-glow); }
   display: flex; flex-direction: column; gap: 8px;
 }
 
+/* ----- 玛雅更宽布局 ----- */
+#mayan-result .result-grid.auto {
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+
 /* ----- 人类图 BodyGraph Canvas 容器 ----- */
+#humandesign-result {
+  display: flex; flex-direction: column; gap: 16px;
+}
 #bodygraph-canvas {
-  max-width: 100%; display: block; margin: 0 auto;
-  border-radius: var(--radius); background: rgba(0,0,0,0.2);
+  max-width: 480px; width: 100%; display: block; margin: 0 auto;
+  border-radius: 12px; background: rgba(0,0,0,0.25);
+  border: 1px solid rgba(212,168,71,0.1);
+  padding: 8px;
 }
 
 /* ----- 星盘 Canvas 容器 ----- */
@@ -595,7 +605,7 @@ a:hover { color: var(--accent-gold-glow); }
         <p class="section-desc">Human Design · 能量类型 · 人生策略 · 内在权威 · 轮回交叉</p>
       </div>
       <div id="humandesign-result" class="result-container">
-        <canvas id="bodygraph-canvas" width="600" height="700"></canvas>
+        <canvas id="bodygraph-canvas" width="500" height="580"></canvas>
         <div id="humandesign-analysis" class="result-grid"></div>
       </div>
     </div>
