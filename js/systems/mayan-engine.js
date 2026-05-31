@@ -55,7 +55,7 @@ const MayanEngine = {
     const tone = this.tones.find(t => t.num === tzolkin.tone.num);
     
     // 波符计算
-    const waveGlyphNum = (tzolkin.glyph.num % 20);
+    const waveGlyphNum = (tzolkin.glyph.num % 20) || 20;
     const waveGlyph = this.glyphs.find(g => g.num === waveGlyphNum);
     
     // 内在神殿/指引力量

@@ -4,6 +4,11 @@
    ====================================== */
 
 // ===== 全局状态 =====
+// ===== DOM 快捷工具 =====
+function $(sel, ctx) { return (ctx || document).querySelector(sel); }
+function $$(sel, ctx) { return Array.from((ctx || document).querySelectorAll(sel)); }
+
+// ===== 全局状态 =====
 const AppState = {
   user: null,
   mbtiScores: { EI: 0, SN: 0, TF: 0, JP: 0 },
@@ -112,6 +117,10 @@ window.runAllSystems = function(year, month, day, hour, user) {
   console.log('🚀 开始全系统分析:', year, month, day, hour);
   AppState.allResults = { user: user };
   
+  // 显示所有系统区块
+  $$('.system-section').forEach(function(s) { s.classList.add('active'); });
+  $('#summary-result').innerHTML = '<p class="placeholder-text" style="text-align:center; padding:20px;">⏳ 分析中...</p>';
+  
   try { renderZodiac(year, month, day, hour); } catch(e) { console.error('Zodiac error:', e); }
   try { renderBazi(year, month, day, hour, user); } catch(e) { console.error('Bazi error:', e); }
   try { renderAstrology(year, month, day, hour); } catch(e) { console.error('Astrology error:', e); }
@@ -139,6 +148,9 @@ function renderZodiac(year, month, day, hour) {
   const container = $('#zodiac-result');
   if (!container) return;
   
+  // 从ZodiacData.all获取详细数据（修复星座内容为空的问题）
+  var zodiacDetail = ZodiacData.all[sunSign.name] || {};
+  
   container.innerHTML = ''
     + '<div class="result-card" style="text-align:center;">'
     + '<div style="font-size:60px;">' + sunSign.symbol + '</div>'
@@ -147,20 +159,20 @@ function renderZodiac(year, month, day, hour) {
     + '</div>'
     
     + '<div class="result-grid auto">'
-    + '<div class="result-card"><div class="card-title"><i class="fas fa-sun"></i> 太阳星座</div><div class="card-value">' + sunSign.name + ' ' + sunSign.symbol + '</div><div class="card-desc">' + sunSign.personality.slice(0, 60) + '...</div></div>'
+    + '<div class="result-card"><div class="card-title"><i class="fas fa-sun"></i> 太阳星座</div><div class="card-value">' + sunSign.name + ' ' + sunSign.symbol + '</div><div class="card-desc">' + (zodiacDetail.personality || '').slice(0, 60) + '...</div></div>'
     + '<div class="result-card"><div class="card-title"><i class="fas fa-arrow-up"></i> 上升星座</div><div class="card-value">' + rising + '</div><div class="card-desc">你在外的面具和给人的第一印象</div></div>'
     + '<div class="result-card"><div class="card-title"><i class="fas fa-moon"></i> 月亮星座</div><div class="card-value">' + moon + '</div><div class="card-desc">你的情感需求和情绪反应模式</div></div>'
     + '<div class="result-card"><div class="card-title"><i class="fas fa-dragon"></i> 生肖</div><div class="card-value">' + chineseZodiac.animal + ' · ' + chineseZodiac.element + '</div><div class="card-desc">' + chineseZodiac.element + '命' + chineseZodiac.animal + '</div></div>'
     + '</div>'
     
     + '<div class="result-grid auto">'
-    + '<div class="result-card"><div class="card-title"><i class="fas fa-brain"></i> 性格特质</div><div class="card-desc">' + sunSign.personality + '</div></div>'
-    + '<div class="result-card"><div class="card-title"><i class="fas fa-check-circle" style="color:var(--accent-teal);"></i> 优势</div><div class="card-desc">' + sunSign.strength + '</div><span class="card-tag">长处</span></div>'
-    + '<div class="result-card"><div class="card-title"><i class="fas fa-times-circle" style="color:var(--accent-pink);"></i> 弱点</div><div class="card-desc">' + sunSign.weakness + '</div><span class="card-tag">需注意</span></div>'
-    + '<div class="result-card"><div class="card-title"><i class="fas fa-briefcase"></i> 职业方向</div><div class="card-desc">' + sunSign.career + '</div></div>'
-    + '<div class="result-card"><div class="card-title"><i class="fas fa-heart"></i> 爱情</div><div class="card-desc">' + sunSign.love + '</div><span class="card-tag">最佳配对：' + compat + '</span></div>'
-    + '<div class="result-card"><div class="card-title"><i class="fas fa-heartbeat"></i> 健康</div><div class="card-desc">' + sunSign.health + '</div></div>'
-    + '<div class="result-card"><div class="card-title"><i class="fas fa-star"></i> 幸运信息</div><div class="card-desc">' + sunSign.luck + '</div></div>'
+    + '<div class="result-card"><div class="card-title"><i class="fas fa-brain"></i> 性格特质</div><div class="card-desc">' + (zodiacDetail.personality || '暂无数据') + '</div></div>'
+    + '<div class="result-card"><div class="card-title"><i class="fas fa-check-circle" style="color:var(--accent-teal);"></i> 优势</div><div class="card-desc">' + (zodiacDetail.strength || '暂无数据') + '</div><span class="card-tag">长处</span></div>'
+    + '<div class="result-card"><div class="card-title"><i class="fas fa-times-circle" style="color:var(--accent-pink);"></i> 弱点</div><div class="card-desc">' + (zodiacDetail.weakness || '暂无数据') + '</div><span class="card-tag">需注意</span></div>'
+    + '<div class="result-card"><div class="card-title"><i class="fas fa-briefcase"></i> 职业方向</div><div class="card-desc">' + (zodiacDetail.career || '暂无数据') + '</div></div>'
+    + '<div class="result-card"><div class="card-title"><i class="fas fa-heart"></i> 爱情</div><div class="card-desc">' + (zodiacDetail.love || '暂无数据') + '</div><span class="card-tag">最佳配对：' + compat + '</span></div>'
+    + '<div class="result-card"><div class="card-title"><i class="fas fa-heartbeat"></i> 健康</div><div class="card-desc">' + (zodiacDetail.health || '暂无数据') + '</div></div>'
+    + '<div class="result-card"><div class="card-title"><i class="fas fa-star"></i> 幸运信息</div><div class="card-desc">' + (zodiacDetail.luck || '暂无数据') + '</div></div>'
     + '</div>';
 }
 

@@ -294,7 +294,8 @@ const ZiweiEngine = {
       
       if (palace.mainStars.length > 0) {
         var firstStar = palace.mainStars[0];
-        mainDesc = pd.detail ? pd.detail(firstStar.info) : '';
+        // 传递firstStar对象（含name属性）而非info，修复undefined错误
+        mainDesc = pd.detail ? pd.detail(firstStar) : '';
       } else {
         mainDesc = '无主星，借对宫查看。命运受辅星影响较大，格局灵活多变。';
       }
