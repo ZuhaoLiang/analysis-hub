@@ -630,7 +630,7 @@ a:hover { color: var(--accent-gold-glow); }
   
 <script>
 // DOM 辅助函数（必须在所有系统前定义）
-function $(id) { return document.getElementById(id); }
+function $(id) { return document.querySelector(id); }
 function $$(sel) { return document.querySelectorAll(sel); }
 
 console.log("SCRIPT STARTED");
@@ -2283,7 +2283,7 @@ function renderMBTIQuestion() {
   if (questionText) questionText.textContent = q.text;
   
   // 绑定按钮
-  $('#mbti-question .opt-btn').forEach(function(btn) {
+  $$('#mbti-question .opt-btn').forEach(function(btn) {
     btn.onclick = function() {
       const val = parseInt(this.dataset.value);
       const score = val * q.dir;
