@@ -654,7 +654,7 @@ a:hover { color: var(--accent-gold-glow); }
         <h2 class="section-title">综合评语</h2>
         <p class="section-desc">AI 综合分析 · 十大系统交叉解读</p>
       </div>
-      <div id="summary-result" class="result-card">
+      <div id="summary-result" style="background:rgba(255,255,255,0.02); border-radius:12px; padding:20px;">
         <p class="placeholder-text">请先输入信息并点击"全面分析"</p>
       </div>
     </div>
@@ -2943,6 +2943,7 @@ if (typeof origRAS === 'function') {
     try { renderNumerology(y,m,d); } catch(e) {}
     try { renderLunarMansion(m,d); } catch(e) {}
     try { renderZhengyu(y,m,d); } catch(e) {}
+    try { renderSummary(); } catch(e) {}
     document.querySelectorAll('.system-section').forEach(function(s){s.classList.add('active');});
   };
 }
