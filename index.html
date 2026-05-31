@@ -609,6 +609,7 @@ a:hover { color: var(--accent-gold-glow); }
       <div id="ziwei-result" class="result-container">
         <div id="ziwei-chart" class="ziwei-grid"></div>
         <div id="ziwei-analysis" class="result-grid"></div>
+        <div id="ziwei-palaces"></div>
       </div>
     </div>
   </section>
@@ -2202,7 +2203,7 @@ const HumanDesignEngine = {
 
 const SummaryEngine = {
   generate: function(allResults) {
-    const { user, mbti, zodiac, zodiacSign, astrology, bazi, baziResult, ziwei, mayan, humandesign } = allResults;
+    const { user, mbti, zodiac, zodiacSign, astrology, bazi, baziResult, ziwei, mayan, humandesign, numerology, lunarmansion, zhengyu } = allResults;
     
     const sections = [];
     let title = `${user.name}的全面人生解读报告`;
@@ -2244,6 +2245,21 @@ const SummaryEngine = {
     // 人类图片段
     if (humandesign) {
       sections.push(`【人类赋能】你属于${humandesign.typeInfo.type}能量类型（${humandesign.typeInfo.typeData.desc.slice(0,20)}），人生角色${humandesign.typeInfo.profileKey}，内在权威为${humandesign.typeInfo.authority}型。`);
+    }
+    
+    // 灵数片段
+    if (allResults.numerology) {
+      sections.push(`【灵数密码】你的生命数字是${allResults.numerology.number}，核心特质为"${allResults.numerology.name}"，${allResults.numerology.desc.slice(0,40)}。`);
+    }
+    
+    // 星宿片段
+    if (allResults.lunarmansion) {
+      sections.push(`【星宿指引】你的当值星宿为${allResults.lunarmansion.n}（${allResults.lunarmansion.g}），星宿特性为"${allResults.lunarmansion.d}"。`);
+    }
+    
+    // 政余片段
+    if (allResults.zhengyu) {
+      sections.push(`【政余星命】你的本命星为"${allResults.zhengyu.n}"，五行属${allResults.zhengyu.e}，${allResults.zhengyu.d.slice(0,40)}。`);
     }
     
     // 综合启发性段落
@@ -2453,7 +2469,6 @@ function renderZodiac(year, month, day, hour) {
     + '<div class="result-card"><div class="card-title"><i class="emoji-sun"></i> 太阳星座</div><div class="card-value">' + sunSign.name + ' ' + sunSign.symbol + '</div><div class="card-desc">' + sunSign.personality.slice(0, 60) + '...</div></div>'
     + '<div class="result-card"><div class="card-title"><i class="emoji-up"></i> 上升星座</div><div class="card-value">' + rising + '</div><div class="card-desc">你在外的面具和给人的第一印象</div></div>'
     + '<div class="result-card"><div class="card-title"><i class="emoji-moon"></i> 月亮星座</div><div class="card-value">' + moon + '</div><div class="card-desc">你的情感需求和情绪反应模式</div></div>'
-    + '<div class="result-card"><div class="card-title"><i class="emoji-dragon"></i> 生肖</div><div class="card-value">' + chineseZodiac.animal + ' · ' + chineseZodiac.element + '</div><div class="card-desc">' + chineseZodiac.element + '命' + chineseZodiac.animal + '</div><span class="card-tag">生肖 · 天生资质</span></div>'
     
     + '<div class="result-card"><div class="card-title"><i class="emoji-brain"></i> 性格特质</div><div class="card-desc">' + sunSign.personality + '</div><span class="card-tag">性格 · 你的核心特质</span></div>'
     + '<div class="result-card"><div class="card-title"><i class="emoji-check" style="color:var(--accent-teal);"></i> 优势</div><div class="card-desc">' + sunSign.strength + '</div><span class="card-tag">优势 · 发挥天赋，事半功倍</span></div>'
@@ -2653,9 +2668,13 @@ function renderZiwei(year, month, day, hour, gender) {
           + '<div class="card-desc" style="margin-bottom:6px; line-height:1.7;">' + a.mainDesc + '</div>'
           + (a.auxStars !== '无' ? '<div style="font-size:12px; color:var(--text-secondary); border-top:1px solid rgba(255,255,255,0.05); padding-top:6px;"><span style="color:var(--accent-teal);">辅星：</span>' + a.auxStars + '</div><div class="card-desc" style="font-size:12px; margin-top:4px;">' + a.auxDesc + '</div>' : '')
           + '</div>';
-      }).join('')
-      // 十二宫总览
-      + '<div class="result-card" style="width:100%;"><div class="card-title"><i class="emoji-home"></i> 十二宫总览</div><div class="card-desc" style="margin-bottom:8px;">紫微斗数十二宫涵盖人生的各个面向，以下为各宫位核心含义：</div>'
+      }).join('');
+  }
+  
+  // 十二宫总览（单独容器）
+  var palacesContainer = $('#ziwei-palaces');
+  if (palacesContainer) {
+    palacesContainer.innerHTML = '<div class="result-card" style="width:100%;"><div class="card-title"><i class="emoji-home"></i> 十二宫总览</div><div class="card-desc" style="margin-bottom:8px;">紫微斗数十二宫涵盖人生的各个面向，以下为各宫位核心含义：</div>'
       + '<div class="result-grid auto" style="grid-template-columns:repeat(4,1fr);">'
       + ZiweiEngine.palaceNames.map(function(pn) {
         var pd = ZiweiEngine.palaceDetail[pn] || { keywords:'', fortune:'' };
@@ -2790,15 +2809,12 @@ function renderSummary() {
   if (!container) return;
   
   container.innerHTML = ''
-    + '<div style="text-align:center; margin-bottom:24px;">'
-    + '<h3 style="font-size:22px; color:var(--accent-gold); letter-spacing:2px;">' + summary.title + '</h3>'
-    + '<div style="width:40px; height:2px; background:var(--accent-gold); margin:12px auto;"></div></div>'
-    
-    + '<div class="result-grid auto">'
+    + '<div style="text-align:center; margin-bottom:20px;">'
+    + '<h3 style="font-size:20px; color:var(--accent-gold); letter-spacing:2px;">' + summary.title + '</h3>'
+    + '<div style="width:30px; height:1px; background:var(--accent-gold); margin:10px auto;"></div></div>'
     + summary.sections.map(function(s) {
-      return '<div class="result-card" style="width:100%;"><div class="card-desc" style="font-size:14px; line-height:1.8;">' + s + '</div></div>';
+      return '<div style="font-size:13px; color:var(--text-secondary); line-height:1.9; padding:6px 0; border-bottom:1px solid rgba(255,255,255,0.04);">' + s + '</div>';
     }).join('')
-    + '</div>'
     
     + '<div class="result-card" style="margin-top:16px; border-color:rgba(212,168,71,0.3);">'
     + '<div class="card-title"><i class="emoji-bulb" style="color:var(--accent-gold);"></i> 综合洞察</div>'
@@ -2902,18 +2918,21 @@ function renderNumerology(y,m,d) {
   while(sum>9&&sum!==11&&sum!==22&&sum!==33) sum=sum.toString().split('').reduce(function(a,b){return a+ +b;},0);
   var nums=[{"n":"开创者","c":"#FF4444","t":"独立、开创、领导、自信","d":"天生领袖，有开创精神和强大的行动力。独立自主，不畏艰难，善于开辟新道路。人生课题是学会合作与倾听。"},{"n":"调和者","c":"#FF8800","t":"敏感、合作、外交、平衡","d":"和平使者，善于沟通协调和化解冲突。直觉敏锐，情感丰富细腻。人生课题是学会自我肯定，不过度依赖他人。"},{"n":"创造者","c":"#FFCC00","t":"创意、表达、乐观、社交","d":"天生的艺术家和表演者，充满创造力和表达欲。乐观开朗，是人群中的快乐源泉。人生课题是专注和深度，避免浮于表面。"},{"n":"建设者","c":"#44BB44","t":"稳定、务实、秩序、可靠","d":"脚踏实地的实干家，重视秩序和安全感。勤奋可靠，善于将想法变为现实。人生课题是学会灵活变通，接纳变化。"},{"n":"自由者","c":"#44BBFF","t":"自由、冒险、变革、好奇","d":"热爱自由，渴望探索未知世界。思维敏捷，多才多艺，善于适应变化。人生课题是专注和坚持，找到真正值得深耕的领域。"},{"n":"守护者","c":"#8844FF","t":"责任、奉献、关爱、智慧","d":"天生的照顾者和导师，有强烈的责任感和同情心。重视家庭和社群，乐于为他人付出。人生课题是学会平衡付出与自我关爱。"},{"n":"探寻者","c":"#4488FF","t":"智慧、分析、灵性、真理","d":"思想的探索者，热爱知识和真理。逻辑思维强，善于分析和研究，有深刻的洞察力。人生课题是将知识转化为实际的智慧。"},{"n":"掌控者","c":"#CC3333","t":"权力、财富、成就、魄力","d":"天生的管理者和企业家，有强大的决断力和执行力。追求成就和物质丰盛，善于掌握大局。人生课题是学会分享与慷慨。"},{"n":"人道者","c":"#CC8833","t":"大爱、包容、理想、奉献","d":"博爱主义者，胸襟宽广，有崇高的理想和人文关怀。综合前面所有数字的优点和弱点。人生课题是学会落地、不脱离现实。"}];
   var d2=nums[sum-1]||nums[0]; var el=document.getElementById('numerology-result'); if(!el)return;
-  el.innerHTML='<div class="result-card card-primary"><div style="font-size:36px;">🔢</div><div style="font-size:22px;font-weight:700;color:'+d2.c+'">生命数字 '+sum+'</div><div style="font-size:15px;color:var(--accent-gold);">'+d2.n+'</div><div style="font-size:12px;color:var(--text-secondary);margin:4px 0;">'+d2.t+'</div><div class="card-desc" style="margin-top:6px;">'+(d2.d||'')+'</div></div>';
+
+  AppState.allResults.numerology = { number:sum, name:d2.n, desc:d2.d };  el.innerHTML='<div class="result-card card-primary"><div style="font-size:36px;">🔢</div><div style="font-size:22px;font-weight:700;color:'+d2.c+'">生命数字 '+sum+'</div><div style="font-size:15px;color:var(--accent-gold);">'+d2.n+'</div><div style="font-size:12px;color:var(--text-secondary);margin:4px 0;">'+d2.t+'</div><div class="card-desc" style="margin-top:6px;">'+(d2.d||'')+'</div></div>';
 }
 // 星宿
 function renderLunarMansion(m,d) {
   var ms=[{"i":"角宿","n":"角木蛟","g":"青龙","ss":321,"ee":404,"c":"春","d":"龙角·万物之始"},{"i":"亢宿","n":"亢金龙","g":"青龙","ss":405,"ee":419,"c":"春","d":"龙颈·刚正不阿"},{"i":"氐宿","n":"氐土貉","g":"青龙","ss":420,"ee":504,"c":"春","d":"龙前足·根基之始"},{"i":"房宿","n":"房日兔","g":"青龙","ss":505,"ee":518,"c":"春","d":"龙胸·天驷吉星"},{"i":"心宿","n":"心月狐","g":"青龙","ss":519,"ee":527,"c":"春","d":"龙心·大火商星"},{"i":"尾宿","n":"尾火虎","g":"青龙","ss":528,"ee":604,"c":"春","d":"龙尾·风调雨顺"},{"i":"箕宿","n":"箕水豹","g":"青龙","ss":605,"ee":621,"c":"春","d":"龙粪·好风兴事"},{"i":"斗宿","n":"斗木獬","g":"玄武","ss":622,"ee":706,"c":"夏","d":"南斗·天庙福星"},{"i":"牛宿","n":"牛金牛","g":"玄武","ss":707,"ee":721,"c":"夏","d":"牵牛·祭祀之牲"},{"i":"女宿","n":"女土蝠","g":"玄武","ss":722,"ee":807,"c":"夏","d":"须女·巧艺之事"},{"i":"虚宿","n":"虚日鼠","g":"玄武","ss":808,"ee":820,"c":"夏","d":"大虚·祭祀之星"},{"i":"危宿","n":"危月燕","g":"玄武","ss":821,"ee":903,"c":"夏","d":"屋栋·高望远行"},{"i":"室宿","n":"室火猪","g":"玄武","ss":904,"ee":918,"c":"秋","d":"营室·建造之始"},{"i":"壁宿","n":"壁水獝","g":"玄武","ss":919,"ee":1003,"c":"秋","d":"东壁·图书之府"},{"i":"奎宿","n":"奎木狼","g":"白虎","ss":1004,"ee":1017,"c":"秋","d":"天豕·文章之府"},{"i":"娄宿","n":"娄金狗","g":"白虎","ss":1018,"ee":1102,"c":"秋","d":"聚众·牧养牺牲"},{"i":"胃宿","n":"胃土雉","g":"白虎","ss":1103,"ee":1113,"c":"秋","d":"天仓·五谷之府"},{"i":"昴宿","n":"昴日鸡","g":"白虎","ss":1114,"ee":1127,"c":"冬","d":"髦头·胡星七姊妹"},{"i":"毕宿","n":"毕月乌","g":"白虎","ss":1128,"ee":1208,"c":"冬","d":"天毕·雨师之象"},{"i":"觜宿","n":"觜火猴","g":"白虎","ss":1209,"ee":1220,"c":"冬","d":"鸟嘴·白虎之首"},{"i":"参宿","n":"参水猿","g":"白虎","ss":1221,"ee":101,"c":"冬","d":"白虎身·三星高照"},{"i":"井宿","n":"井木犴","g":"朱雀","ss":102,"ee":120,"c":"冬","d":"东井·天之南门"},{"i":"鬼宿","n":"鬼金羊","g":"朱雀","ss":121,"ee":207,"c":"冬","d":"舆鬼·天目积尸"},{"i":"柳宿","n":"柳土獐","g":"朱雀","ss":208,"ee":221,"c":"春","d":"柳八星·天之厨宰"},{"i":"星宿","n":"星日马","g":"朱雀","ss":222,"ee":307,"c":"春","d":"七星·朱鸟颈喉"},{"i":"张宿","n":"张月鹿","g":"朱雀","ss":308,"ee":322,"c":"春","d":"朱雀嗉·天之珍宝"},{"i":"翼宿","n":"翼火蛇","g":"朱雀","ss":323,"ee":414,"c":"春","d":"朱雀翼·天之羽翮"},{"i":"轸宿","n":"轸水蚓","g":"朱雀","ss":415,"ee":503,"c":"春","d":"朱雀尾·天之车骑"}];var md=m*100+d; var r=ms[0]; for(var i=0;i<ms.length;i++){if(md>=ms[i].ss&&md<=ms[i].ee){r=ms[i];break;}}
   var el=document.getElementById('lunarmansion-result'); if(!el)return;
-  el.innerHTML='<div class="result-card card-primary"><div style="font-size:36px;">'+r.i+'</div><div style="font-size:20px;font-weight:700;">'+r.n+'</div><div style="font-size:14px;color:var(--accent-gold);">'+r.g+' · '+r.c+'</div><div style="font-size:12px;color:var(--text-secondary);margin-top:6px;">'+r.d+'</div></div>';
+  
+  AppState.allResults.lunarmansion = r;el.innerHTML='<div class="result-card card-primary"><div style="font-size:36px;">'+r.i+'</div><div style="font-size:20px;font-weight:700;">'+r.n+'</div><div style="font-size:14px;color:var(--accent-gold);">'+r.g+' · '+r.c+'</div><div style="font-size:12px;color:var(--text-secondary);margin-top:6px;">'+r.d+'</div></div>';
 }
 // 政余
 function renderZhengyu(y,m,d) {
   var ps=[{"n":"太阳守命","i":"☀️","e":"火","d":"太阳入命，光明磊落，贵气临身。性格开朗热情，有领导才能，一生贵人运强。"},{"n":"太阴守命","i":"🌙","e":"水","d":"太阴入命，温婉聪慧，心思细腻。情感丰富，直觉敏锐，善于协调和外交。"},{"n":"木星守命","i":"🌳","e":"木","d":"木星入命，仁慈宽厚，福泽深厚。性格温和，学识广博，贵人运旺盛。"},{"n":"火星守命","i":"🔥","e":"火","d":"火星入命，热情奔放，行动力强。性格刚烈，有开拓精神，但需注意冲动。"},{"n":"土星守命","i":"⛰️","e":"土","d":"土星入命，稳重踏实，诚信可靠。行事稳健，勤奋刻苦，晚年福厚。"},{"n":"金星守命","i":"⭐","e":"金","d":"金星入命，富贵荣华，人缘出众。才华横溢，艺术天赋高，财源广进。"},{"n":"水星守命","i":"💧","e":"水","d":"水星入命，聪明睿智，口才出众。思维敏捷，善于沟通，适合学术和外交。"},{"n":"紫炁守命","i":"🟣","e":"木","d":"紫炁入命，清贵出尘，有仙缘佛缘。性格淡泊，有精神追求，晚年修行有成。"},{"n":"月孛守命","i":"🌑","e":"水","d":"月孛入命，刚毅果敢，不怒自威。性格坚韧，执行力强，但需注意情绪管理。"},{"n":"罗睺守命","i":"🔴","e":"火","d":"罗睺入命，志向远大，魄力惊人。有野心和决断力，适合开创性事业。"},{"n":"计都守命","i":"⚫","e":"土","d":"计都入命，智谋深沉，善于策划。性格内敛，深思熟虑，有战略眼光。"}];var p=ps[m%2]; var el=document.getElementById('zhengyu-result'); if(!el)return;
-  el.innerHTML='<div class="result-card card-primary"><div style="font-size:36px;">'+p.i+'</div><div style="font-size:18px;font-weight:700;">'+p.n+'</div><div style="font-size:12px;color:var(--accent-gold);">五行属'+p.e+'</div><div class="card-desc" style="margin-top:6px;">'+p.d+'</div></div>';
+  
+  AppState.allResults.zhengyu = { n:p.n, e:p.e, d:p.d };el.innerHTML='<div class="result-card card-primary"><div style="font-size:36px;">'+p.i+'</div><div style="font-size:18px;font-weight:700;">'+p.n+'</div><div style="font-size:12px;color:var(--accent-gold);">五行属'+p.e+'</div><div class="card-desc" style="margin-top:6px;">'+p.d+'</div></div>';
 }
 
 // Wrap runAllSystems
