@@ -2,12 +2,13 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>万象分析 · 测试</title>
 <style>
 * { margin:0; padding:0; box-sizing:border-box; }
-body { background:#0a0a1a; color:#e0d5c5; font-family:sans-serif; display:flex; flex-direction:column; align-items:center; padding:40px; }
+body { background:#0a0a1a; color:#e0d5c5; font-family:sans-serif; }
 h1 { color:#daa520; margin-bottom:20px; }
-form { background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); padding:30px; border-radius:12px; width:400px; }
+form { background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); padding:30px; border-radius:12px; }
 label { display:block; margin:10px 0 5px; color:#aaa; font-size:13px; }
 input, select { width:100%; padding:10px; background:rgba(0,0,0,0.3); border:1px solid rgba(255,255,255,0.15); border-radius:6px; color:#e0d5c5; font-size:14px; }
 button { width:100%; padding:12px; background:#daa520; color:#0a0a1a; border:none; border-radius:6px; font-size:16px; font-weight:bold; cursor:pointer; margin-top:20px; }
@@ -161,7 +162,7 @@ a:hover { color: var(--accent-gold-glow); }
 
 /* ----- 表单 ----- */
 .master-form {
-  background: var(--gradient-card); backdrop-filter: blur(8px);
+  background: var(--gradient-card); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
   border: var(--glass-border); border-radius: var(--radius);
   padding: 32px; max-width: 700px; margin: 0 auto;
 }
