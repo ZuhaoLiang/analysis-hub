@@ -121,14 +121,14 @@ a:hover { color: var(--accent-gold-glow); }
   padding: 0 20px;
 }
 .section-title {
-  font-size: 22px; text-align: center; margin-bottom: 6px;
-  color: var(--text-primary); letter-spacing: 2px; font-weight: 600;
+  font-size: 26px; text-align: center; margin-bottom: 8px;
+  color: var(--text-primary); letter-spacing: 2px; font-weight: 700;
 }
 .section-desc {
-  text-align: center; color: var(--text-muted); font-size: 13px; margin-bottom: 24px;
+  text-align: center; color: var(--text-muted); font-size: 13px; margin-bottom: 18px;
 }
 .system-header { text-align: center; margin-bottom: 24px; }
-.system-icon { font-size: 32px; display: block; margin-bottom: 6px; }
+.system-icon { font-size: 28px; display: block; margin-bottom: 4px; }
 
 /* ----- 英雄区 ----- */
 #hero {
@@ -401,6 +401,38 @@ a:hover { color: var(--accent-gold-glow); }
 .expand-card.expanded .expand-indicator { transform: rotate(180deg); }
 
 
+
+/* ----- 卡片入场动画 ----- */
+@keyframes cardIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.result-card { animation: cardIn 0.35s ease both; }
+.result-card:nth-child(2) { animation-delay: 0.04s; }
+.result-card:nth-child(3) { animation-delay: 0.08s; }
+.result-card:nth-child(4) { animation-delay: 0.12s; }
+.result-card:nth-child(5) { animation-delay: 0.16s; }
+.result-card:nth-child(6) { animation-delay: 0.2s; }
+.result-card:nth-child(7) { animation-delay: 0.24s; }
+.result-card:nth-child(8) { animation-delay: 0.28s; }
+.result-card:nth-child(9) { animation-delay: 0.32s; }
+.result-card:nth-child(10) { animation-delay: 0.36s; }
+
+/* ----- 卡片入场动画 ----- */
+@keyframes cardIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.result-card { animation: cardIn 0.35s ease both; }
+.result-card:nth-child(2) { animation-delay: 0.04s; }
+.result-card:nth-child(3) { animation-delay: 0.08s; }
+.result-card:nth-child(4) { animation-delay: 0.12s; }
+.result-card:nth-child(5) { animation-delay: 0.16s; }
+.result-card:nth-child(6) { animation-delay: 0.2s; }
+.result-card:nth-child(7) { animation-delay: 0.24s; }
+.result-card:nth-child(8) { animation-delay: 0.28s; }
+.result-card:nth-child(9) { animation-delay: 0.32s; }
+.result-card:nth-child(10) { animation-delay: 0.36s; }
 </style>
 
 </head>
@@ -416,10 +448,10 @@ a:hover { color: var(--accent-gold-glow); }
       <div class="logo">
         <span class="logo-icon">✦</span>
         <span class="logo-text">万象分析</span>
-        <span class="logo-sub">Life Discovery Hub</span>
+        
       </div>
       <nav id="main-nav">
-        <a href="#mbti" class="nav-link active" data-system="mbti">• MBTI</a>
+        <a href="#mbti" class="nav-link" data-system="mbti">• MBTI</a>
         <a href="#zodiac" class="nav-link" data-system="zodiac">• 星座</a>
         <a href="#astrology" class="nav-link" data-system="astrology">• 星盘</a>
         <a href="#bazi" class="nav-link" data-system="bazi">• 生辰·八字</a>
@@ -2794,6 +2826,7 @@ console.log('🌐 十大系统已全部注册');
 
 // Scroll-to-form button
 (function() {
+  // Scroll-to-form button
   var btn = document.getElementById('scroll-to-form');
   if (btn) {
     btn.addEventListener('click', function(e) {
@@ -2802,9 +2835,49 @@ console.log('🌐 十大系统已全部注册');
       if (section) section.scrollIntoView({ behavior: 'smooth', block: 'start' });
     });
   }
-})();
-
-// Form handler
+  
+  // Scroll-based nav active highlighting
+  var navLinks = document.querySelectorAll('#main-nav .nav-link');
+  var sectionIds = [];
+  navLinks.forEach(function(a) {
+    var id = a.getAttribute('href').substring(1);
+    var el = document.getElementById(id);
+    if (el) sectionIds.push({ id: id, el: el, link: a });
+  });
+  
+  function updateActiveNav() {
+    var scrollY = window.pageYOffset || document.documentElement.scrollTop;
+    var active = null;
+    for (var i = 0; i < sectionIds.length; i++) {
+      var sec = sectionIds[i].el;
+      if (sec) {
+        var rect = sec.getBoundingClientRect();
+        var top = rect.top + scrollY;
+        var bottom = top + rect.height;
+        if (top <= scrollY + 160 && bottom > scrollY + 80) {
+          active = sectionIds[i].link;
+          break;
+        }
+      }
+    }
+    // Fallback: last section that's above viewport
+    if (!active) {
+      for (var j = sectionIds.length - 1; j >= 0; j--) {
+        var s = sectionIds[j].el;
+        if (s && s.getBoundingClientRect().top <= 200) {
+          active = sectionIds[j].link;
+          break;
+        }
+      }
+    }
+    navLinks.forEach(function(l) { l.classList.remove('active'); });
+    if (active) active.classList.add('active');
+  }
+  
+  window.addEventListener('scroll', updateActiveNav, { passive: true });
+  window.addEventListener('resize', updateActiveNav, { passive: true });
+  setTimeout(updateActiveNav, 300);
+})();// Form handler
 document.addEventListener('DOMContentLoaded', function() {
   var form = document.getElementById('master-form');
   if (!form) { console.log('Form not found'); return; }
