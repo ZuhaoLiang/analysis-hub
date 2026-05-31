@@ -114,6 +114,7 @@ a:hover { color: var(--accent-gold-glow); }
 /* ----- 通用区块 ----- */
 .section {
   padding: 40px 20px 30px; position: relative; z-index: 1;
+  width: 100%;
 }
 .section:nth-child(even) { background: rgba(255,255,255,0.01); }
 .section-inner {
@@ -3162,7 +3163,23 @@ function bindAllCardExpands() {
     card.addEventListener('click', function(e) {
       if (e.target.closest('button,a,input,select,textarea,.opt-btn,.question-card')) return;
       if (!this.classList.contains('expand-card')) buildExpandBody(this);
-      this.classList.toggle('expanded');
+      var ebody = this.querySelector('.expand-body');
+      if (!ebody) return;
+      if (this.classList.contains('expanded')) {
+        ebody.style.maxHeight = '0px';
+        ebody.style.opacity = '0';
+        ebody.style.marginTop = '0';
+        ebody.style.paddingTop = '0';
+        ebody.style.borderTopWidth = '0';
+        this.classList.remove('expanded');
+      } else {
+        ebody.style.maxHeight = '2000px';
+        ebody.style.opacity = '1';
+        ebody.style.marginTop = '10px';
+        ebody.style.paddingTop = '10px';
+        ebody.style.borderTopWidth = '1px';
+        this.classList.add('expanded');
+      }
     });
   });
 }
