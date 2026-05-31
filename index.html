@@ -279,13 +279,17 @@ a:hover { color: var(--accent-gold-glow); }
 /* 紫微: 图表在上卡片在下 */
 #ziwei-result {
   display: flex; flex-direction: column; gap: 8px;
+  align-items: center;
 }
+#ziwei-chart { width: 100%; }
 
 /* ----- 玛雅更宽布局 ----- */
 /* ----- 人类图 BodyGraph Canvas 容器 ----- */
 #humandesign-result {
   display: flex; flex-direction: column; gap: 16px;
+  align-items: center;
 }
+#humandesign-result > * { width: 100%; }
 #bodygraph-canvas {
   max-width: 480px; width: 100%; display: block; margin: 0 auto;
   border-radius: 12px; background: rgba(0,0,0,0.25);
