@@ -2730,14 +2730,14 @@ function renderMayan(year, month, day) {
     + '<div style="font-size:20px; margin:6px 0; color:var(--accent-gold);">KIN ' + result.info.kin + '</div>'
     + '</div>'
     
+    + '<div class="result-card" style="grid-column:1/-1;"><div class="card-title"><i class="emoji-book"></i> 图腾解读</div><div class="card-desc" style="white-space:pre-line;">' + result.analysis + '</div></div>'
+    
     + '<div class="result-grid auto" style="grid-column:1/-1;">'
     + '<div class="result-card"><div class="card-title"><i class="emoji-music"></i> 银河音阶</div><div class="card-value" style="font-size:18px;">' + t.name + ' 调性' + t.num + '</div><div class="card-desc">行动：' + t.action + ' · 力量：' + t.power + '</div></div>'
     + '<div class="result-card"><div class="card-title"><i class="emoji-question"></i> 生命提问</div><div class="card-desc" style="font-size:15px;">"' + result.info.full.question + '"</div></div>'
     + '<div class="result-card"><div class="card-title"><i class="emoji-wave"></i> 波符</div><div class="card-value" style="font-size:18px;">' + result.info.wave.name + '</div><div class="card-desc">第' + result.info.wave.positionNum + '格 · ' + result.info.wave.position + '</div></div>'
     + '<div class="result-card"><div class="card-title">🎨 颜色家族</div><div class="card-desc">' + result.info.colorFamily + '</div></div>'
     + '</div>'
-    
-    + '<div class="result-card"><div class="card-title"><i class="emoji-book"></i> 图腾解读</div><div class="card-desc" style="white-space:pre-line;">' + result.analysis + '</div></div>'
     
     + '<div class="result-grid auto" style="grid-column:1/-1;grid-template-columns:repeat(3,1fr);">'
     + [result.info.guide, result.info.similar, result.info.opposite].filter(Boolean).map(function(p) {
