@@ -929,8 +929,9 @@ const Astronomy = {
 
   // 玛雅卓尔金历
   mayanTzolkin: function(jd) {
-    const offset = 584282; // 与卓尔金历的差
-    const tzolkinDay = Math.floor(jd - offset) % 260;
+    // Dreamspell历：1987年7月26日=JD2447005=KIN1
+    const offset = 2447005;
+    var tzolkinDay = (Math.floor(jd + 0.5) - offset) % 260;
     if (tzolkinDay < 0) tzolkinDay += 260;
     
     const tones = [
@@ -1345,10 +1346,14 @@ const ZodiacData = {
     '双鱼座': '巨蟹座、天蝎座、金牛座、摩羯座'
   },
 
-  // 上升星座简易计算（基于出生时间）
-  risingSign: function(hour) {
+  // 上升星座（基于出生时间 + 太阳星座修正）
+  risingSign: function(hour, sunSignName) {
     const signs = ['白羊','金牛','双子','巨蟹','狮子','处女','天秤','天蝎','射手','摩羯','水瓶','双鱼'];
-    const idx = Math.floor(hour / 2) % 12;
+    const sunIdx = signs.indexOf(sunSignName);
+    if (sunIdx < 0) return signs[Math.floor(hour / 2) % 12];
+    // 上升约每2小时前进一宫，日出时上升约等于太阳星座
+    var hourOffset = Math.floor(hour / 2) - 6; // 6AM时offset=0
+    var idx = ((sunIdx + hourOffset) % 12 + 12) % 12;
     return signs[idx];
   },
 
@@ -2212,17 +2217,17 @@ const HumanDesignEngine = {
 
   // 人生类型判定（简化版）
   determineType: function(year, month, day, hour) {
-    // 基于出生数据判定（简化算法）
-    const total = year + month + day + Math.floor(hour);
-    const typeNum = total % 5;
-    const types = ['显示者','显示生产型','生产型','投射者','反映者'];
+    // 基于出生数据判定（多因子混合算法）
+    var total = Math.abs(year * 13 + month * 47 + day * 31 + Math.floor(hour||12) * 17);
+    var typeNum = total % 5;
+    var types = ['显示者','显示生产型','生产型','投射者','反映者'];
     const type = types[typeNum];
     return {
       type: type,
       typeData: this.types[type],
-      profileKey: `${(year % 6) + 1}/${(day % 6) + 1}`,
+      profileKey: `${((total + typeNum) % 6) + 1}/${((total + 3) % 6) + 1}`,
       profile: this.profiles[`${(year % 6) + 1}/${(day % 6) + 1}`],
-      authority: Object.keys(this.authorities)[month % 6]
+      authority: Object.keys(this.authorities)[Math.abs(total + year) % 6]
     };
   },
 
@@ -2526,7 +2531,7 @@ window.runAllSystems = function(year, month, day, hour, user) {
 // =============================================
 function renderZodiac(year, month, day, hour) {
   const sunSign = Astronomy.westernZodiac(month, day);
-  const rising = ZodiacData.risingSign(hour);
+  const rising = ZodiacData.risingSign(hour, sunSign.name);
   const moon = ZodiacData.moonSign(year, month, day);
   const compat = ZodiacData.compatibility[sunSign.name] || '';
   const chineseZodiac = Astronomy.chineseZodiac(year);
