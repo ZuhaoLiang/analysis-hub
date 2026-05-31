@@ -2237,7 +2237,7 @@ const HumanDesignEngine = {
 
   analyze: function(year, month, day, hour) {
     const typeInfo = this.determineType(year, month, day, hour);
-    const bodyGraph = this.bodyGraphData();
+    const bodyGraph = this.bodyGraphData(year, month, day, hour);
     const authorityDesc = this.authorities[typeInfo.authority] || '';
     
     const summary = [];
