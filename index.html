@@ -116,7 +116,7 @@ a:hover { color: var(--accent-gold-glow); }
 
 /* ----- 通用区块 ----- */
 .section {
-  padding: 50px 20px 40px; position: relative; z-index: 1;
+  padding: 30px 20px 25px; position: relative; z-index: 1;
 }
 .section-inner {
   max-width: 1400px; margin: 0 auto;
@@ -197,22 +197,22 @@ a:hover { color: var(--accent-gold-glow); }
 
 /* ----- 结果卡片 ----- */
 .result-grid, .result-container {
-  display: grid; gap: 16px;
+  display: grid; gap: 10px;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
 }
-.result-grid.auto { grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); }
 .result-card {
   background: var(--gradient-card); border: var(--glass-border); border-radius: var(--radius);
-  padding: 16px; transition: var(--transition);
+  padding: 10px; transition: var(--transition);
 }
 .result-card:hover { background: var(--bg-card-hover); transform: translateY(-2px); }
 .result-card .card-title {
-  font-size: 14px; color: var(--accent-gold); margin-bottom: 8px; display: flex; align-items: center; gap: 6px;
+  font-size: 12px; color: var(--accent-gold); margin-bottom: 6px; display: flex; align-items: center; gap: 4px;
 }
-.result-card .card-value { font-size: 18px; font-weight: 700; margin-bottom: 6px; }
-.result-card .card-desc { color: var(--text-secondary); font-size: 12px; line-height: 1.6; }
+.result-card .card-value { font-size: 16px; font-weight: 700; margin-bottom: 4px; }
+.result-card .card-desc { color: var(--text-secondary); font-size: 11px; line-height: 1.5; }
 .result-card .card-tag {
-  display: inline-block; padding: 2px 10px; border-radius: 12px; font-size: 12px;
-  background: rgba(212,168,71,0.15); color: var(--accent-gold); margin-top: 8px;
+  display: inline-block; padding: 1px 8px; border-radius: 10px; font-size: 11px;
+  background: rgba(212,168,71,0.15); color: var(--accent-gold); margin-top: 4px;
 }
 .placeholder-text { color: var(--text-muted); text-align: center; padding: 40px; font-size: 14px; }
 
@@ -345,7 +345,7 @@ a:hover { color: var(--accent-gold-glow); }
   cursor: pointer; transition: all 0.4s ease;
   border: var(--glass-border); background: var(--gradient-card);
   backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
-  border-radius: var(--radius); padding: 14px;
+  border-radius: var(--radius); padding: 10px;
   position: relative; overflow: hidden;
 }
 .result-card:hover {
@@ -2395,17 +2395,17 @@ function renderZodiac(year, month, day, hour) {
     + '<div class="result-card"><div class="card-title"><i class="emoji-sun"></i> 太阳星座</div><div class="card-value">' + sunSign.name + ' ' + sunSign.symbol + '</div><div class="card-desc">' + sunSign.personality.slice(0, 60) + '...</div></div>'
     + '<div class="result-card"><div class="card-title"><i class="emoji-up"></i> 上升星座</div><div class="card-value">' + rising + '</div><div class="card-desc">你在外的面具和给人的第一印象</div></div>'
     + '<div class="result-card"><div class="card-title"><i class="emoji-moon"></i> 月亮星座</div><div class="card-value">' + moon + '</div><div class="card-desc">你的情感需求和情绪反应模式</div></div>'
-    + '<div class="result-card"><div class="card-title"><i class="emoji-dragon"></i> 生肖</div><div class="card-value">' + chineseZodiac.animal + ' · ' + chineseZodiac.element + '</div><div class="card-desc">' + chineseZodiac.element + '命' + chineseZodiac.animal + '</div></div>'
+    + '<div class="result-card"><div class="card-title"><i class="emoji-dragon"></i> 生肖</div><div class="card-value">' + chineseZodiac.animal + ' · ' + chineseZodiac.element + '</div><div class="card-desc">' + chineseZodiac.element + '命' + chineseZodiac.animal + '</div><span class="card-tag">生肖 · 天生资质</span></div>'
     + '</div>'
     
     + '<div class="result-grid auto">'
-    + '<div class="result-card"><div class="card-title"><i class="emoji-brain"></i> 性格特质</div><div class="card-desc">' + sunSign.personality + '</div></div>'
-    + '<div class="result-card"><div class="card-title"><i class="emoji-check" style="color:var(--accent-teal);"></i> 优势</div><div class="card-desc">' + sunSign.strength + '</div><span class="card-tag">长处</span></div>'
-    + '<div class="result-card"><div class="card-title"><i class="emoji-cross" style="color:var(--accent-pink);"></i> 弱点</div><div class="card-desc">' + sunSign.weakness + '</div><span class="card-tag">需注意</span></div>'
-    + '<div class="result-card"><div class="card-title"><i class="emoji-case"></i> 职业方向</div><div class="card-desc">' + sunSign.career + '</div></div>'
-    + '<div class="result-card"><div class="card-title"><i class="emoji-heart"></i> 爱情</div><div class="card-desc">' + sunSign.love + '</div><span class="card-tag">最佳配对：' + compat + '</span></div>'
-    + '<div class="result-card"><div class="card-title"><i class="emoji-heartbeat"></i> 健康</div><div class="card-desc">' + sunSign.health + '</div></div>'
-    + '<div class="result-card"><div class="card-title"><i class="emoji-star"></i> 幸运信息</div><div class="card-desc">' + sunSign.luck + '</div></div>'
+    + '<div class="result-card"><div class="card-title"><i class="emoji-brain"></i> 性格特质</div><div class="card-desc">' + sunSign.personality + '</div><span class="card-tag">性格 · 你的核心特质</span></div>'
+    + '<div class="result-card"><div class="card-title"><i class="emoji-check" style="color:var(--accent-teal);"></i> 优势</div><div class="card-desc">' + sunSign.strength + '</div><span class="card-tag">优势 · 发挥天赋，事半功倍</span></div>'
+    + '<div class="result-card"><div class="card-title"><i class="emoji-cross" style="color:var(--accent-pink);"></i> 弱点</div><div class="card-desc">' + sunSign.weakness + '</div><span class="card-tag">弱点 · 觉察即成长</span></div>'
+    + '<div class="result-card"><div class="card-title"><i class="emoji-case"></i> 职业方向</div><div class="card-desc">' + sunSign.career + '</div><span class="card-tag">适合领域 · 你的天赋赛道</span></div>'
+    + '<div class="result-card"><div class="card-title"><i class="emoji-heart"></i> 爱情</div><div class="card-desc">' + sunSign.love + '</div><span class="card-tag">配对 · ' + compat + '</span></div>'
+    + '<div class="result-card"><div class="card-title"><i class="emoji-heartbeat"></i> 健康</div><div class="card-desc">' + sunSign.health + '</div><span class="card-tag">健康提示 · 身心的平衡之道</span></div>'
+    + '<div class="result-card"><div class="card-title"><i class="emoji-star"></i> 幸运信息</div><div class="card-desc">' + sunSign.luck + '</div><span class="card-tag">幸运指引 · 你的幸运密码</span></div>'
     + '</div>';
 }
 
@@ -2550,7 +2550,7 @@ function renderBazi(year, month, day, hour, user) {
     
     + '<div class="result-card"><div class="card-title"><i class="emoji-scale"></i> 命理分析</div><div class="card-desc" style="white-space:pre-line;">' + result.analysis + '</div></div>'
     
-    + '<div class="result-card"><div class="card-title"><i class="emoji-tags"></i> 十神</div>'
+    + '<div class="result-card"><div class="card-title"><i class="emoji-tags"></i> 十神</div>' + '<span class="card-tag">十神 · 性格的十个面向</span>'
     + '<div class="result-grid auto" style="grid-template-columns:repeat(3,1fr);">'
     + Object.entries(result.shishen).map(function(e) {
       var k = e[0], v = e[1];
