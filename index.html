@@ -2415,20 +2415,17 @@ function renderZodiac(year, month, day, hour) {
   if (!container) return;
   
   container.innerHTML = ''
-    + '<div class="result-card" style="text-align:center;">'
+    + '<div class="result-card" style="text-align:center; grid-column:1/-1;">'
     + '<div style="font-size:60px;">' + sunSign.symbol + '</div>'
     + '<div style="font-size:28px; font-weight:700; letter-spacing:4px;">' + sunSign.name + '</div>'
     + '<div style="font-size:13px; color:var(--text-muted);">' + sunSign.element + '象 · ' + sunSign.quality + ' · 守护星' + sunSign.ruler + '</div>'
     + '</div>'
     
-    + '<div class="result-grid auto">'
     + '<div class="result-card"><div class="card-title"><i class="emoji-sun"></i> 太阳星座</div><div class="card-value">' + sunSign.name + ' ' + sunSign.symbol + '</div><div class="card-desc">' + sunSign.personality.slice(0, 60) + '...</div></div>'
     + '<div class="result-card"><div class="card-title"><i class="emoji-up"></i> 上升星座</div><div class="card-value">' + rising + '</div><div class="card-desc">你在外的面具和给人的第一印象</div></div>'
     + '<div class="result-card"><div class="card-title"><i class="emoji-moon"></i> 月亮星座</div><div class="card-value">' + moon + '</div><div class="card-desc">你的情感需求和情绪反应模式</div></div>'
     + '<div class="result-card"><div class="card-title"><i class="emoji-dragon"></i> 生肖</div><div class="card-value">' + chineseZodiac.animal + ' · ' + chineseZodiac.element + '</div><div class="card-desc">' + chineseZodiac.element + '命' + chineseZodiac.animal + '</div><span class="card-tag">生肖 · 天生资质</span></div>'
-    + '</div>'
     
-    + '<div class="result-grid auto">'
     + '<div class="result-card"><div class="card-title"><i class="emoji-brain"></i> 性格特质</div><div class="card-desc">' + sunSign.personality + '</div><span class="card-tag">性格 · 你的核心特质</span></div>'
     + '<div class="result-card"><div class="card-title"><i class="emoji-check" style="color:var(--accent-teal);"></i> 优势</div><div class="card-desc">' + sunSign.strength + '</div><span class="card-tag">优势 · 发挥天赋，事半功倍</span></div>'
     + '<div class="result-card"><div class="card-title"><i class="emoji-cross" style="color:var(--accent-pink);"></i> 弱点</div><div class="card-desc">' + sunSign.weakness + '</div><span class="card-tag">弱点 · 觉察即成长</span></div>'
