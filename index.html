@@ -2868,41 +2868,37 @@ console.log('🌐 十大系统已全部注册');
     });
   }
   
-  // Scroll-based nav active highlighting
-  var navLinks = document.querySelectorAll('#main-nav .nav-link');
-  var sectionIds = [];
-  navLinks.forEach(function(a) {
-    var id = a.getAttribute('href').substring(1);
-    var el = document.getElementById(id);
-    if (el) sectionIds.push({ id: id, el: el, link: a });
-  });
+  // Scroll-based nav active highlighting - 实时查询
+  var nav = document.querySelector('#main-nav');
   
   function updateActiveNav() {
+    if (!nav) return;
     var scrollY = window.pageYOffset || document.documentElement.scrollTop;
+    var links = nav.querySelectorAll('.nav-link');
     var active = null;
-    for (var i = 0; i < sectionIds.length; i++) {
-      var sec = sectionIds[i].el;
+    for (var i = 0; i < links.length; i++) {
+      var id = links[i].getAttribute('href').substring(1);
+      var sec = document.getElementById(id);
       if (sec) {
         var rect = sec.getBoundingClientRect();
-        var top = rect.top + scrollY;
-        var bottom = top + rect.height;
-        if (top <= scrollY + 160 && bottom > scrollY + 80) {
-          active = sectionIds[i].link;
+        if (rect.top <= 160 && rect.bottom > 80) {
+          active = links[i];
           break;
         }
       }
     }
-    // Fallback: last section that's above viewport
+    // Fallback
     if (!active) {
-      for (var j = sectionIds.length - 1; j >= 0; j--) {
-        var s = sectionIds[j].el;
+      for (var j = links.length - 1; j >= 0; j--) {
+        var id2 = links[j].getAttribute('href').substring(1);
+        var s = document.getElementById(id2);
         if (s && s.getBoundingClientRect().top <= 200) {
-          active = sectionIds[j].link;
+          active = links[j];
           break;
         }
       }
     }
-    navLinks.forEach(function(l) { l.classList.remove('active'); });
+    links.forEach(function(l) { l.classList.remove('active'); });
     if (active) active.classList.add('active');
   }
   
