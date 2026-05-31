@@ -2939,9 +2939,9 @@ function buildExpandBody(cardEl) {
   var body = document.createElement('div'); body.className = 'expand-body';
   var titleEl = cardEl.querySelector('.card-title');
   var t = titleEl ? titleEl.textContent.trim() : '详情';
-  body.innerHTML = '<div class="expand-section-title">📖 深度解读</div>'
-    + '<div style="font-size:13px;color:var(--text-secondary);line-height:1.8;margin-bottom:12px;">'
-    + '点击查看 "' + t + '" 在该维度下的详细分析、运势影响和行动建议。每个系统的解读都基于古老的智慧体系，结合现代心理学视角，为你提供多维度的自我认知参考。'
+  body.innerHTML = '<div class="expand-section-title">📖 深度解读 · ' + t + '</div>'
+    + '<div style="font-size:13px;color:var(--text-secondary);line-height:1.8;padding:8px 0;">'
+    + '点击查看此维度的完整分析。'
     + '</div>';
   cardEl.appendChild(body);
 }
