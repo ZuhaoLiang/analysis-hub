@@ -183,7 +183,7 @@ a:hover { color: var(--accent-gold-glow); }
 
 /* ----- 结果卡片 ----- */
 .result-grid, .result-container {
-  display: grid; gap: 16px;
+  display: grid; gap: 16px; align-items: start;
 }
 .result-grid.auto { grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
 .result-card {
@@ -263,6 +263,28 @@ a:hover { color: var(--accent-gold-glow); }
   color: var(--text-muted); font-size: 14px; position: relative; z-index: 1;
 }
 #footer .footer-small { font-size: 12px; margin-top: 8px; color: rgba(255,255,255,0.15); font-style: italic; }
+
+/* ----- 卡片展开 ----- */
+.expand-card { cursor: pointer; transition: var(--transition); }
+.expand-card:hover { transform: translateY(-2px); }
+.expand-card .expand-body {
+  max-height: 0; overflow: hidden; opacity: 0;
+  transition: all 0.4s ease; margin-top: 0;
+}
+.expand-card.expanded .expand-body {
+  max-height: 3000px; opacity: 1; margin-top: 12px;
+}
+.expand-body .expand-section-title {
+  font-size: 13px; color: var(--accent-gold); font-weight: 600;
+  margin: 12px 0 8px; display: flex; align-items: center; gap: 6px;
+}
+.expand-body .expand-section-title:first-child { margin-top: 0; }
+.expand-body .expand-insight {
+  margin-top: 10px; padding: 10px 12px;
+  background: rgba(74,124,247,0.08); border-radius: 6px;
+  border-left: 3px solid var(--accent-blue);
+  font-size: 12px; color: var(--text-secondary); line-height: 1.7;
+}
 
 /* ----- 响应式 ----- */
 @media (max-width: 900px) {
@@ -356,7 +378,7 @@ a:hover { color: var(--accent-gold-glow); }
     <div class="hero-bg"></div>
     <div class="hero-content">
       <h1 class="hero-title">遇见自己</h1>
-      <p class="hero-subtitle">七大系统 · 多维解读 · 重新认识你自己</p>
+      <p class="hero-subtitle">十大系统 · 多维解读 · 重新认识你自己</p>
       <p class="hero-desc">输入你的出生信息，探索 MBTI、星座、星盘、八字、紫微斗数、玛雅图腾和人类图的奥秘</p>
       <button id="scroll-to-form" class="btn-hero">
         • 开始探索
@@ -573,7 +595,7 @@ a:hover { color: var(--accent-gold-glow); }
       <div class="system-header">
         <span class="system-icon">📊</span>
         <h2 class="section-title">综合评语</h2>
-        <p class="section-desc">AI 综合分析 · 七大系统交叉解读</p>
+        <p class="section-desc">AI 综合分析 · 十大系统交叉解读</p>
       </div>
       <div id="summary-result" class="result-card">
         <p class="placeholder-text">请先输入信息并点击"全面分析"</p>
@@ -2114,15 +2136,12 @@ const HumanDesignEngine = {
 
 // ===== js/systems/summary-engine.js =====
 /* ======================================
-   综合引擎 · 七大系统交叉解读
+   综合引擎 · 十大系统交叉解读
    ====================================== */
 
 const SummaryEngine = {
   generate: function(allResults) {
-    const { user, mbti, zodiac, zodiacSign, astrology, bazi, baziResult, ziwei, mayan, humandesign } = allResults;
-    
-    const sections = [];
-    let title = `${user.name}的全面人生解读报告`;
+    const { user, mbti, zodiac, zodiacSign, astrology, bazi, baziResult, ziwei, mayan, humandesign, numerology, lunarmansion, zhengyu } = allResults;   let title = `${user.name}的全面人生解读报告`;
     
     // MBTI 片段
     if (mbti) {
@@ -2163,8 +2182,23 @@ const SummaryEngine = {
       sections.push(`【人类赋能】你属于${humandesign.typeInfo.type}能量类型（${humandesign.typeInfo.typeData.desc.slice(0,20)}），人生角色${humandesign.typeInfo.profileKey}，内在权威为${humandesign.typeInfo.authority}型。`);
     }
     
+    // 灵数片段
+    if (numerology) {
+      sections.push(`【灵数密码】你的生命数字是【${numerology.lifePath}】——${numerology.data.name}。${numerology.data.desc.slice(0,60)}。`);
+    }
+    
+    // 星宿片段
+    if (lunarmansion) {
+      sections.push(`【星宿分野】你的本命星宿是【${lunarmansion.name}】，属于${lunarmansion.group}、${lunarmansion.dir}方${lunarmansion.animal}。${lunarmansion.desc.slice(0,40)}。`);
+    }
+    
+    // 政余片段
+    if (zhengyu) {
+      sections.push(`【政余星命】你的命格为【${zhengyu.name}】，五行属${zhengyu.element}，${zhengyu.season}格。${zhengyu.desc.slice(0,40)}。`);
+    }
+    
     // 综合启发性段落
-    const insights = this.generateInsights(mbti, zodiacSign, baziResult, mayan, humandesign);
+    const insights = this.generateInsights(mbti, zodiacSign, baziResult, mayan, humandesign, numerology, lunarmansion, zhengyu);
     
     return {
       title: title,
@@ -2173,7 +2207,7 @@ const SummaryEngine = {
     };
   },
 
-  generateInsights: function(mbti, zodiac, bazi, mayan, hd) {
+  generateInsights: function(mbti, zodiac, bazi, mayan, hd, numerology, lunarmansion, zhengyu) {
     const insights = [];
     
     // 基于交叉系统的启发
@@ -2200,7 +2234,7 @@ const SummaryEngine = {
       insights.push('你是一个独特的宇宙存在。没有两张相同的命盘，没有两段相同的人生。以上分析仅供多维参考。');
     }
     
-    insights.push('✨ 知人者智，自知者明。七大系统从不同维度照亮了你的某一个侧面，而真正的你，比所有系统的总和还要丰富。');
+    insights.push('✨ 知人者智，自知者明。十大系统从不同维度照亮了你的某一个侧面，而真正的你，比所有系统的总和还要丰富。');
     
     return insights;
   }
@@ -2334,6 +2368,9 @@ window.runAllSystems = function(year, month, day, hour, user) {
   try { renderZhengyu(year, month, day); } catch(e) { console.error('Zhengyu error:', e); }
 // MBTI 需用户交互
   initMBTI();
+  
+  // 绑卡片展开
+  setTimeout(function() { try { bindAllExpand(); } catch(e) { console.error('Expand:', e); } }, 600);
 };
 
 // =============================================
@@ -2795,11 +2832,79 @@ function renderSummary() {
     + '</div>'
     
     + '<div style="text-align:center; margin-top:16px; color:var(--text-muted); font-size:12px; font-style:italic;">'
-    + '以上分析综合了MBTI、星座、星盘、八字、紫微斗数、玛雅图腾和人类图七大系统。<br>人生充满可能，此分析仅供参考。</div>';
+    + '以上分析综合了MBTI、星座、星盘、八字、紫微斗数、玛雅图腾和人类图十大系统。<br>人生充满可能，此分析仅供参考。</div>';
+}
+
+// ===== 卡片展开系统 =====
+function escHtml(s) { return (s||'').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+function buildExpandBody(cardEl) {
+  if (cardEl.querySelector('.expand-body')) return;
+  if (!cardEl.classList.contains('expand-card')) cardEl.classList.add('expand-card');
+  var body = document.createElement('div'); body.className = 'expand-body';
+  var titleEl = cardEl.querySelector('.card-title');
+  var descEl = cardEl.querySelector('.card-desc');
+  var valueEl = cardEl.querySelector('.card-value');
+  var title = titleEl ? titleEl.textContent.trim() : '详情';
+  var desc = descEl ? descEl.textContent.trim() : '';
+  var value = valueEl ? valueEl.textContent.trim() : '';
+  var section = cardEl.closest('[id]');
+  var system = section ? section.id : '';
+  body.innerHTML = '<div class="expand-section-title">📖 深度解读 · ' + escHtml(title) + '</div>'
+    + '<div style="font-size:13px;color:var(--text-secondary);line-height:1.8;">'
+    + (DetailMap[title] ? DetailMap[title](desc,value,system) : genContent(title,desc,value,system))
+    + '</div>';
+  cardEl.appendChild(body);
+}
+
+function genContent(title, desc, value, system) {
+  var sysMap = {'zodiac-result':'星座','bazi-result':'八字','chart-data':'星盘','ziwei-analysis':'紫微','mayan-result':'玛雅','humandesign-analysis':'人类图','mbti-result':'MBTI','numerology-result':'灵数','lunarmansion-result':'星宿','zhengyu-result':'政余'};
+  var sysName = sysMap[system] || '命理';
+  var insightBank = ['💡 每一个维度都是你人生拼图中的一块——单独看可能不明显，但放在整体中就会显现出独特的图案。','💫 理解这些配置不是为了给你的可能性设限，而是为了让你更有觉知地选择和创造。','✨ 你不是任何一种体系的产物，你是所有维度共同指向的那个独特存在。'];
+  return '<p style="margin-bottom:8px;"><strong>' + escHtml(title) + '</strong>是' + sysName + '体系中的重要维度。它揭示了你生命中一个特定的能量切面。</p>'
+    + (desc ? '<p style="margin-bottom:8px;"><span style="color:var(--accent-gold);">' + escHtml(desc) + '</span></p>' : '')
+    + '<div class="expand-insight">' + insightBank[(title.length + system.length) % insightBank.length] + '</div>';
+}
+
+var DetailMap = {};
+DetailMap['成长建议'] = function(d,v,s) {
+  return '<p style="margin-bottom:8px;">成长建议是从你的命盘全局出发，结合各系统的核心发现所提炼出的行动指引——它指向的是你的个人进化方向。</p><p style="margin-bottom:8px;">' + (d || '真正的成长来自对自我的持续认知和实践。了解自己是一生的功课，每一步觉察都在改写你的人生剧本。') + '</p><div class="expand-insight">💡 世界上最远的距离是从「知道」到「做到」。知识只是地图，行动才是旅途。</div>';
+};
+DetailMap['优势'] = function(d,v,s) {
+  return '<p style="margin-bottom:8px;">优势是你的天然武器库——这些是与生俱来的能力倾向，不需要费力就做得很好的领域。</p><p style="margin-bottom:8px;">' + (d ? '<span style="color:var(--accent-teal);">' + escHtml(d) + '</span>' : '暂无数据') + '</p><div class="expand-insight" style="border-left-color:var(--accent-teal);">💡 优势是你的人生杠杆支点。投入精力放大你的优势比修补短板能带来更高的回报。</div>';
+};
+DetailMap['短板'] = DetailMap['弱点'] = function(d,v,s) {
+  return '<p style="margin-bottom:8px;">成长点不是你的失败标签，而是人生进化的方向标。</p><p style="margin-bottom:8px;">' + (d ? '<span style="color:var(--accent-pink);">' + escHtml(d) + '</span>' : '暂无数据') + '</p><div class="expand-insight" style="border-left-color:var(--accent-pink);">💡 每一个所谓的弱点背后，都藏着一个待开发的优势潜力。</div>';
+};
+DetailMap['适合职业'] = DetailMap['职业方向'] = function(d,v,s) {
+  return '<p style="margin-bottom:8px;">职业方向是根据你的命盘格局推荐的发展路径——这些领域能最大化你的天赋优势。</p><p style="margin-bottom:8px;">' + (d ? '<span style="color:var(--accent-gold);">' + escHtml(d) + '</span>' : '暂无数据') + '</p><div class="expand-insight">💡 职业建议不是命运判决，而是指向你天然擅长的方向。</div>';
+};
+DetailMap['爱情'] = DetailMap['爱情观'] = DetailMap['爱情指引'] = function(d,v,s) {
+  return '<p style="margin-bottom:8px;">命盘中的爱情信息反映你的情感需求模式和亲密关系倾向。</p><p style="margin-bottom:8px;">' + (d ? '<span style="color:var(--accent-pink);">' + escHtml(d) + '</span>' : '暂无数据') + '</p><div class="expand-insight" style="border-left-color:var(--accent-pink);">💡 最好的关系不是找到和你完全一样的人，而是找到愿意理解你的不一样的人。</div>';
+};
+DetailMap['性格特质'] = function(d,v,s) {
+  return '<p style="margin-bottom:8px;">性格特质是你人格中最稳定、最显著的特征组合。</p><p style="margin-bottom:8px;">' + (d ? '<span style="color:var(--accent-gold);">' + escHtml(d) + '</span>' : '') + '</p><div class="expand-insight">💡 这些特质是你的「出厂设置」，后天的人生阅历会让你在保持核心特质的同时演化出更多元的个性层面。</div>';
+};
+
+function setupExpandDelegation(sel) {
+  var el = document.querySelector(sel);
+  if (!el || el.dataset._exp === '1') return;
+  el.dataset._exp = '1';
+  el.addEventListener('click', function(e) {
+    var card = e.target.closest('.result-card');
+    if (!card) return;
+    if (card.closest('.question-card,.opt-btn')) return;
+    if (!card.classList.contains('expand-card')) buildExpandBody(card);
+    card.classList.toggle('expanded');
+  });
+}
+
+function bindAllExpand() {
+  ['#zodiac-result','#bazi-result','#chart-data','#ziwei-analysis','#mayan-result','#humandesign-analysis','#mbti-result','#numerology-result','#lunarmansion-result','#zhengyu-result'].forEach(function(s) { setupExpandDelegation(s); });
 }
 
 console.log('✅ app.js 加载完成，系统就绪！');
-console.log('🌐 七大系统已全部注册');
+console.log('🌐 十大系统已全部注册');
 
 
 
