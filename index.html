@@ -196,13 +196,13 @@ a:hover { color: var(--accent-gold-glow); }
 .result-grid, .result-container {
   display: grid; gap: 10px;
   grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  align-items: start;
 }
 .result-card {
   background: linear-gradient(145deg, rgba(18,25,50,0.9), rgba(12,18,38,0.85));
   border: 1px solid rgba(212,168,71,0.08);
   border-radius: 12px; padding: 10px;
   transition: all 0.25s ease; position: relative;
-  overflow: hidden;
 }
 .result-card::before {
   content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px;
