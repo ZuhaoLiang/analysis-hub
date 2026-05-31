@@ -3040,10 +3040,24 @@ function buildExpandBody(cardEl) {
   var body = document.createElement('div'); body.className = 'expand-body';
   var titleEl = cardEl.querySelector('.card-title');
   var t = titleEl ? titleEl.textContent.trim() : '详情';
-  var container = cardEl.closest('[id$="-result"],[id$="-analysis"],[id="chart-data"],[id="mbti-result"]');
-  var systemId = container ? container.id : '';
+  
+  // 稳健方式：手动遍历父节点找容器ID
+  var systemId = '';
+  var el = cardEl.parentElement;
+  while (el && el.id !== 'output' && el.tagName !== 'BODY' && el.tagName !== 'HTML') {
+    if (el.id) {
+      var id = el.id;
+      if (id.endsWith('-result') || id.endsWith('-analysis') || id === 'chart-data' || id === 'mbti-result' || id === 'ziwei-chart') {
+        systemId = id;
+        break;
+      }
+    }
+    el = el.parentElement;
+  }
+  
   var content = getExpandContent(systemId, t);
   if (!content) content = '点击查看此维度的完整分析。';
+  
   body.innerHTML = '<div class="expand-section-title">📖 深度解读 · ' + t + '</div>'
     + '<div style="font-size:13px;color:var(--text-secondary);line-height:1.8;padding:8px 0;">'
     + content
