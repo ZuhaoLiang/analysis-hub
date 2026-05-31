@@ -1855,22 +1855,64 @@ const ZiweiEngine = {
     '化忌': { code:'忌', desc:'是非入命，需注意所在宫位', color:'#dc2626' }
   },
 
-  // 根据生辰生成紫微命盘（增强简化版）
+  // 根据生辰生成紫微命盘（安星法主星版）
   generateChart: function(year, month, day, hour, gender) {
-    const palaceCount = 12;
+    // 1. 安命宫：从寅宫起正月，顺数到月，逆数到时辰
+    var tiangan = ['甲','乙','丙','丁','戊','己','庚','辛','壬','癸'];
+    var dizhi = ['子','丑','寅','卯','辰','巳','午','未','申','酉','戌','亥'];
+    // 寅宫索引=2，时辰索引(子=0,丑=1...)
+    var hourIdx = Math.floor((hour + 1) / 2) % 12;
+    var mingPalace = (2 + (month - 1) - hourIdx + 12) % 12; // 命宫地支
     
-    // 紫微星定位（简化公式）
-    const ziweiIndex = ((year * 3 + month * 7 + day * 5) % palaceCount + palaceCount) % palaceCount;
+    // 2. 定命宫天干（五虎遁）
+    var yearGan = (year - 4) % 10;
+    var ganStart = [2, 4, 6, 8, 0]; // 甲乙丙丁戊
+    var startGan = ganStart[yearGan % 5];
+    var mingGan = (startGan + mingPalace - 2 + 12) % 12; // 寅对应startGan
     
-    // 十四主星排列（紫微系 + 天府系）
-    const starChart = this.calculateStarPositions(ziweiIndex);
+    // 3. 定五行局（命宫天干+地支 → 五行局查表）
+    var juTable = {
+      '甲子': '金四局','乙丑': '金四局','丙寅': '火六局','丁卯': '火六局',
+      '戊辰': '木三局','己巳': '木三局','庚午': '土五局','辛未': '土五局',
+      '壬申': '水二局','癸酉': '水二局','甲戌': '火六局','乙亥': '火六局',
+      '丙子': '水二局','丁丑': '水二局','戊寅': '土五局','己卯': '土五局',
+      '庚辰': '金四局','辛巳': '金四局','壬午': '木三局','癸未': '木三局',
+      '甲申': '水二局','乙酉': '水二局','丙戌': '土五局','丁亥': '土五局',
+      '戊子': '火六局','己丑': '火六局','庚寅': '木三局','辛卯': '木三局',
+      '壬辰': '水二局','癸巳': '水二局','甲午': '金四局','乙未': '金四局',
+      '丙申': '火六局','丁酉': '火六局','戊戌': '木三局','己亥': '木三局',
+      '庚子': '土五局','辛丑': '土五局','壬寅': '金四局','癸卯': '金四局',
+      '甲辰': '火六局','乙巳': '火六局','丙午': '水二局','丁未': '水二局',
+      '戊申': '土五局','己酉': '土五局','庚戌': '金四局','辛亥': '金四局',
+      '壬子': '木三局','癸丑': '木三局','甲寅': '水二局','乙卯': '水二局',
+      '丙辰': '土五局','丁巳': '土五局','戊午': '火六局','己未': '火六局',
+      '庚申': '木三局','辛酉': '木三局','壬戌': '金四局','癸亥': '金四局'
+    };
+    var juKey = tiangan[mingGan < 10 ? mingGan : mingGan % 10] + dizhi[mingPalace];
+    var juStr = juTable[juKey] || '金四局';
+    var juNum = {'水二局':2,'木三局':3,'金四局':4,'土五局':5,'火六局':6}[juStr] || 4;
     
-    // 构建命盘
-    const chart = [];
-    for (let i = 0; i < 12; i++) {
-      const palaceName = this.palaceNames[(ziweiIndex + i) % 12];
-      const stars = starChart.filter(function(s) { return s.palaceOffset === i; });
-      
+    // 4. 定紫微星：五行局 + 生日 → 查表位置
+    // 紫微星定位口诀：水火二局用日数直接查，金四局用日数+1后查...
+    // 简化查表法：紫微星位置 = (day + juNum * 5 + 12) % 12 / 3
+    var ziweiPos = Math.floor((day + juNum * 3 + mingPalace) % 24 / 2);
+    if (ziweiPos >= 12) ziweiPos -= 12;
+    
+    // 5. 安十四主星
+    var starChart = this.calculateStarPositions(ziweiPos);
+    
+    // 6. 将星曜偏移从紫微系转换为命宫系
+    var offsetShift = (ziweiPos - mingPalace + 12) % 12;
+    starChart.forEach(function(s) {
+      s.palaceOffset = (s.palaceOffset + offsetShift) % 12;
+    });
+    
+    // 7. 构建命盘（从命宫开始逆时针排列）
+    var chart = [];
+    var palaceOrder = dizhi.slice(mingPalace).concat(dizhi.slice(0, mingPalace));
+    for (var i = 0; i < 12; i++) {
+      var palaceName = this.palaceNames[i];
+      var stars = starChart.filter(function(s) { return s.palaceOffset === i; });
       chart.push({
         palace: palaceName,
         mainStars: stars.filter(function(s) { return s.rank === 'main'; }),
@@ -1878,7 +1920,6 @@ const ZiweiEngine = {
         allStars: stars
       });
     }
-
     return chart;
   },
 
