@@ -2721,6 +2721,7 @@ function renderBazi(year, month, day, hour, user) {
     + '<div class="result-grid auto" style="grid-column:1/-1;">'
     + '<div class="result-card"><div class="card-title"><i class="emoji-dragon"></i> 生肖</div><div class="card-value">' + result.shengxiao + '</div></div>'
     + '<div class="result-card"><div class="card-title"><i class="emoji-user"></i> 日主</div><div class="card-value">' + result.riZhu + ' · ' + result.riZhuWuxing + '</div><div class="card-desc">日干代表你自己</div></div>'
+ + '<div class="result-card"><div class="card-title"><i class="emoji-scale"></i> 命理分析</div><div class="card-desc" style="white-space:pre-line;">' + result.analysis + '</div></div>'
     + '<div class="result-card"><div class="card-title"><i class="emoji-cube"></i> 五行分布</div>'
     + '<div style="display:flex; gap:8px; flex-wrap:wrap;">'
     + Object.entries(result.wuxing).map(function(e) {
@@ -2730,7 +2731,7 @@ function renderBazi(year, month, day, hour, user) {
     }).join('')
     + '</div></div></div>'
     
-    + '<div class="result-card"><div class="card-title"><i class="emoji-scale"></i> 命理分析</div><div class="card-desc" style="white-space:pre-line;">' + result.analysis + '</div></div>'
+
     
     + '<div class="result-card"><div class="card-title"><i class="emoji-tags"></i> 十神</div>' + '<span class="card-tag">十神 · 性格的十个面向</span>'
     + '<div class="result-grid auto" style="grid-column:1/-1;grid-template-columns:repeat(3,1fr);">'
@@ -3190,7 +3191,7 @@ var ExpandContent = {
 
   // ===== 紫微斗数 =====
   'ziwei': {
-    '十二宫详解': '紫微斗数的十二宫从命宫开始逆时针排列——命宫看一生格局与气质，兄弟宫论手足缘分与平辈关系，夫妻宫定姻缘深浅与伴侣特质，子女宫观子嗣福气与创造能力，财帛宫断财富模式与理财能力，疾厄宫察身体健康与潜在隐患，迁移宫看外出机遇与环境适应力，交友宫论人际关系与社会网络，官禄宫观事业发展与成就高峰，田宅宫看房产运与家庭根基，福德宫定精神世界与晚年福气，父母宫论亲缘遗传与原生家庭。十四主星入十二宫的各种排列组合，形成了千变万化的命盘格局。',
+    '十二宫详解': '紫微斗数十二宫覆盖人生的所有维度。命宫为核心，命宫里的主星决定一生格局与气质；兄弟宫看手足缘分深浅和人际关系模式；夫妻宫定姻缘好坏和伴侣特质；子女宫观子嗣缘分和创造力方向；财帛宫断财富获取方式和理财能力；疾厄宫察身体强弱和健康隐患；迁移宫看出外机遇、旅行运和环境适应力；交友宫论社交圈和人脉质量；官禄宫观事业方向和成就高度；田宅宫看家业根基和居住环境；福德宫定精神世界、福气和晚年；父母宫论亲缘关系和家族遗传。十四主星加辅星四化的排列组合千变万化。',
     '十二宫总览': '紫微斗数十二宫各司其职：命宫为命运核心，兄弟宫看手足缘分，夫妻宫断婚姻好坏，子女宫观子嗣有无，财帛宫论贫富程度，疾厄宫察身体强弱，迁移宫看出外吉凶，交友宫论社交能力，官禄宫断事业高低，田宅宫看家业大小，福德宫定福寿深浅，父母宫论出身贵贱。主星星曜的强弱和四化星的分布，共同构成了一幅完整的人生蓝图。',
   },
 
@@ -3222,7 +3223,7 @@ var ExpandContent = {
 
   // ===== 灵数 =====
   'numerology': {
-    '生命数字': '生命数字源于古希腊数学家毕达哥拉斯的理论——他认为万物皆数，数字是宇宙的本质。通过出生年月日计算出的1-9核心数字，代表了你此生的生命轨迹、灵魂使命和成长课题。每个数字都有独特的能量频率和振动模式。你的生命数字不是随机的——它是你选择此生的核心意图的数学表达。',
+    '生命数字': '生命数字源于毕达哥拉斯理论，数字是宇宙的本质。通过出生年月日计算出的1-9核心数字，代表了你此生的生命轨迹、灵魂使命和成长课题。每个数字都有独特的能量频率和振动模式。你的生命数字不是随机的——它是你选择此生的核心意图的数学表达。',
   },
 
   // ===== 星宿 =====
