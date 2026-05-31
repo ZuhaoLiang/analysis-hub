@@ -281,7 +281,7 @@ a:hover { color: var(--accent-gold-glow); }
   display: flex; flex-direction: column; gap: 8px;
   align-items: center;
 }
-#ziwei-chart { width: 100%; }
+#ziwei-result > * { width: 100%; }
 
 /* ----- 玛雅更宽布局 ----- */
 /* ----- 人类图 BodyGraph Canvas 容器 ----- */
@@ -290,6 +290,9 @@ a:hover { color: var(--accent-gold-glow); }
   align-items: center;
 }
 #humandesign-result > * { width: 100%; }
+#humandesign-result #bodygraph-canvas {
+  max-width: 480px; width: 100%;
+}
 #bodygraph-canvas {
   max-width: 480px; width: 100%; display: block; margin: 0 auto;
   border-radius: 12px; background: rgba(0,0,0,0.25);
