@@ -2730,7 +2730,7 @@ function renderMayan(year, month, day) {
     + '<div style="font-size:20px; margin:6px 0; color:var(--accent-gold);">KIN ' + result.info.kin + '</div>'
     + '</div>'
     
-    + '<div class="result-card" style="grid-column:1/-1;"><div class="card-title"><i class="emoji-book"></i> 图腾解读</div><div class="card-desc" style="white-space:pre-line;">' + result.analysis + '</div></div>'
+    + '<div class="result-card" style="grid-column:1/-1;"><div class="card-title" style="justify-content:center;"><i class="emoji-book"></i> 图腾解读</div><div class="card-desc" style="text-align:center;line-height:1.8;">' + result.analysis.split('\n').filter(Boolean).join('</p><p style="margin:6px 0;">') + '</div></div>'
     
     + '<div class="result-grid auto" style="grid-column:1/-1;">'
     + '<div class="result-card"><div class="card-title"><i class="emoji-music"></i> 银河音阶</div><div class="card-value" style="font-size:18px;">' + t.name + ' 调性' + t.num + '</div><div class="card-desc">行动：' + t.action + ' · 力量：' + t.power + '</div></div>'
