@@ -2400,7 +2400,6 @@ function renderZodiac(year, month, day, hour) {
     + '<div class="result-card"><div class="card-title"><i class="emoji-sun"></i> 太阳星座</div><div class="card-value">' + sunSign.name + ' ' + sunSign.symbol + '</div><div class="card-desc">' + sunSign.personality.slice(0, 60) + '...</div></div>'
     + '<div class="result-card"><div class="card-title"><i class="emoji-up"></i> 上升星座</div><div class="card-value">' + rising + '</div><div class="card-desc">你在外的面具和给人的第一印象</div></div>'
     + '<div class="result-card"><div class="card-title"><i class="emoji-moon"></i> 月亮星座</div><div class="card-value">' + moon + '</div><div class="card-desc">你的情感需求和情绪反应模式</div></div>'
-    + '<div class="result-card"><div class="card-title"><i class="emoji-dragon"></i> 生肖</div><div class="card-value">' + chineseZodiac.animal + ' · ' + chineseZodiac.element + '</div><div class="card-desc">' + chineseZodiac.element + '命' + chineseZodiac.animal + '</div></div>'
     + '</div>'
     
     + '<div class="result-grid auto">'
@@ -2902,6 +2901,43 @@ function setupExpandDelegation(sel) {
 function bindAllExpand() {
   ['#zodiac-result','#bazi-result','#chart-data','#ziwei-analysis','#mayan-result','#humandesign-analysis','#mbti-result','#numerology-result','#lunarmansion-result','#zhengyu-result'].forEach(function(s) { setupExpandDelegation(s); });
 }
+
+
+  // #### 深度内容包 ####
+  window.ContentPack = {
+    zodiac: {
+      '摩羯座':{deep:'摩羯座是十二星座中最具耐心和战略眼光的建设者。人生不是短跑而是精密规划的马拉松。有着超越年龄的成熟和冷静，很早就明白不劳无获的道理。最令人敬佩的品质是长期主义——愿意用十年、二十年去完成一个目标。',shadow:'最大阴影面是对失败的极端恐惧——驱动着不断向前，也让永远无法真正放松。',lesson:'学会在攀登的过程中欣赏风景。终点不是你人生的全部价值。'},
+      '水瓶座':{deep:'水瓶座是超越时代的思考者——思维天然比别人超前，能看到大多数人看不到的未来趋势。最珍贵的天赋是独立性——不需要外界认可来确认价值。',shadow:'最大的盲点是过度追求理性而忽略情感。',lesson:'你的超前是这个世界的礼物。保持独特，也学会接地气。'},
+      '双鱼座':{deep:'双鱼座是最富有灵性的梦想家——能感知到别人感知不到的微妙能量，在平凡中看到诗意和美感。最大天赋是同理心——能真正感受他人的痛苦和快乐。',shadow:'最需要面对的是逃避现实的倾向。',lesson:'你的敏感是你灵魂的天线。但天线需要接地才不会过载。'},
+      '白羊座':{deep:'白羊座是宇宙最初的火焰——纯粹、直接、不可阻挡。最显著的特质是惊人的行动力——当别人还在思考时已经在行动了。',shadow:'最大的弱点是急躁——想要的一切都希望立刻实现。',lesson:'勇气是世界上最稀缺的资源。行动前给自己三秒钟——让冲锋更有方向。'},
+      '金牛座':{deep:'金牛座是最懂得存在之美的星座。价值感来自于内在的稳定和自足。对美的感知是全方位的——用所有感官体验世界。',shadow:'最大的挑战是固执——一旦认定很难改变。',lesson:'稳定是你的根基。偶尔让自己被连根拔起去新土壤——你的根在哪里都能生长。'}
+    },
+    mbti: {
+      'INTJ':{name:'建筑师',desc:'战略家和系统设计师。从混乱信息中提炼出清晰框架。独立性强，不需要外界认可。',career:'科学家、研究员、投资分析师'},
+      'INTP':{name:'逻辑学家',desc:'概念的探索者和理论的建筑师。思维永远在分析、解构和重组一切信息。',career:'科学家、工程师、程序员'},
+      'ENTJ':{name:'指挥官',desc:'天生的领导者和战略执行者。能看到别人看不到的可能性并转化为现实。',career:'CEO、管理咨询、企业领导者'},
+      'ENFP':{name:'竞选者',desc:'热情的传播者和可能性的探索者。乐观和热情具有强大感染力。',career:'记者、演员、营销策划'},
+      'INFJ':{name:'提倡者',desc:'理想主义和深度洞察的完美结合。有极强使命感和价值观驱动。',career:'心理咨询师、作家、教师'},
+      'ISTJ':{name:'物流师',desc:'可靠性和责任感的化身。注重细节、遵守规则、信守承诺。',career:'会计师、法官、公务员'},
+      'ENFJ':{name:'主人公',desc:'天生的催化剂和人际关系编织者。领导力来自真诚关心和同理心。',career:'教师、培训师、人力资源'},
+      'ISFJ':{name:'守卫者',desc:'温暖和关怀的化身。默默关注每个人需求，用行动表达关心。',career:'护士、教师、社工'},
+      'ESTJ':{name:'总经理',desc:'秩序和效率的维护者。善于将混乱化为秩序，将想法变为行动。',career:'管理者、军官、项目经理'},
+      'ENTP':{name:'辩论家',desc:'思想的探险家。大脑永远在寻找新角度、新可能性和新挑战。',career:'创业者、营销专家、顾问'},
+      'INFP':{name:'调停者',desc:'内心世界的诗人。内在世界远比外在世界丰富精彩。',career:'作家、艺术家、心理咨询师'},
+      'ESFJ':{name:'执政官',desc:'社交中心和温暖传播者。帮助他人是最自然的表达方式。',career:'教师、社工、活动策划'},
+      'ISTP':{name:'鉴赏家',desc:'实际问题的解决者。用最直接的方式解决最实际的问题。',career:'工程师、飞行员、外科医生'},
+      'ISFP':{name:'探险家',desc:'感官世界的艺术家。用心感受世界，用美表达自我。',career:'艺术家、设计师、摄影师'},
+      'ESTP':{name:'企业家',desc:'行动派的冒险家。在行动中快速调整方向，是最大的优势。',career:'创业者、销售、运动员'},
+      'ESFP':{name:'表演者',desc:'快乐和活力的传播者。存在的意义就是让世界更快乐。',career:'演员、歌手、主持人'}
+    },
+    insights: [
+      '你的星座揭示了你的天性，你的八字揭示了你的能量，你的紫微命盘揭示了你的格局。但所有这些加起来也不足以定义一个完整的你。',
+      '命盘的意义不是让你对未来感到确定，而是让你对当下更加清醒。',
+      '最深的命理智慧不是让你相信命中注定——而是让你理解命运可以被解读，也可以被改写。',
+      '当你同时看十个系统的分析时可能会发现矛盾——那不是错误，而是你比任何一个系统都要丰富和复杂。',
+      '你的出生时刻不是偶然——宇宙以星辰为笔、以天空为纸，为你画下了独属于你的人生蓝图。'
+    ]
+  };
 
 console.log('✅ app.js 加载完成，系统就绪！');
 console.log('🌐 十大系统已全部注册');
