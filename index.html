@@ -2216,23 +2216,39 @@ const HumanDesignEngine = {
   },
 
   // 绘制人体图（BodyGraph）的简化画布数据
-  bodyGraphData: function() {
-    return {
-      centers: [
-        { id:'head', x:300, y:40, r:22, name:'头顶中心', number:1 },
-        { id:'ajna', x:300, y:120, r:22, name:'脑中心', number:2 },
-        { id:'throat', x:300, y:200, r:20, name:'喉咙中心', number:3 },
-        { id:'g', x:240, y:300, r:20, name:'G中心', number:4 },
-        { id:'ego', x:360, y:300, r:18, name:'意志力中心', number:5 },
-        { id:'sacral', x:300, y:390, r:22, name:'荐骨中心', number:6 },
-        { id:'spleen', x:210, y:460, r:18, name:'脾中心', number:7 },
-        { id:'solar', x:390, y:460, r:18, name:'情绪中心', number:8 },
-        { id:'root', x:300, y:540, r:20, name:'根部中心', number:9 }
-      ],
-      channels: [
-        [1,2], [2,3], [3,4], [3,5], [4,6], [4,7], [5,8], [6,7], [6,8], [7,9], [8,9]
-      ]
-    };
+  bodyGraphData: function(year, month, day, hour) {
+    // 基于出生日期动态生成 BodyGraph
+    var seed = year * 137 + month * 47 + day * 31 + Math.floor(hour || 12) * 17;
+    var centerStates = [];
+    for (var ci = 0; ci < 9; ci++) {
+      centerStates.push(((seed >> (ci * 2)) & 1) === 1);
+    }
+    var anyActive = false;
+    for (var ci2 = 0; ci2 < centerStates.length; ci2++) { if (centerStates[ci2]) { anyActive = true; break; } }
+    if (!anyActive) centerStates[0] = true;
+    
+    var centers = [
+      { id:'head', x:300, y:40, r:22, name:'头顶中心', number:1, defined: centerStates[0] },
+      { id:'ajna', x:300, y:120, r:22, name:'脑中心', number:2, defined: centerStates[1] },
+      { id:'throat', x:300, y:200, r:20, name:'喉咙中心', number:3, defined: centerStates[2] },
+      { id:'g', x:240, y:300, r:20, name:'G中心', number:4, defined: centerStates[3] },
+      { id:'ego', x:360, y:300, r:18, name:'意志力中心', number:5, defined: centerStates[4] },
+      { id:'sacral', x:300, y:390, r:22, name:'荐骨中心', number:6, defined: centerStates[5] },
+      { id:'spleen', x:210, y:460, r:18, name:'脾中心', number:7, defined: centerStates[6] },
+      { id:'solar', x:390, y:460, r:18, name:'情绪中心', number:8, defined: centerStates[7] },
+      { id:'root', x:300, y:540, r:20, name:'根部中心', number:9, defined: centerStates[8] }
+    ];
+    
+    var allChannels = [[1,2],[2,3],[3,4],[3,5],[4,6],[4,7],[5,8],[6,7],[6,8],[7,9],[8,9]];
+    var channels = [];
+    for (var ci3 = 0; ci3 < allChannels.length; ci3++) {
+      var ch = allChannels[ci3];
+      if (centerStates[ch[0] - 1] && centerStates[ch[1] - 1]) {
+        channels.push([ch[0], ch[1]]);
+      }
+    }
+    
+    return { centers: centers, channels: channels };
   },
 
   analyze: function(year, month, day, hour) {
@@ -2615,6 +2631,39 @@ function drawChart(planets) {
   ctx.lineWidth = 1;
   ctx.stroke();
   
+  // 计算行星位置
+  var ppos = planets.map(function(p) {
+    var deg = parseFloat(p.degree);
+    var ang = (deg / 360) * 2 * Math.PI - Math.PI/2;
+    var r = outerR * 0.6;
+    return { x: cx + Math.cos(ang) * r, y: cy + Math.sin(ang) * r, deg: deg, p: p };
+  });
+  
+  // 绘制相位连线
+  for (var ai = 0; ai < ppos.length; ai++) {
+    for (var aj = ai + 1; aj < ppos.length; aj++) {
+      var diff = Math.abs(ppos[ai].deg - ppos[aj].deg);
+      diff = Math.min(diff, 360 - diff);
+      var opacity = 0;
+      var dashed = false;
+      if (diff < 10) { opacity = 0.3; }
+      else if (diff > 50 && diff < 70) { opacity = 0.12; dashed = true; }
+      else if (diff > 80 && diff < 100) { opacity = 0.18; }
+      else if (diff > 110 && diff < 130) { opacity = 0.12; dashed = true; }
+      else if (diff > 170 && diff < 190) { opacity = 0.25; }
+      if (opacity > 0) {
+        ctx.beginPath();
+        ctx.moveTo(ppos[ai].x, ppos[ai].y);
+        ctx.lineTo(ppos[aj].x, ppos[aj].y);
+        ctx.strokeStyle = 'rgba(212,168,71,' + opacity + ')';
+        ctx.lineWidth = 0.8;
+        ctx.setLineDash(dashed ? [3,3] : []);
+        ctx.stroke();
+        ctx.setLineDash([]);
+      }
+    }
+  }
+  
   planets.forEach(function(p) {
     const deg = parseFloat(p.degree);
     const angle = (deg / 360) * 2 * Math.PI - Math.PI/2;
@@ -2822,16 +2871,24 @@ function drawBodyGraph(bg) {
   
   ctx.clearRect(0, 0, 600, 700);
   
-  ctx.strokeStyle = 'rgba(212,168,71,0.15)';
-  ctx.lineWidth = 3;
-  ctx.setLineDash([5, 5]);
   bg.channels.forEach(function(pair) {
     var c1 = bg.centers.find(function(c) { return c.number === pair[0]; });
     var c2 = bg.centers.find(function(c) { return c.number === pair[1]; });
-    if (c1 && c2) {
+    if (c1 && c2 && c1.defined && c2.defined) {
       ctx.beginPath();
       ctx.moveTo(c1.x, c1.y);
       ctx.lineTo(c2.x, c2.y);
+      ctx.strokeStyle = 'rgba(212,168,71,0.4)';
+      ctx.lineWidth = 3;
+      ctx.setLineDash([]);
+      ctx.stroke();
+    } else if (c1 && c2) {
+      ctx.beginPath();
+      ctx.moveTo(c1.x, c1.y);
+      ctx.lineTo(c2.x, c2.y);
+      ctx.strokeStyle = 'rgba(255,255,255,0.06)';
+      ctx.lineWidth = 2;
+      ctx.setLineDash([4, 4]);
       ctx.stroke();
     }
   });
@@ -2840,13 +2897,18 @@ function drawBodyGraph(bg) {
   bg.centers.forEach(function(c) {
     ctx.beginPath();
     ctx.arc(c.x, c.y, c.r, 0, 2*Math.PI);
-    ctx.fillStyle = 'rgba(212,168,71,0.08)';
+    if (c.defined) {
+      ctx.fillStyle = 'rgba(212,168,71,0.25)';
+      ctx.strokeStyle = 'rgba(212,168,71,0.6)';
+    } else {
+      ctx.fillStyle = 'rgba(255,255,255,0.04)';
+      ctx.strokeStyle = 'rgba(255,255,255,0.12)';
+    }
     ctx.fill();
-    ctx.strokeStyle = 'rgba(212,168,71,0.3)';
-    ctx.lineWidth = 1.5;
+    ctx.lineWidth = c.defined ? 2 : 1;
     ctx.stroke();
     
-    ctx.fillStyle = 'rgba(255,255,255,0.6)';
+    ctx.fillStyle = c.defined ? 'rgba(212,168,71,0.9)' : 'rgba(255,255,255,0.3)';
     ctx.font = '11px sans-serif';
     ctx.textAlign = 'center';
     ctx.fillText(c.name, c.x, c.y + 4);
