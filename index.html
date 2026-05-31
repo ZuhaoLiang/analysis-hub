@@ -2387,6 +2387,17 @@ function renderZodiac(year, month, day, hour) {
   const compat = ZodiacData.compatibility[sunSign.name] || '';
   const chineseZodiac = Astronomy.chineseZodiac(year);
   
+  // 从ZodiacData获取详细数据
+  const zodiacDetail = ZodiacData.all[sunSign.name] || {};
+  sunSign.personality = zodiacDetail.personality || '暂无数据';
+  sunSign.strength = zodiacDetail.strength || '暂无数据';
+  sunSign.weakness = zodiacDetail.weakness || '暂无数据';
+  sunSign.career = zodiacDetail.career || '暂无数据';
+  sunSign.love = zodiacDetail.love || '暂无数据';
+  sunSign.health = zodiacDetail.health || '暂无数据';
+  sunSign.luck = zodiacDetail.luck || '暂无数据';
+  sunSign.advice = zodiacDetail.advice || '';
+  
   AppState.allResults.zodiac = { sunSign, rising, moon, compat, chineseZodiac };
   AppState.allResults.zodiacSign = sunSign;
   
