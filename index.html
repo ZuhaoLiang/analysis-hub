@@ -2411,7 +2411,7 @@ function renderMBTIResult(result) {
     + '<div style="font-size:14px; color:var(--text-secondary); max-width:400px; margin:0 auto 16px; line-height:1.7;">' + t.desc + '</div>'
     + '</div>'
     
-    + '<div class="result-grid auto" style="grid-template-columns:repeat(4,1fr);">'
+    + '<div class="result-grid auto" style="grid-column:1/-1;grid-template-columns:repeat(4,1fr);">'
     + result.dimensions.map(function(d) {
       var pct = Math.abs(d.value)/5*100;
       return '<div class="result-card" style="text-align:center;">'
@@ -2424,7 +2424,7 @@ function renderMBTIResult(result) {
     }).join('')
     + '</div>'
     
-    + '<div class="result-grid auto" style="grid-template-columns:repeat(2,1fr);">'
+    + '<div class="result-grid auto" style="grid-column:1/-1;grid-template-columns:repeat(2,1fr);">'
     + '<div class="result-card"><div class="card-title"><i class="emoji-star"></i> 优势</div><div class="card-desc">' + t.strengths + '</div></div>'
     + '<div class="result-card"><div class="card-title"><i class="emoji-warn"></i> 短板</div><div class="card-desc">' + t.weaknesses + '</div></div>'
     + '<div class="result-card"><div class="card-title"><i class="emoji-case"></i> 适合职业</div><div class="card-desc">' + t.career + '</div></div>'
@@ -2626,7 +2626,7 @@ function renderBazi(year, month, day, hour, user) {
     + '<div style="font-size:14px; color:var(--text-secondary);">年柱' + result.nanyin.year + ' · 月柱' + result.nanyin.month + ' · 日柱' + result.nanyin.day + ' · 时柱' + result.nanyin.hour + '</div>'
     + '</div>'
     
-    + '<div class="result-grid auto">'
+    + '<div class="result-grid auto" style="grid-column:1/-1;">'
     + '<div class="result-card"><div class="card-title"><i class="emoji-dragon"></i> 生肖</div><div class="card-value">' + result.shengxiao + '</div></div>'
     + '<div class="result-card"><div class="card-title"><i class="emoji-user"></i> 日主</div><div class="card-value">' + result.riZhu + ' · ' + result.riZhuWuxing + '</div><div class="card-desc">日干代表你自己</div></div>'
     + '<div class="result-card"><div class="card-title"><i class="emoji-cube"></i> 五行分布</div>'
@@ -2641,7 +2641,7 @@ function renderBazi(year, month, day, hour, user) {
     + '<div class="result-card"><div class="card-title"><i class="emoji-scale"></i> 命理分析</div><div class="card-desc" style="white-space:pre-line;">' + result.analysis + '</div></div>'
     
     + '<div class="result-card"><div class="card-title"><i class="emoji-tags"></i> 十神</div>' + '<span class="card-tag">十神 · 性格的十个面向</span>'
-    + '<div class="result-grid auto" style="grid-template-columns:repeat(3,1fr);">'
+    + '<div class="result-grid auto" style="grid-column:1/-1;grid-template-columns:repeat(3,1fr);">'
     + Object.entries(result.shishen).map(function(e) {
       var k = e[0], v = e[1];
       var label = k === 'year' ? '年柱' : k === 'month' ? '月柱' : '时柱';
@@ -2694,7 +2694,7 @@ function renderZiwei(year, month, day, hour, gender) {
   var palacesContainer = $('#ziwei-palaces');
   if (palacesContainer) {
     palacesContainer.innerHTML = '<div class="result-card" style="grid-column:1/-1;"><div class="card-title"><i class="emoji-home"></i> 十二宫总览</div><div class="card-desc" style="margin-bottom:8px;">紫微斗数十二宫涵盖人生的各个面向，以下为各宫位核心含义：</div>'
-      + '<div class="result-grid auto" style="grid-template-columns:repeat(4,1fr);">'
+      + '<div class="result-grid auto" style="grid-column:1/-1;grid-template-columns:repeat(4,1fr);">'
       + ZiweiEngine.palaceNames.map(function(pn) {
         var pd = ZiweiEngine.palaceDetail[pn] || { keywords:'', fortune:'' };
         return '<div style="background:rgba(255,255,255,0.03); padding:10px; border-radius:8px; text-align:center;">'
@@ -2730,7 +2730,7 @@ function renderMayan(year, month, day) {
     + '<div style="font-size:20px; margin:6px 0; color:var(--accent-gold);">KIN ' + result.info.kin + '</div>'
     + '</div>'
     
-    + '<div class="result-grid auto">'
+    + '<div class="result-grid auto" style="grid-column:1/-1;">'
     + '<div class="result-card"><div class="card-title"><i class="emoji-music"></i> 银河音阶</div><div class="card-value" style="font-size:18px;">' + t.name + ' 调性' + t.num + '</div><div class="card-desc">行动：' + t.action + ' · 力量：' + t.power + '</div></div>'
     + '<div class="result-card"><div class="card-title"><i class="emoji-question"></i> 生命提问</div><div class="card-desc" style="font-size:15px;">"' + result.info.full.question + '"</div></div>'
     + '<div class="result-card"><div class="card-title"><i class="emoji-wave"></i> 波符</div><div class="card-value" style="font-size:18px;">' + result.info.wave.name + '</div><div class="card-desc">第' + result.info.wave.positionNum + '格 · ' + result.info.wave.position + '</div></div>'
@@ -2739,7 +2739,7 @@ function renderMayan(year, month, day) {
     
     + '<div class="result-card"><div class="card-title"><i class="emoji-book"></i> 图腾解读</div><div class="card-desc" style="white-space:pre-line;">' + result.analysis + '</div></div>'
     
-    + '<div class="result-grid auto" style="grid-template-columns:repeat(3,1fr);">'
+    + '<div class="result-grid auto" style="grid-column:1/-1;grid-template-columns:repeat(3,1fr);">'
     + [result.info.guide, result.info.similar, result.info.opposite].filter(Boolean).map(function(p) {
       var ce = p.color === '红' ? '🔴' : p.color === '白' ? '⚪' : p.color === '蓝' ? '🔵' : '🟡';
       return '<div class="result-card" style="text-align:center;"><div style="font-size:24px;">' + ce + '</div><div class="card-value" style="font-size:16px;">' + p.name + '</div><div class="card-desc">' + p.keyword + '</div></div>';
@@ -2759,7 +2759,7 @@ function renderHumanDesign(year, month, day, hour) {
   
   container.innerHTML = ''
     + '<div class="result-card card-primary"><div class="card-title"><i class="emoji-bolt"></i> ' + result.typeInfo.type + ' · ' + result.typeInfo.typeData.en + '</div><div class="card-desc" style="white-space:pre-line; font-size:14px; max-width:500px; margin:0 auto;">' + result.summary + '</div></div>'
-    + '<div class="result-grid auto">'
+    + '<div class="result-grid auto" style="grid-column:1/-1;">'
     + '<div class="result-card" style="text-align:center;"><div style="font-size:36px;">' + result.typeInfo.typeData.symbol + '</div><div class="card-value" style="font-size:18px;">' + result.typeInfo.type + ' (' + result.typeInfo.typeData.pct + ')</div><div class="card-desc">' + result.typeInfo.typeData.en + '</div></div>'
     + '<div class="result-card"><div class="card-title"><i class="emoji-route"></i> 人生策略</div><div class="card-desc">' + result.typeInfo.typeData.strategy + '</div></div>'
     + '<div class="result-card"><div class="card-title"><i class="emoji-compass"></i> 内在权威</div><div class="card-value" style="font-size:18px;">' + result.typeInfo.authority + '型</div></div>'
