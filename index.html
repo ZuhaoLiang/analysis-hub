@@ -2854,6 +2854,12 @@ document.addEventListener("DOMContentLoaded", function() {
 console.log("HANDLER SCRIPT LOADED");
 
 // =============================================
+// DOM 辅助函数
+// =============================================
+function $(id) { return document.getElementById(id); }
+function $$(sel) { return document.querySelectorAll(sel); }
+
+// =============================================
 // 时间线引擎 · 人生阶段多维解读 (v2)
 // =============================================
 const TimelineEngine = {
