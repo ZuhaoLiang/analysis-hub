@@ -3476,8 +3476,11 @@ function getExpandContent(systemId, title) {
   return '';
 }
 
+// ===== ===== ===== ===== ===== ===== ===== =====
+// 动态展开内容引擎 · 全系统
+// ===== ===== ===== ===== ===== ===== ===== =====
+
 function getPlanetSignContent(planetName, signStr) {
-  // signStr = "白羊 15.3°", extract sign name
   if (!signStr) return '';
   var signPart = signStr.split(' ')[0] || '';
   if (!signPart) return '';
@@ -3487,13 +3490,285 @@ function getPlanetSignContent(planetName, signStr) {
   return planetData[signWithZuo] || '';
 }
 
+function getZodiacDynamicContent(title, all) {
+  var z = all.zodiac;
+  if (!z) return '';
+  var sun = z.sunSign;
+
+  if (title.indexOf('太阳星座') >= 0) {
+    return '你的太阳星座是【' + sun.name + '】。太阳代表你的核心自我和生命意志。'
+      + sun.name + '的你，' + (sun.personality || '有着鲜明的个性特质。')
+      + ' 你属于' + sun.element + '象星座，' + sun.quality + '特质，守护星为' + sun.ruler + '。'
+      + '你的天然优势在于：' + (sun.strength || '') + '。需要觉察的成长点：' + (sun.weakness || '') + '。'
+      + '在职业上，你适合' + (sun.career || '多样化的领域') + '方向。'
+      + '在爱情中，' + (sun.love || '你有自己独特的表达方式。');
+  }
+  if (title.indexOf('上升星座') >= 0) {
+    var up = z.rising;
+    var upDetail = ZodiacData.all[up + '座'];
+    return '你的上升星座是【' + up + '】。上升代表你给外界的第一印象和人格面具。'
+      + '上升' + up + '的人，给人的感觉是' + (upDetail ? upDetail.personality.slice(0, 40) : '独特而有魅力') + '。'
+      + '上升星座也是你应对新环境的自动反应模式，随着年龄增长，它的特质会越来越明显。'
+      + '你的上升' + up + '影响着你的人生道路选择和他人看待你的方式。'
+      + '了解你的上升星座，就是理解你与世界初次相遇的方式。';
+  }
+  if (title.indexOf('月亮星座') >= 0) {
+    return '你的月亮星座是【' + z.moon + '】。月亮掌管你的情感需求、情绪反应模式和安全感来源。'
+      + '月亮落在' + z.moon + '，意味着你的情感世界以' + (z.moon === '白羊' ? '直接、热烈的方式表达，你' : '') + (z.moon === '金牛' ? '稳定、务实的方式寻求慰藉，你' : '') + (z.moon === '双子' ? '多变、好奇的方式处理感受，你' : '') + '独特的方式体验和表达情感。'
+      + '理解你的月亮星座需求，对于建立健康的亲密关系和情绪管理至关重要。'
+      + '当你的月亮需求被满足时，你才能感到真正的内心安宁。';
+  }
+  if (title.indexOf('性格特质') >= 0) {
+    return '你的性格特质综合了太阳' + sun.name + '的核心自我、上升' + z.rising + '的外部面具和月亮' + z.moon + '的情感底色。'
+      + sun.element + '象的' + sun.quality + '特质赋予你' + (sun.personality || '独特的性格魅力') + '。'
+      + '你的太阳驱动你' + (sun.element === '火' ? '充满热情和行动力' : sun.element === '土' ? '务实稳健地追求目标' : sun.element === '风' ? '用智慧和社交来创造' : '用情感和直觉去感受') + '。'
+      + '太阳星座是你"想要成为的人"，上升是你"看起来像的人"，月亮是你"真正的感受"。'
+      + '这三者的整合，构成了完整的你。';
+  }
+  if (title.indexOf('生肖') >= 0) {
+    return '你的生肖是【' + (z.chineseZodiac ? z.chineseZodiac.animal : '—') + '】。'
+      + '生肖不仅影响你的性格倾向，还与流年运势密切相关。'
+      + (z.chineseZodiac ? '你的生肖五行属' + z.chineseZodiac.element + '，' : '')
+      + '结合八字和星座分析，可以更全面地理解你的先天禀赋和人生周期。';
+  }
+  if (title.indexOf('优势') >= 0) {
+    var strs = sun.strength || '';
+    return '你的核心优势源于' + sun.name + '的天赋能量。' + strs
+      + ' 这些优势在你顺境时助你腾飞，在逆境时给你支撑。'
+      + '充分发挥太阳' + sun.name + '赋予你的' + sun.element + '象能量——'
+      + (sun.element === '火' ? '热情、勇气和行动力' : sun.element === '土' ? '稳定、务实和耐力' : sun.element === '风' ? '智慧、社交和应变力' : '直觉、共情和创造力')
+      + '，同时有意识地整合上升' + z.rising + '和月亮' + z.moon + '的能量，你会发现自己的潜力远超想象。';
+  }
+  if (title.indexOf('弱点') >= 0 || title.indexOf('短板') >= 0) {
+    var wk = sun.weakness || '';
+    return '你的成长盲点源于' + sun.name + '的阴影面。' + wk
+      + ' 这些"弱点"不是缺陷，而是你优势的过度发展——当太阳' + sun.name + '的能量失衡时，'
+      + (sun.element === '火' ? '热情可能变成冲动' : sun.element === '土' ? '稳定可能变成固执' : sun.element === '风' ? '灵活可能变成善变' : '共情可能变成过度敏感')
+      + '。自我觉察是和阴影共舞的第一步。';
+  }
+  if (title.indexOf('职业方向') >= 0) {
+    return '你的职业天赋由太阳' + sun.name + '指引。' + (sun.career || '适合你的职业方向多样')
+      + ' 结合' + sun.element + '象的' + (sun.element === '火' ? '开创性能量，你在需要勇气和领导力的岗位上能充分发挥' : sun.element === '土' ? '务实能量，你在需要耐心和构建的岗位上能茁壮成长' : sun.element === '风' ? '社交能量，你在需要沟通和创新的岗位上能游刃有余' : '感知能量，你在需要共情和创造力的岗位上能绽放才华')
+      + '。月亮' + z.moon + '影响你的工作情绪需求，上升' + z.rising + '影响你展现职业形象的方式。';
+  }
+  if (title.indexOf('爱情') >= 0) {
+    return '你的爱情模式由太阳' + sun.name + '主导。' + (sun.love || '')
+      + ' 你的月亮在' + z.moon + '，揭示了你深层的情感需求和安全感来源——这是你在亲密关系中真正需要的滋养方式。'
+      + '上升' + z.rising + '则影响你吸引他人的第一印象。'
+      + '了解这三者如何在你的爱情中互动，是建立健康亲密关系的关键。';
+  }
+  if (title.indexOf('健康') >= 0) {
+    return (sun.health || '你的健康与' + sun.element + '象的能量平衡密切相关。')
+      + ' ' + sun.element + '象星座需要特别注意'
+      + (sun.element === '火' ? '心血管和压力管理，保持适度运动但避免过度消耗。规律作息和充足睡眠对你的活力至关重要的。' : sun.element === '土' ? '消化系统和骨骼关节，注意饮食规律和适度休息。压力容易积累在身体上，需要定期放松。' : sun.element === '风' ? '呼吸系统和神经系统，保持空气流通和心态放松。冥想和深呼吸练习对你很有益。' : '免疫系统和情绪健康，情绪波动直接影响你的身体状况。艺术创作和亲近自然是最好的疗愈。');
+  }
+  if (title.indexOf('幸运信息') >= 0) {
+    return (sun.luck || '你的幸运信息与' + sun.name + '的能量频率相呼应。')
+      + ' 与' + sun.element + '象相关的颜色、数字和活动能增强你的气场。'
+      + '幸运不仅是外在的机遇，更是你与自己的能量保持和谐一致时自然吸引的事物。';
+  }
+  return '';
+}
+
+function getMBTIDynamicContent(title, all) {
+  var m = all.mbti;
+  if (!m || !m.data) return '';
+  var d = m.data;
+
+  if (title.indexOf('人格类型') >= 0 || title.indexOf('MBTI') >= 0) {
+    return '你的MBTI类型是【' + m.type + ' · ' + d.name + '】。'
+      + d.desc + ' 你的认知功能组合由'
+      + (m.type[0] === 'E' ? '外向' : '内向')
+      + (m.type[1] === 'N' ? '直觉' : '实感')
+      + (m.type[2] === 'T' ? '思考' : '情感')
+      + (m.type[3] === 'J' ? '判断' : '感知')
+      + '四个维度构成。每一维度都不是固定的标签，而是你在特定条件下的心理偏好——就像你的惯用手一样自然。';
+  }
+  if (title.indexOf('性格特质') >= 0) {
+    var dims = m.dimensions || [];
+    var parts = dims.map(function(d2) {
+      return d2.name + '：偏' + d2.label + '（' + d2.pct + '%）';
+    });
+    return '你的四维偏好如下：\n' + parts.join('\n')
+      + '\n\n这些偏好决定了你的认知风格——你如何获取能量（E/I）、如何接收信息（S/N）、如何做决定（T/F）、以及如何组织生活（J/P）。偏好不等于能力，了解它们是自我认知的第一步。';
+  }
+  if (title.indexOf('优势') >= 0) {
+    return '你的' + m.type + '（' + d.name + '）天然优势：' + d.strengths
+      + '。你的主导功能是你最信赖的心智工具——当你在工作中频繁使用它时，容易进入心流状态。'
+      + '充分发挥你的天赋优势，而不是执着于修补短板，能带来更高效的成长。';
+  }
+  if (title.indexOf('短板') >= 0) {
+    return '你的' + m.type + '（' + d.name + '）需要觉察的盲点：' + d.weaknesses
+      + '。在MBTI框架中，这些通常是你的第三功能和劣势功能——在压力状态下尤其容易扭曲表达。'
+      + '觉察这些倾向不是要"修复"它们，而是在重要决策时意识到自己的偏好局限，有意识地调用其他视角。';
+  }
+  if (title.indexOf('适合职业') >= 0 || title.indexOf('职业方向') >= 0) {
+    return '适合' + m.type + '（' + d.name + '）的职业方向：' + d.career
+      + '。最适合你的工作环境通常能让你频繁使用主导功能、不过度消耗劣势功能，并提供与你类型匹配的工作节奏。'
+      + '职业幸福感不完全取决于"做什么"，更取决于"用对的方式做事"。';
+  }
+  if (title.indexOf('爱情观') >= 0 || title.indexOf('爱情') >= 0) {
+    return d.love + ' 作为' + m.type + '类型，你在爱情中的天然倾向是'
+      + (m.type[2] === 'T' ? '倾向于用理性分析来处理感情问题，重视诚信和逻辑一致性。' : '以情感连接为导向，重视关系中的和谐与共鸣。')
+      + '了解自己和伴侣的类型差异不是为了"证明谁对谁错"，而是提供一种共同语言来描述彼此的需求。';
+  }
+  if (title.indexOf('成长建议') >= 0) {
+    return d.advice + ' 对' + m.type + '而言，真正的心理成熟是从主导功能到劣势功能的逐步整合。'
+      + '你不是要成为"另一种类型"，而是在保持天然优势的同时，发展平衡的认知能力。';
+  }
+  if (title.indexOf('待测评') >= 0) {
+    return '点击上方"开始测试"按钮，回答20道简单问题即可获得你的MBTI人格类型报告。'
+      + '每道题没有对错之分，遵循你的第一反应选择就好。';
+  }
+  return '';
+}
+
+function getNumerologyDynamicContent(title, all) {
+  var n = all.numerology;
+  if (!n) return '';
+  var nums = [{"n":"开创者","t":"独立、开创、领导、自信","d":"天生领袖，有开创精神和强大的行动力。独立自主，不畏艰难，善于开辟新道路。人生课题是学会合作与倾听。"},{"n":"调和者","t":"敏感、合作、外交、平衡","d":"和平使者，善于沟通协调和化解冲突。直觉敏锐，情感丰富细腻。人生课题是学会自我肯定，不过度依赖他人。"},{"n":"创造者","t":"创意、表达、乐观、社交","d":"天生的艺术家和表演者，充满创造力和表达欲。乐观开朗，是人群中的快乐源泉。人生课题是专注和深度，避免浮于表面。"},{"n":"建设者","t":"稳定、务实、秩序、可靠","d":"脚踏实地的实干家，重视秩序和安全感。勤奋可靠，善于将想法变为现实。人生课题是学会灵活变通，接纳变化。"},{"n":"自由者","t":"自由、冒险、变革、好奇","d":"热爱自由，渴望探索未知世界。思维敏捷，多才多艺，善于适应变化。人生课题是专注和坚持，找到真正值得深耕的领域。"},{"n":"守护者","t":"责任、奉献、关爱、智慧","d":"天生的照顾者和导师，有强烈的责任感和同情心。重视家庭和社群，乐于为他人付出。人生课题是学会平衡付出与自我关爱。"},{"n":"探寻者","t":"智慧、分析、灵性、真理","d":"思想的探索者，热爱知识和真理。逻辑思维强，善于分析和研究，有深刻的洞察力。人生课题是将知识转化为实际的智慧。"},{"n":"掌控者","t":"权力、财富、成就、魄力","d":"天生的管理者和企业家，有强大的决断力和执行力。追求成就和物质丰盛，善于掌握大局。人生课题是学会分享与慷慨。"},{"n":"人道者","t":"大爱、包容、理想、奉献","d":"博爱主义者，胸襟宽广，有崇高的理想和人文关怀。综合前面所有数字的优点和弱点。人生课题是学会落地、不脱离现实。"}];
+  var num = n.number || 1;
+  var info = nums[num - 1] || nums[0];
+  var careers = ['管理、创业、领导岗','咨询、外交、调解','艺术、写作、表演','金融、管理、工程','销售、旅行、传媒','教育、医疗、公益','科研、IT、分析','管理、投资、金融','公益、艺术、教育'];
+  var loves = ['需要被尊重和欣赏','渴望深度沟通和理解','需要浪漫和新鲜感','需要稳定和承诺','需要空间和自由','需要被需要和感谢','需要智识和精神共鸣','需要强大和有能力的伴侣','追求灵魂层面的连接'];
+
+  if (title.indexOf('生命数字') >= 0) {
+    return '你的生命数字是【' + num + ' · ' + info.n + '】。' + info.d
+      + ' 你的核心天赋关键词：' + info.t + '。'
+      + ' 这个数字不是你人生的全部，而是你灵魂选择此生的核心意图的数学表达。';
+  }
+  if (title.indexOf('天赋特质') >= 0) {
+    return '数字' + num + '赋予你的天赋特质：' + info.t + '。' + info.d.slice(0, 80)
+      + '。这些天赋是你与生俱来的优势——在顺境中自然而然地发挥，在逆境中成为你的帮助。';
+  }
+  if (title.indexOf('人生课题') >= 0) {
+    var lessons = [
+      '学会合作与倾听，记住你不是一个人在战斗。',
+      '学会自我肯定，你的价值不需要他人的认可来证明。',
+      '学会专注和深度，广度是天赋但深度才是力量。',
+      '学会灵活变通，变化不是威胁而是成长的机会。',
+      '学会专注和坚持，找到真正值得深耕的领域。',
+      '学会平衡付出与自我关爱，照顾好自己才能更好地照顾他人。',
+      '学会将知识转化为实践，智慧在于应用而非积累。',
+      '学会分享与慷慨，真正的丰盛在于给予。',
+      '学会落地和务实，理想需要现实的土壤才能生根。'
+    ];
+    return '数字' + num + '的人生课题：' + (lessons[num - 1] || '') + ' 人生课题不是你的缺陷，而是你灵魂选择的成长方向。每当你在这个领域遇到挑战时，记得这是你选择要学习的功课。';
+  }
+  if (title.indexOf('适合职业') >= 0) {
+    return '生命数字' + num + '（' + info.n + '）适合的职业方向：' + (careers[num - 1] || '')
+      + '。选择与你的数字能量相符的工作环境，你更容易找到成就感和心流体验。'
+      + '数字不是限制，而是指引——你可以从事任何职业，但以符合你数字能量的方式去工作会让你更快乐。';
+  }
+  if (title.indexOf('爱情模式') >= 0) {
+    return '生命数字' + num + '（' + info.n + '）在爱情中的核心需求：' + (loves[num - 1] || '')
+      + '。了解自己的爱情模式不是为了限制自己，而是为了在关系中更有意识地选择。'
+      + '你的数字揭示了你的情感需求模式，而关系的质量取决于你如何与伴侣的需求进行创造性对话。';
+  }
+  if (title.indexOf('幸运指引') >= 0) {
+    var colors = ['#FF4444','#FF8800','#FFCC00','#44BB44','#44BBFF','#8844FF','#4488FF','#CC3333','#CC8833'];
+    return '生命数字' + num + '的幸运色：' + (colors[num - 1] || '') + '。幸运数字：' + num + '。'
+      + '通过有意识地接触与你的数字能量共振的颜色和元素，你可以增强自己的气场和直觉。'
+      + '幸运不是偶然，而是你与自身频率和谐一致时自然吸引的结果。';
+  }
+  return '';
+}
+
+function getLunarMansionDynamicContent(title, all) {
+  var r = all.lunarmansion;
+  if (!r) return '';
+  var beast = r.g || '';
+  var beasts = {'青龙':{'icon':'🐉','color':'青绿','dir':'东方','season':'春','element':'木','attr':'生机勃勃、奋发向上'},'白虎':{'icon':'🐅','color':'银白','dir':'西方','season':'秋','element':'金','attr':'肃杀决断、刚健有力'},'朱雀':{'icon':'🦅','color':'朱红','dir':'南方','season':'夏','element':'火','attr':'热情灵动、光明磊落'},'玄武':{'icon':'🐢','color':'玄黑','dir':'北方','season':'冬','element':'水','attr':'智慧深沉、含蓄内敛'}};
+  var bd = beasts[beast] || {};
+
+  if (title.indexOf('性格特质') >= 0) {
+    return '你的当值星宿是【' + r.i + '·' + r.n + '】。' + (r.p || r.d || '')
+      + ' 所属' + beast + '七宿之一，蕴含着' + (bd.attr || '独特') + '的能量气质。'
+      + '二十八星宿是中国古代天文学家和星占家观察日月五星运行的重要参照系统。';
+  }
+  if (title.indexOf('所属四象') >= 0) {
+    return '你的本命星宿属于【' + beast + '】。'
+      + (bd.icon || '') + ' ' + beast + '：' + (bd.dir || '') + '，属' + (bd.element || '') + '，对应' + (bd.season || '') + '季。'
+      + (bd.attr || '') + '。' + beast + '七宿的排列顺序和星区划分反映了古代中国人对天象与人事关系的深刻理解。你的四象归属决定了你天生的能量气质和行事风格。';
+  }
+  if (title.indexOf('运势建议') >= 0) {
+    var tips = ['适合稳步发展，抓住贵人机遇。','宜放慢节奏，深思熟虑后行动。','人缘旺盛，适合合作和社交。','事业运强，大胆推进计划。','需注意人际沟通，保持低调。','财运不错，适合稳健理财。','适合学习和进修，提升自我。','易有变动，以静制动为佳。','健康运佳，适合开启新计划。','需防小人，低调行事。','贵人运强，可大胆尝试。','适合整理和规划，不宜冒进。','交际运强，多参与社交活动。','事业有突破，把握良机。','宜保守，注意身体健康。','精神佳，适合创意和表达。','财运旺盛，适合投资理财。','适合内省和调整方向。','人缘好，宜开拓新局面。','事业需耐心，稳步前进。','感情运佳，宜珍惜眼前人。','宜远行或学习新技能。','财富积累期，不宜大额支出。','适合整合资源，合作共赢。','精力旺盛，大胆行动。','注意情绪管理，保持平和。','适合总结和规划未来。','新周期开始，宜调整心态。'];
+    return '星宿' + r.i + '的运势建议：' + (tips[Math.floor(Math.random() * tips.length)] || '顺时进取，逆时修身。')
+      + ' 运势不是宿命的判决，而是能量的潮汐——了解周期，顺势而为。在能量高峰时大胆行动，在低谷期养精蓄锐。';
+  }
+  if (title.indexOf('相处指南') >= 0) {
+    var guides = {
+      '青龙': '青龙象的人喜欢直接、热情的交流方式，需要被尊重和认可。与他们相处宜坦诚相待，给他们主导的空间。',
+      '朱雀': '朱雀象的人重视沟通和表达，喜欢活跃的社交互动。与他们相处宜开放交流，分享想法和感受。',
+      '白虎': '白虎象的人讲究效率和公平，需要清晰的规则和边界。与他们相处宜直接了当，尊重他们的独立空间。',
+      '玄武': '玄武象的人注重私密和深度，需要被理解和给予空间。与他们相处宜耐心温和，不要逼迫他们打开心扉。'
+    };
+    return (guides[beast] || '不同星宿特质的人各有不同的相处之道。')
+      + ' 了解他人的星宿特质不是贴标签，而是找到最适合彼此的相处节奏。真正的人际智慧在于：用对方能感受到的方式表达真诚。';
+  }
+  return '';
+}
+
+function getZhengyuDynamicContent(title, all) {
+  var p = all.zhengyu;
+  if (!p) return '';
+  var elemIcon = {'木':'🌳','火':'🔥','土':'⛰️','金':'💎','水':'💧'};
+  var elemColor = {'木':'绿色、青色','火':'红色、紫色','土':'黄色、棕色','金':'白色、金色','水':'黑色、蓝色'};
+  var elemWear = elemColor[p.e] || '本色系';
+
+  if (title.indexOf('星曜特质') >= 0) {
+    return '你的本命政余星曜是【' + p.n + '】。' + (p.d || '')
+      + ' 七政四余是隋唐时期从印度占星学传入中国后，与本土星命学融合形成的独特体系。'
+      + '七政指日、月、金、木、水、火、土七星，四余指紫炁、月孛、罗睺、计都四颗隐曜。'
+      + '你的本命星揭示了你的先天性格底色和人生禀赋。';
+  }
+  if (title.indexOf('五行属性') >= 0) {
+    return '你的本命星【' + p.n + '】五行属【' + p.e + '】。'
+      + ' ' + (elemIcon[p.e] || '') + ' ' + p.e + '性' + (p.e === '木' ? '主仁，生发向上，温和宽厚' : p.e === '火' ? '主礼，热情奔放，积极进取' : p.e === '土' ? '主信，稳重踏实，诚信可靠' : p.e === '金' ? '主义，刚毅果断，意志坚定' : '主智，智慧灵活，善于变通') + '。'
+      + '了解你的本命星五行，可以帮助你在生活中选择有利的环境、颜色和方向，增强能量的正面流动。';
+  }
+  if (title.indexOf('命格解析') >= 0) {
+    return '你的命格由【' + p.n + '】主导。' + (p.d || '').slice(0, 80)
+      + ' 在七政四余体系中，太阳为"身主"，太阴为"命主"，金木水火土为"政星"。'
+      + '四余星——紫炁为吉星福神，月孛为暗星隐藏之力，罗睺为蚀星变革之力，计都为蚀星收束之力。'
+      + '命格解析不是定格你的一生，而是帮助你认识自己的能量禀赋，从而更有方向地活出最好的自己。';
+  }
+  if (title.indexOf('开运建议') >= 0) {
+    return '五行属【' + p.e + '】的开运建议：宜穿戴' + elemWear
+      + '的衣物配饰，多接触与' + p.e + '相关的自然元素。'
+      + (p.e === '木' ? '多亲近绿色植物和自然，东方是你的吉利方位。' : p.e === '火' ? '多接触阳光和温暖的环境，南方是你的吉利方位。' : p.e === '土' ? '多接触大地和山峦，中部是你的吉利方位。' : p.e === '金' ? '多佩戴金属饰品，西方是你的吉利方位。' : '多靠近水域和流动的水，北方是你的吉利方位。')
+      + '开运的本质不是改变命运，而是调整自己的频率与宇宙同频。';
+  }
+  return '';
+}
+
+function getDynamicExpandContent(systemId, title, cardEl) {
+  var all = AppState.allResults;
+  if (!all) return '';
+
+  switch (systemId) {
+    case 'chart-data': {
+      var planetName = title.replace(/^[\u2600-\u27BF\u2600-\u26FF\u2700-\u27BF☉☽☿♀♂♃♄♅♆♇\s]/, '').trim();
+      var signEl = cardEl ? cardEl.querySelector('.card-value') : null;
+      var signText = signEl ? signEl.textContent.trim() : '';
+      return getPlanetSignContent(planetName, signText);
+    }
+    case 'zodiac-result': return getZodiacDynamicContent(title, all);
+    case 'mbti-result': return getMBTIDynamicContent(title, all);
+    case 'numerology-result': return getNumerologyDynamicContent(title, all);
+    case 'lunarmansion-result': return getLunarMansionDynamicContent(title, all);
+    case 'zhengyu-result': return getZhengyuDynamicContent(title, all);
+    default: return '';
+  }
+}
+
 function buildExpandBody(cardEl) {
   if (cardEl.classList.contains('expand-card')) return;
   cardEl.classList.add('expand-card');
   var body = document.createElement('div'); body.className = 'expand-body';
   var titleEl = cardEl.querySelector('.card-title');
   var t = titleEl ? titleEl.textContent.trim() : '详情';
-  
+
   // 稳健方式：手动遍历父节点找容器ID
   var systemId = '';
   var el = cardEl.parentElement;
@@ -3507,21 +3782,14 @@ function buildExpandBody(cardEl) {
     }
     el = el.parentElement;
   }
-  
-  // Check if this is an astrology planet card — use dynamic PlanetSignData
-  var content = '';
-  if (systemId === 'chart-data') {
-    var planetName = t.replace(/^[\u2600-\u27BF\u2600-\u26FF\u2700-\u27BF☉☽☿♀♂♃♄♅♆♇\s]/, '').trim();
-    var signEl = cardEl.querySelector('.card-value');
-    var signText = signEl ? signEl.textContent.trim() : '';
-    content = getPlanetSignContent(planetName, signText);
-  }
-  
+
+  // 动态内容优先 → 静态回退
+  var content = getDynamicExpandContent(systemId, t, cardEl);
   if (!content) {
     content = getExpandContent(systemId, t);
     if (!content) content = '';
   }
-  
+
   body.innerHTML = '<div class="expand-section-title">📖 深度解读 · ' + t + '</div>'
     + '<div style="font-size:13px;color:var(--text-secondary);line-height:1.8;padding:8px 0;">'
     + content
