@@ -2531,7 +2531,7 @@ function renderMBTIResult(result) {
     + result.dimensions.map(function(d) {
       var pct = Math.abs(d.value)/5*100;
       return '<div class="result-card" style="text-align:center;">'
-        + '<div style="font-size:12px; color:var(--text-muted); margin-bottom:4px;">' + d.name + '</div>'
+        + '<div class="card-title" style="font-size:12px; color:var(--text-muted); margin-bottom:4px;justify-content:center;">' + d.name + '</div>'
         + '<div style="height:4px; background:rgba(255,255,255,0.08); border-radius:2px; margin:8px 0;position:relative;">'
         + '<div style="position:absolute; height:100%; border-radius:2px; background:var(--accent-gold); width:' + pct + '%;'
         + (d.value < 0 ? 'left:0;' : 'right:0;') + '"></div></div>'
@@ -3620,6 +3620,52 @@ function getMBTIDynamicContent(title, all) {
     return '点击上方"开始测试"按钮，回答20道简单问题即可获得你的MBTI人格类型报告。'
       + '每道题没有对错之分，遵循你的第一反应选择就好。';
   }
+  // 四维卡片：外向(E)/内向(I) 等
+  var dimName = title.replace(/\s*\(.*\)\s*/, '').trim();
+  if (dimName === '外向' || dimName === '内向' || dimName.indexOf('外向') >= 0 || title.indexOf('EI') >= 0) {
+    var eiScore = m.scores ? m.scores.EI : 0;
+    var eiPct = Math.round(Math.abs(eiScore) / 5 * 100);
+    var eiLabel = eiScore >= 0 ? '外向(E)' : '内向(I)';
+    var eiPolar = eiScore >= 0 ? '内向(I)' : '外向(E)';
+    return '你在【外向(E)/内向(I)】维度上偏向【' + eiLabel + '】，倾向强度约 ' + eiPct + '%。'
+      + '外向（E）的人通过与人互动获得能量，倾向于先行动后思考，喜欢社交和多元化的环境。'
+      + '内向（I）的人通过独处获得能量，倾向于先思考后行动，喜欢深度而非广度。'
+      + '\n\n你的得分偏向' + eiLabel + '，说明你更' + (eiScore >= 0 ? '倾向于通过社交和外部活动来充电，乐于表达想法，喜欢成为活跃的一份子。但也要注意留出独处时间进行深度反思。' : '倾向于在安静环境中思考和恢复能量，享受深度的一对一交流。但也要注意适度参与社交活动，拓展自己的舒适区。')
+      + '\n\n偏好' + eiLabel + '不代表你没有' + eiPolar + '的能力，只是说前者是你的天然倾向——你的惯用模式。';
+  }
+  if (dimName.indexOf('直觉') >= 0 || dimName.indexOf('实感') >= 0 || title.indexOf('SN') >= 0) {
+    var snScore = m.scores ? m.scores.SN : 0;
+    var snPct = Math.round(Math.abs(snScore) / 5 * 100);
+    var snLabel = snScore >= 0 ? '直觉(N)' : '实感(S)';
+    var snPolar = snScore >= 0 ? '实感(S)' : '直觉(N)';
+    return '你在【直觉(N)/实感(S)】维度上偏向【' + snLabel + '】，倾向强度约 ' + snPct + '%。'
+      + '实感（S）的人关注具体、实际的信息，相信五感经验，注重当下和细节。'
+      + '直觉（N）的人关注模式和可能性，相信灵感和想象，着眼未来和全局。'
+      + '\n\n你的得分偏向' + snLabel + '，说明你更' + (snScore >= 0 ? '关注事物的可能性和深层含义，喜欢思考未来和抽象概念。你有丰富的想象力，能看到别人看不到的联系。但要注意关注当下和具体的执行细节。' : '关注具体事实和实际经验，注重现实中的细节。你脚踏实地，善于从经验中学习。但要注意拓展视野，偶尔跳出常规思维。')
+      + '\n\n偏好' + snLabel + '不代表你没有' + snPolar + '的能力，只是说前者是你更自然的信息接收方式。';
+  }
+  if (dimName.indexOf('思考') >= 0 || dimName.indexOf('情感') >= 0 || title.indexOf('TF') >= 0) {
+    var tfScore = m.scores ? m.scores.TF : 0;
+    var tfPct = Math.round(Math.abs(tfScore) / 5 * 100);
+    var tfLabel = tfScore >= 0 ? '思考(T)' : '情感(F)';
+    var tfPolar = tfScore >= 0 ? '情感(F)' : '思考(T)';
+    return '你在【思考(T)/情感(F)】维度上偏向【' + tfLabel + '】，倾向强度约 ' + tfPct + '%。'
+      + '思考（T）的人依据逻辑和客观原则做决策，重视公平和一致性。'
+      + '情感（F）的人依据个人价值观和对他人的影响做决策，重视和谐和共情。'
+      + '\n\n你的得分偏向' + tfLabel + '，说明你更' + (tfScore >= 0 ? '倾向于用逻辑分析来做决定，你重视原则和公平。在讨论问题时你追求客观真理，即使真相可能会让人不舒服。但要注意在做决策时也考虑他人的感受。' : '倾向于用价值观和共情来做决定，你重视关系和感受。你能敏锐地察觉他人的情绪需求。但要注意在做决策时也适当运用理性分析，避免过度迁就他人。')
+      + '\n\n偏好' + tfLabel + '不代表你没有' + tfPolar + '的能力，只是说前者是你做决策时的首选依据。';
+  }
+  if (dimName.indexOf('判断') >= 0 || dimName.indexOf('感知') >= 0 || title.indexOf('JP') >= 0) {
+    var jpScore = m.scores ? m.scores.JP : 0;
+    var jpPct = Math.round(Math.abs(jpScore) / 5 * 100);
+    var jpLabel = jpScore >= 0 ? '判断(J)' : '感知(P)';
+    var jpPolar = jpScore >= 0 ? '感知(P)' : '判断(J)';
+    return '你在【判断(J)/感知(P)】维度上偏向【' + jpLabel + '】，倾向强度约 ' + jpPct + '%。'
+      + '判断（J）的人喜欢计划和组织，追求确定性和掌控感，倾向于快速做决定。'
+      + '感知（P）的人喜欢灵活和开放，追求体验和可能性，倾向于保持选项开放。'
+      + '\n\n你的得分偏向' + jpLabel + '，说明你更' + (jpScore >= 0 ? '喜欢有计划、有条理的生活方式。你喜欢把事情确定下来，按计划推进。你的组织和执行能力强。但要注意留出弹性和适应变化的空间。' : '喜欢灵活、随性的生活方式。你喜欢保持开放的选择，享受当下的体验。你的适应能力和即兴发挥能力强。但要注意在重要事项上保持必要的规划。')
+      + '\n\n偏好' + jpLabel + '不代表你没有' + jpPolar + '的能力，只是说前者是你组织生活方式的自然倾向。';
+  }
   return '';
 }
 
@@ -3742,6 +3788,40 @@ function getZhengyuDynamicContent(title, all) {
   return '';
 }
 
+
+function getZiweiDynamicContent(title, all) {
+  var analysis = all.ziwei;
+  if (!analysis || !analysis.length) return '';
+  
+  // 十二宫详解 / 十二宫总览 — 使用现有ExpandContent但扩展
+  if (title.indexOf('十二宫详解') >= 0) {
+    var palaceList = analysis.map(function(a) {
+      return '【' + a.palace + '】' + a.keywords + '。主星：' + a.mainStars + '。' + a.fortune;
+    }).join('\\n');
+    return '你的紫微命盘十二宫主星分布如下：\\n' + palaceList
+      + '\\n\\n以上十二宫覆盖了人生的所有维度。命宫定格局，财帛宫论财富，官禄宫看事业，夫妻宫论姻缘。每一宫的星曜配置都在谱写你人生的独特乐章。十四主星加辅星四化的排列组合千变万化，正是紫微斗数精妙之处。';
+  }
+  if (title.indexOf('十二宫总览') >= 0) {
+    return '紫微斗数十二宫各司其职：命宫为命运核心，兄弟宫看手足缘分，夫妻宫断婚姻好坏，子女宫观子嗣有无，财帛宫论贫富程度，疾厄宫察身体强弱，迁移宫看出外吉凶，交友宫论社交能力，官禄宫断事业高低，田宅宫看家业大小，福德宫定福寿深浅，父母宫论出身贵贱。主星星曜的强弱和四化星的分布，共同构成了一幅完整的人生蓝图。你的命盘中，' + (analysis[0] ? analysis[0].mainStars + '坐命宫，' : '') + (analysis[5] ? analysis[5].mainStars + '在财帛宫' : '') + '等组合，描绘了你独特的人生格局。';
+  }
+  
+  // 具体宫位卡片：如"命宫"、"兄弟宫"等
+  for (var i = 0; i < analysis.length; i++) {
+    var a = analysis[i];
+    if (title.indexOf(a.palace) >= 0) {
+      var houseNum = ['命','兄弟','夫妻','子女','财帛','疾厄','迁移','交友','官禄','田宅','福德','父母'][i] || '';
+      var houseGuide = ['命宫是你人生蓝图的核心。命宫里的主星决定了你一生的基本格局和气质走向。命宫强有力的主星配吉化，主一生顺遂；命宫无主星则需借对宫来推断，一生格局较受外部环境影响。','兄弟宫看的是你与同辈的缘分深浅、手足情谊以及人际互动的模式。','夫妻宫揭示你的婚姻缘分、配偶的特质以及亲密关系的模式。','子女宫反映你的子嗣缘分、创造力方向以及与年轻人的互动缘分。','财帛宫显示你的财富获取方式、理财能力以及物质生活的丰俭程度。','疾厄宫揭示你的体质强弱、容易出现的健康问题以及应对疾病的方式。','迁移宫反映你的异地运势、旅行机缘以及适应新环境的能力。','交友宫揭示你的社交圈质量、朋友缘分以及人际关系的助力与阻力。','官禄宫显示你的事业方向、成就高度以及在社会中的角色定位。','田宅宫反映你的家业根基、房产运以及居住环境的变化。','福德宫揭示你的精神享受、福气深浅以及晚年的生活质量。','父母宫反映你的出身背景、亲缘关系以及家族的传承影响。'][i] || '';
+      return '你' + a.palace + '的解读：' + houseGuide
+        + '\\n你的' + a.palace + '主星为【' + a.mainStars + '】，' + a.starType + '性质。'
+        + '\\n' + a.mainDesc
+        + (a.auxStars !== '无' ? '\\n辅星配置：' + a.auxStars + '。' + a.auxDesc : '')
+        + '\\n' + a.fortune
+        + '\\n\\n十二宫之间相互影响，' + a.palace + '的能量会通过四化（化禄、化权、化科、化忌）与其他宫位产生联动。';
+    }
+  }
+  return '';
+}
+
 function getDynamicExpandContent(systemId, title, cardEl) {
   var all = AppState.allResults;
   if (!all) return '';
@@ -3758,6 +3838,7 @@ function getDynamicExpandContent(systemId, title, cardEl) {
     case 'numerology-result': return getNumerologyDynamicContent(title, all);
     case 'lunarmansion-result': return getLunarMansionDynamicContent(title, all);
     case 'zhengyu-result': return getZhengyuDynamicContent(title, all);
+    case 'ziwei-analysis': return getZiweiDynamicContent(title, all);
     default: return '';
   }
 }
