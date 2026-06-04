@@ -3258,6 +3258,7 @@ var ExpandContent = {
   // ===== 玛雅 =====
   'mayan': {
     '银河音阶': '玛雅13银河音阶（调性）是宇宙创造频率的13个等级，从磁性的统一到宇宙的超越。每个音阶都有独特的行动力量和生命提问。你的银河音阶揭示了你在此生中的核心行动模式——你是发起者、稳定者、服务者还是传播者？音阶是你的能量节奏，决定你做事和与世界互动的基本步调。',
+        '生命提问': '你的生命提问是你在此生中不断回响的核心议题。每个玛雅调性都有一个独特的提问——从磁性调性的"目的是什么"到宇宙调性的"如何超越"。当你面对这个提问时，你面对的是自己灵魂的核心频率。',
     '波符': '波符是玛雅历法中由13个连续图腾组成的能量旅程。你的本命波符揭示了你的人生主题——从第一个图腾（启动）到第十三个图腾（超越），每个位置都承载着特定的人生课题。你在波符中的位置决定了你在此次旅程中的角色定位。',
     '图腾解读': '玛雅20图腾源自卓尔金历，是宇宙能量的20种原型表达。每个图腾都有独特的颜色家族（红白蓝黄）、核心关键词和天赋力量。你的本命图腾不只是一个符号，它是你与生俱来的能量密码——揭示了你最自然的存在方式、你的天赋赛道以及你在集体意识中扮演的角色。',
   },
@@ -3720,6 +3721,57 @@ function getNumerologyDynamicContent(title, all) {
   return '';
 }
 
+
+function getMayanDynamicContent(title, all) {
+  var mayan = all.mayan;
+  if (!mayan || !mayan.info) return '';
+  var info = mayan.info;
+  var g = info.mainGlyph;
+  var t = info.mainTone;
+
+  if (title.indexOf('图腾解读') >= 0) {
+    return '你的玛雅印记是【' + g.color + g.name + '】—— ' + (g.desc || '')
+      + '\n\n银河音阶：' + t.name + '（调性' + t.num + '）—— ' + t.action + '的力量、' + t.power + '的本体。'
+      + '\n你的生命提问是："' + info.full.question + '"'
+      + '\n肯定语："' + (g.affirm || '') + '"'
+      + '\n\n你的指引力量：【' + (info.guide ? info.guide.color + info.guide.name : '—') + '】'
+      + '，相似力量：【' + (info.similar ? info.similar.color + info.similar.name : '—') + '】'
+      + '，挑战力量：【' + (info.opposite ? info.opposite.color + info.opposite.name : '—') + '】。'
+      + '\n\n玛雅纹理学不仅仅是图腾和音阶的组合，更是一套完整的宇宙时间观。你的KIN印记是你在银河星系中的独特坐标。';
+  }
+  if (title.indexOf('银河音阶') >= 0) {
+    return '你的银河音阶是【' + t.name + '】，调性' + t.num + '。'
+      + '\n行动力量：' + t.action
+      + '\n本体力量：' + t.power
+      + '\n生命提问：' + (t.question || '我在这个维度如何表达我的本质？')
+      + '\n\n玛雅13调性是从1（磁性）到13（宇宙）的能量进化序列。调性决定了你的行动节奏——你是发起者、稳定者还是转化者？每个调性都有独特的生命提问，那是你在这一生中不断回响的核心议题。';
+  }
+  if (title.indexOf('生命提问') >= 0) {
+    return '你的生命提问是：【"' + info.full.question + '"】'
+      + '\n\n这个提问不是别人给你的，而是你的灵魂在玛雅历法中选择的核心议题。调性' + t.num + '（' + t.name + '）的你，通过' + t.action + '的行动来表达' + t.power + '的本质。'
+      + '\n\n每一次当你在生活中面对这个提问时，记得你是在回应宇宙的召唤。';
+  }
+  if (title.indexOf('波符') >= 0) {
+    return '你所在的波符：【' + info.wave.name + '】。'
+      + '\n你在波符中的位置：第' + info.wave.positionNum + '格 · ' + info.wave.position
+      + '\n\n波符是由13个连续图腾组成的能量旅程，每个波符由起始图腾的能量所定义。' + info.wave.name + '的能量主题贯穿你的人生——从启动到超越，每个位置都有特定的课题和力量。'
+      + '\n\n你的波符起始图腾是【' + (info.wave.glyph ? info.wave.glyph.name : '') + '】，整个波符的能量旅程围绕这个图腾的核心力量展开。';
+  }
+  if (title.indexOf('颜色家族') >= 0) {
+    var families = {'红':'启动族 · 红龙部落','白':'基础族 · 智者部落','蓝':'蜕变族 · 魔法师部落','黄':'成熟族 · 太阳部落'};
+    var clans = {'红':'血液·大地·生命之源','白':'星光·智慧·纯净之力','蓝':'天空·蜕变·魔法之变','黄':'太阳·成熟·光明之果'};
+    return '你的颜色家族：【' + info.colorFamily + '】'
+      + '\n\n玛雅20图腾分为四个颜色家族，每个家族代表不同的能量层级和进化方向：'
+      + '\n红色家族（启动）：' + (clans['红'] || '')
+      + '\n白色家族（基础）：' + (clans['白'] || '')
+      + '\n蓝色家族（蜕变）：' + (clans['蓝'] || '')
+      + '\n黄色家族（成熟）：' + (clans['黄'] || '')
+      + '\n\n你的图腾' + g.name + '属于' + g.color + '色家族，这意味着你的能量以' + (g.color === '红' ? '启动和开创' : g.color === '白' ? '基础和净化' : g.color === '蓝' ? '蜕变和疗愈' : '成熟和收获') + '的方式展现。';
+  }
+  return '';
+}
+
+
 function getLunarMansionDynamicContent(title, all) {
   var r = all.lunarmansion;
   if (!r) return '';
@@ -3797,9 +3849,9 @@ function getZiweiDynamicContent(title, all) {
   if (title.indexOf('十二宫详解') >= 0) {
     var palaceList = analysis.map(function(a) {
       return '【' + a.palace + '】' + a.keywords + '。主星：' + a.mainStars + '。' + a.fortune;
-    }).join('\\n');
-    return '你的紫微命盘十二宫主星分布如下：\\n' + palaceList
-      + '\\n\\n以上十二宫覆盖了人生的所有维度。命宫定格局，财帛宫论财富，官禄宫看事业，夫妻宫论姻缘。每一宫的星曜配置都在谱写你人生的独特乐章。十四主星加辅星四化的排列组合千变万化，正是紫微斗数精妙之处。';
+    }).join('\n');
+    return '你的紫微命盘十二宫主星分布如下：\n' + palaceList
+      + '\n\n以上十二宫覆盖了人生的所有维度。命宫定格局，财帛宫论财富，官禄宫看事业，夫妻宫论姻缘。每一宫的星曜配置都在谱写你人生的独特乐章。十四主星加辅星四化的排列组合千变万化，正是紫微斗数精妙之处。';
   }
   if (title.indexOf('十二宫总览') >= 0) {
     return '紫微斗数十二宫各司其职：命宫为命运核心，兄弟宫看手足缘分，夫妻宫断婚姻好坏，子女宫观子嗣有无，财帛宫论贫富程度，疾厄宫察身体强弱，迁移宫看出外吉凶，交友宫论社交能力，官禄宫断事业高低，田宅宫看家业大小，福德宫定福寿深浅，父母宫论出身贵贱。主星星曜的强弱和四化星的分布，共同构成了一幅完整的人生蓝图。你的命盘中，' + (analysis[0] ? analysis[0].mainStars + '坐命宫，' : '') + (analysis[5] ? analysis[5].mainStars + '在财帛宫' : '') + '等组合，描绘了你独特的人生格局。';
@@ -3812,11 +3864,11 @@ function getZiweiDynamicContent(title, all) {
       var houseNum = ['命','兄弟','夫妻','子女','财帛','疾厄','迁移','交友','官禄','田宅','福德','父母'][i] || '';
       var houseGuide = ['命宫是你人生蓝图的核心。命宫里的主星决定了你一生的基本格局和气质走向。命宫强有力的主星配吉化，主一生顺遂；命宫无主星则需借对宫来推断，一生格局较受外部环境影响。','兄弟宫看的是你与同辈的缘分深浅、手足情谊以及人际互动的模式。','夫妻宫揭示你的婚姻缘分、配偶的特质以及亲密关系的模式。','子女宫反映你的子嗣缘分、创造力方向以及与年轻人的互动缘分。','财帛宫显示你的财富获取方式、理财能力以及物质生活的丰俭程度。','疾厄宫揭示你的体质强弱、容易出现的健康问题以及应对疾病的方式。','迁移宫反映你的异地运势、旅行机缘以及适应新环境的能力。','交友宫揭示你的社交圈质量、朋友缘分以及人际关系的助力与阻力。','官禄宫显示你的事业方向、成就高度以及在社会中的角色定位。','田宅宫反映你的家业根基、房产运以及居住环境的变化。','福德宫揭示你的精神享受、福气深浅以及晚年的生活质量。','父母宫反映你的出身背景、亲缘关系以及家族的传承影响。'][i] || '';
       return '你' + a.palace + '的解读：' + houseGuide
-        + '\\n你的' + a.palace + '主星为【' + a.mainStars + '】，' + a.starType + '性质。'
-        + '\\n' + a.mainDesc
-        + (a.auxStars !== '无' ? '\\n辅星配置：' + a.auxStars + '。' + a.auxDesc : '')
-        + '\\n' + a.fortune
-        + '\\n\\n十二宫之间相互影响，' + a.palace + '的能量会通过四化（化禄、化权、化科、化忌）与其他宫位产生联动。';
+        + '\n你的' + a.palace + '主星为【' + a.mainStars + '】，' + a.starType + '性质。'
+        + '\n' + a.mainDesc
+        + (a.auxStars !== '无' ? '\n辅星配置：' + a.auxStars + '。' + a.auxDesc : '')
+        + '\n' + a.fortune
+        + '\n\n十二宫之间相互影响，' + a.palace + '的能量会通过四化（化禄、化权、化科、化忌）与其他宫位产生联动。';
     }
   }
   return '';
@@ -3836,6 +3888,7 @@ function getDynamicExpandContent(systemId, title, cardEl) {
     case 'zodiac-result': return getZodiacDynamicContent(title, all);
     case 'mbti-result': return getMBTIDynamicContent(title, all);
     case 'numerology-result': return getNumerologyDynamicContent(title, all);
+    case 'mayan-result': return getMayanDynamicContent(title, all);
     case 'lunarmansion-result': return getLunarMansionDynamicContent(title, all);
     case 'zhengyu-result': return getZhengyuDynamicContent(title, all);
     case 'ziwei-analysis': return getZiweiDynamicContent(title, all);
